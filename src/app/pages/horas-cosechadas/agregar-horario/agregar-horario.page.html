@@ -1,0 +1,405 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start" (click)="back()">
+      <ion-button>
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Agregar Horario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="content">
+  <ion-card>
+    <ion-card-header class="new-background-color">
+      <ion-card-title style="color: white"
+        >Formulario
+
+        <ion-label
+          style="
+            position: absolute;
+            right: 1px;
+            font-size: 1rem;
+            border-bottom: solid white 1px;
+          "
+          >{{rancho}}</ion-label
+        >
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="position: relative">
+      <ion-row>
+        <ion-col *ngIf="filtroSectores" style="margin-top: 3vh">
+          <ion-text> Sector </ion-text>
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-select  (ionChange)="verificarPapeleta()"
+                interface="action-sheet"
+                placeholder="Sin Data"
+                style="padding: 0px"
+                [(ngModel)]="capturaHorario.sector"
+              >
+                <ion-select-option
+                  *ngFor="let sector of filtroSectores"
+                  [value]="sector.sector"
+                >
+                  {{sector.sector}}</ion-select-option
+                >
+              </ion-select>
+              <ion-icon name="grid"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <!-- <label style="text-align: right;"style='position: absolute; top:-1rem; '>Cosecha</label>
+            <div style="height: 3px;width: 100%;background-color:rgb(18,135,107); margin-top: 2rem;">
+            </div> -->
+
+      <ion-row *ngIf="false">
+        <ion-col size="12">
+          <span style="text-align: right; font-size: 1.4rem">
+            <label style="text-align: right">Cosecha</label>
+            <div
+              style="
+                height: 3px;
+                width: 100%;
+                background-color: rgb(18, 135, 107);
+              "
+            ></div>
+          </span>
+        </ion-col>
+        <ion-col size="6">
+          <ion-text> Hora Inicio </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="font-size: 1.6vh; width: 100%; justify-content: center"
+            >
+              <!-- <ion-chip id="tiempo-modal-inicio-cos" color="primary" mode="ios" outline="true" style="font-size: 1.6vh;width: 100%; justify-content: center">
+                            {{capturaHorario.CosHoraInicio |date:'HH:mm:ss a'|sinData}}-->
+
+              <input
+                [format]="24"
+                placeholder="Sin datos"
+                aria-label="Sin datos"
+                [ngxTimepicker]="darkPicker"
+                [(ngModel)]="capturaHorario.CosHoraInicio"
+                readonly
+              />
+              <ngx-material-timepicker
+                #darkPicker
+                [theme]="darkTheme"
+              ></ngx-material-timepicker>
+              <ion-icon name="time"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        <ion-col size="6" style="text-align: right">
+          <ion-text> Hora Fin </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="font-size: 1.6vh; width: 100%; justify-content: center"
+            >
+
+            <input
+            [format]="24"
+            placeholder="Sin datos"
+            aria-label="Sin datos"
+            [ngxTimepicker]="darkPicker2"
+            [(ngModel)]="capturaHorario.CosHoraFin"
+            readonly
+          />
+          <ngx-material-timepicker
+            #darkPicker2
+            [theme]="darkTheme"
+          ></ngx-material-timepicker>
+          <ion-icon name="time"></ion-icon>
+              <!-- {{capturaHorario.CosHoraFin |date:'HH:mm:ss a'|sinData}}
+              <ion-icon name="time"></ion-icon> -->
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="false">
+        <ion-col>
+          <ion-text> Num Cosechadores </ion-text>
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-input
+                placeholder="# Cosechadores"
+                style="font-size: 0.8rem; text-align: left"
+                type="number"
+                [(ngModel)]="capturaHorario.NumCosechadores"
+              ></ion-input>
+              <ion-icon name="person"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        <ion-col style="text-align: right">
+          <ion-text> Kg Proceso Campo </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-input
+                placeholder="# Kg"
+                style="font-size: 0.8rem; text-align: left"
+                type="number"
+                [(ngModel)]="capturaHorario.kilogramosCampo"
+              ></ion-input>
+              <ion-icon name="radio-button-on"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <span>
+            <label style="font-size: 1.4rem">Galera</label>
+            <div
+              style="
+                height: 3px;
+                width: 100%;
+                background-color: rgb(18, 135, 107);
+              "
+            ></div>
+          </span>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-text> Hora Inicio </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="font-size: 1.6vh; width: 100%; justify-content: center"
+            >
+            <input
+            [format]="24"
+            placeholder="Sin datos"
+            aria-label="Sin datos"
+            [ngxTimepicker]="darkPicker3"
+            [(ngModel)]="capturaHorario.GalHoraInicio"
+            readonly
+          />
+          <ngx-material-timepicker
+            #darkPicker3
+            [theme]="darkTheme"
+          ></ngx-material-timepicker>
+              <!-- {{capturaHorario.GalHoraInicio|date:'HH:mm:ss a'|sinData}} -->
+              <ion-icon name="time"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4" style="text-align: center">
+          <ion-text> Hora Fin </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="font-size: 1.6vh; width: 100%; justify-content: center"
+            >
+            <input
+            [format]="24"
+            placeholder="Sin datos"
+            aria-label="Sin datos"
+            [ngxTimepicker]="darkPicker4"
+            [(ngModel)]="capturaHorario.GalHoraFin"
+            readonly
+          />
+          <ngx-material-timepicker
+            #darkPicker4
+            [theme]="darkTheme"
+          ></ngx-material-timepicker>
+              <!-- {{capturaHorario.GalHoraFin |date:'HH:mm:ss a'|sinData}} -->
+              <ion-icon name="time"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        
+        <ion-col size="4" style="text-align: right;">
+          <ion-text style="white-space: nowrap;"> # Galeristas </ion-text> <br>
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-input
+                placeholder="# Galeristas"
+                style="font-size: 0.8rem; text-align: left"
+                type="number"
+                [(ngModel)]="capturaHorario.NumGaleristas"
+              ></ion-input>
+              <ion-icon name="person"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col style="text-align: left">
+          <ion-text> Kg Proceso Galera </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="font-size: 1.6vh"
+              style="width: 100%; justify-content: space-between"
+            >
+              <ion-input
+                placeholder="# Kg"
+                style="font-size: 0.8rem; text-align: left"
+                type="number"
+                [(ngModel)]="capturaHorario.kilogramosGalera"
+              ></ion-input>
+              <ion-icon name="radio-button-on"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        
+        <ion-col style="text-align: right">
+          <ion-text> Kg Proceso Campo </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-input
+                placeholder="# Kg"
+                style="font-size: 0.8rem; text-align: left"
+                type="number"
+                [(ngModel)]="capturaHorario.kilogramosCampo"
+              ></ion-input>
+              <ion-icon name="radio-button-on"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col style="text-align: right" size="12">
+          <ion-text style="display: none"> Supervisor </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="font-size: 1.6vh; width: 100%; justify-content: center"
+              (click)="Guardar()"
+              [disabled]="!existe"
+            >
+              Guardar
+              <ion-icon name="save"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-modal trigger="tiempo-modal-inicio-gal" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ion-datetime
+      displayFormat="HH:mm"
+      pickerFormat="HH:mm"
+      presentation="time"
+      [(ngModel)]="capturaHorario.GalHoraInicio"
+      size="cover"
+      [showDefaultButtons]="true"
+    >
+    </ion-datetime>
+  </ng-template>
+</ion-modal>
+<ion-modal trigger="tiempo-modal-fin-gal" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ion-datetime
+      displayFormat="HH:mm"
+      pickerFormat="HH:mm"
+      presentation="time"
+      [(ngModel)]="capturaHorario.GalHoraFin"
+      size="cover"
+      [showDefaultButtons]="true"
+    >
+    </ion-datetime>
+  </ng-template>
+</ion-modal>
+<ion-modal trigger="tiempo-modal-inicio-cos" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ion-datetime
+      displayFormat="HH:mm"
+      pickerFormat="HH:mm"
+      presentation="time"
+      [(ngModel)]="capturaHorario.CosHoraInicio"
+      size="cover"
+      [showDefaultButtons]="true"
+    >
+    </ion-datetime>
+  </ng-template>
+</ion-modal>
+<ion-modal trigger="tiempo-modal-fin-cos" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ion-datetime
+      displayFormat="HH:mm"
+      pickerFormat="HH:mm"
+      presentation="time"
+      [(ngModel)]="capturaHorario.CosHoraFin"
+      size="cover"
+      [showDefaultButtons]="true"
+    >
+    </ion-datetime>
+  </ng-template>
+</ion-modal>

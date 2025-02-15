@@ -1,0 +1,211 @@
+<ion-header>
+    <ion-toolbar class="new-background-color">
+
+        <ion-buttons slot="start" (click)="back()">
+            <ion-button>
+                <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Datos a definir</ion-title>
+           
+    <ion-buttons *ngIf="id+'' === '7' && f" slot="end">
+        <ion-button id="open-modal-48" style="font-size: 0.72rem">
+          <ion-icon name="calendar"></ion-icon> {{f|date:'dd/MM/yyyy'}}
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-progress-bar *ngIf="ranchos.length === 0" type="indeterminate"></ion-progress-bar>
+
+<ion-content>
+    
+    <ion-card *ngIf="id === '7'">
+        <ion-card-header class="new-background-color">
+            <ion-card-title style="color: white">
+                <ion-icon name="radio-button-on-outline"></ion-icon> Tipo</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+    <ion-row *ngIf="id === '7'">
+        <ion-col *ngFor="let tipo of listaTipos; let i = index" style="text-align: center;" (click)="asignarTipo(i)">
+            <!-- (click)="navegar(rancho.idRancho)" -->
+            <ion-card [ngClass]="{'': tipo.selected === 0, 'new-background-color': tipo.selected === 1}">
+                <ion-card-content>
+                    <!-- <ion-icon name="home"></ion-icon> -->
+                    <ion-card-subtitle [ngClass]="{'': tipo.selected === 0, 'text-white': tipo.selected === 1}">{{tipo.nombre}}</ion-card-subtitle>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+   
+    <ion-card *ngIf="id !== '7' || ((tipo >2)&&( listaProgramas.length > 1 || listaProgramasHD.length > 1)) || ((tipo == 2) &&( listaProgramas.length > 1 || listaProgramasHD.length > 1))">
+        <ion-card-header class="new-background-color">
+            <ion-card-title style="color: white">
+                <ion-icon name="home"></ion-icon> Rancho</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+    <ion-row *ngIf="id === '7' && tipo == 2">
+        
+        <ion-card *ngIf="listaProgramas.length == 0" style="background-color:  #f6bb3a !important; color:black; font-size: 20rem !important;z-index: 9999; z-index: 99; width: 100%;"
+        >
+        <ion-card-content >
+          <div >
+            <ion-icon name="warning-sharp"></ion-icon>
+            Sin programa de cosecha  {{f | date:'dd/MM/YYYY'}}
+      
+          </div>
+              </ion-card-content>
+      </ion-card>
+      <ng-container *ngIf="listaProgramas.length>1">
+
+          <ion-col *ngFor="let rancho of listaProgramas; let i = index" style="text-align: center;" >
+              <!-- (click)="navegar(rancho.idRancho)" -->
+              <ion-card [ngClass]="{'': rancho.selected === 0, 'new-background-color': rancho.selected === 1}" (click)="capturarCajas(rancho)">
+                  <ion-card-content>
+                      <!-- <ion-icon name="home"></ion-icon> -->
+                      <ion-card-subtitle [ngClass]="{'': rancho.selected === 0, 'text-white': rancho.selected === 1}">{{rancho.rancho}}</ion-card-subtitle>
+                  </ion-card-content>
+              </ion-card>
+          </ion-col>
+      </ng-container>
+      
+    </ion-row>
+    <ion-row *ngIf="id === '7' && (tipo == 3 )">
+        
+        <ion-card *ngIf="listaProgramasHD.length == 0" style="background-color:  #f6bb3a !important; color:black; font-size: 20rem !important;z-index: 9999; z-index: 99; width: 100%;"
+        >
+        <ion-card-content >
+          <div >
+            <ion-icon name="warning-sharp"></ion-icon>
+            Sin programa por hora o dia {{f | date:'dd/MM/YYYY'}}
+      
+          </div>
+              </ion-card-content>
+      </ion-card>
+      <ng-container *ngIf="listaProgramasHD.length>1">
+
+          <ion-col *ngFor="let rancho of listaProgramasHD; let i = index" style="text-align: center;" >
+              <!-- (click)="navegar(rancho.idRancho)" -->
+              <ion-card [ngClass]="{'': rancho.selected === 0, 'new-background-color': rancho.selected === 1}" (click)="capturaHorasDia(rancho)">
+                  <ion-card-content>
+                      <!-- <ion-icon name="home"></ion-icon> -->
+                      <ion-card-subtitle [ngClass]="{'': rancho.selected === 0, 'text-white': rancho.selected === 1}">{{rancho.rancho}}</ion-card-subtitle>
+                  </ion-card-content>
+              </ion-card>
+          </ion-col>
+      </ng-container>
+      
+    </ion-row>
+    <ion-row *ngIf="id !== '7' || (tipo >4)">
+        <ion-col *ngFor="let rancho of ranchos; let i = index" style="text-align: center;" (click)="asigbarRancho(i)">
+            <!-- (click)="navegar(rancho.idRancho)" -->
+            <ion-card [ngClass]="{'': rancho.selected === 0, 'new-background-color': rancho.selected === 1}">
+                <ion-card-content>
+                    <!-- <ion-icon name="home"></ion-icon> -->
+                    <ion-card-subtitle [ngClass]="{'': rancho.selected === 0, 'text-white': rancho.selected === 1}">{{rancho.rancho}}</ion-card-subtitle>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+    <ion-card *ngIf="(supervisores.length > 0 && this.id !== '6'&& this.id !== '8' && this.id+'' === '7'?tipo > 4:this.id === '8'?false: idRancho) || (this.id === '7' && tipo >4 ?idRancho:false)">
+        <ion-card-header class="new-background-color">
+            <ion-card-title style="color: white">
+                <ion-icon name="person"></ion-icon> Supervisores</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+    <ion-searchbar *ngIf="(supervisores.length > 0 && this.id !== '6' && this.id !== '8' && this.id+'' === '7' ?tipo > 4:this.id === '8'?false: idRancho) || (this.id === '7' &&  tipo >4?idRancho:false)"
+      id="4"
+      class="custom"
+      placeholder="Buscar..."
+      [(ngModel)]="palabra"
+      showCancelButton="true" cancelButtonText="cancel" debounce=250
+    ></ion-searchbar>
+    <ion-row *ngIf="supervisores.length > 0&& this.id !== '6' && this.id+'' === '7' ?tipo > 4:this.id === '8'?false: idRancho ">
+        <ion-col *ngFor="let supervisor of supervisores| buscar2: ['nombre']:palabra; let i = index" size="6" style="text-align: center;" (click)="asignarSupervisor(supervisor.id)">
+            <!-- (click)="navegar(rancho.idRancho)" -->
+            <ion-card [ngClass]="{'': supervisor.selected === 0, 'new-background-color': supervisor.selected === 1}">
+                <ion-card-content>
+                    <!-- <ion-icon name="home"></ion-icon> -->
+                    <ion-card-subtitle [ngClass]="{'': supervisor.selected === 0, 'text-white': supervisor.selected === 1}">{{supervisor.nombre}}</ion-card-subtitle>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+
+    
+    <ion-card *ngIf="tipo === 1 ">
+        <ion-card-header class="new-background-color">
+            <ion-card-title style="color: white">
+                <ion-icon name="person"></ion-icon> Actividades</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+<div *ngIf="tipo === 1 ">
+
+    <ion-card *ngFor="let act of listaActActivas" (click)="capturar(act)" style="min-height: 70px;">
+      <ion-row style="padding-left: 3px !important;">
+       <ion-col size="12"  class="regla">
+         <ion-row>
+           <ion-col size="2">
+             <small>N°</small><br>
+            <div style="font-size: 12px; font-weight: 600;">
+              {{act.numActividad}}
+           </div>
+           </ion-col>
+           <ion-col size='7'>
+            <small>Nombre</small>  <br>
+             <div style="font-size: 12px; font-weight: 600;">
+              {{act.actividad}}
+             </div>
+           </ion-col>
+           <ion-col size='3'>
+            <small>Rancho</small>  <br>
+             <div style="font-size: 12px; font-weight: 600;">
+              {{act.rancho}}
+             </div>
+           </ion-col>
+         </ion-row>
+       </ion-col >
+      </ion-row>
+      <ion-row>
+      </ion-row>
+      <div class="circle">
+       <div class="centrar" >
+          {{act.sector}}
+       </div>
+      </div>
+      
+     </ion-card>
+</div>
+   <!-- <div *ngIf="tipo === 1 && idRancho >0">
+
+    <ion-card  (click)="verTodasActividades()">
+     <ion-card-content style="text-align: center;">
+        Todos
+     </ion-card-content>
+      
+     </ion-card>
+   </div> -->
+
+    
+    <!-- <ion-card *ngIf=" this.id === '6'">
+        <ion-card-header class="new-background-color">
+            <ion-card-title style="color: white">
+                <ion-icon name="calendar"></ion-icon> Fecha</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+    <ion-grid [fixed]="true" *ngIf=" this.id === '6'">
+        <ion-row>
+          <ion-col ></ion-col>
+          <ion-col >
+            <ion-datetime (click)="galeristas()"  [(ngModel)]="fecha" min="2022-03-01T00:00:00"></ion-datetime>
+        </ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+      </ion-grid> -->
+    <!-- <ion-card >
+        <div class="centrado">
+            <ion-datetime  value="2022-04-21T00:00:00" min="2022-03-01T00:00:00" max="2022-05-31T23:59:59"></ion-datetime>
+        </div>
+    </ion-card> -->
+
+
+</ion-content>

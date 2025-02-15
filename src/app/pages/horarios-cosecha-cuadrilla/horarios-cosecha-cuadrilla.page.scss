@@ -1,0 +1,76 @@
+input::placeholder {
+    color: white; /* Cambia el color del texto del placeholder */
+    opacity: .5; /* Asegura que el color se vea completamente */
+}
+
+input:focus {
+    outline: none;
+}
+.padre{
+    position: relative;
+}
+.center-v{
+    position: absolute; top:50%; right:0%; transform: translate(0%,-50%);
+}
+.circulo-green{
+    background-color: #0054e9;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    // color: black;
+    display: inline-block;
+}
+.circulo-info{
+    background-color: #2dd55b;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    font-size: 12px;
+    // color: black;
+    display: inline-block;
+}
+.circulo-trash{
+    background-color: #c5000f;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    font-size: 12px;
+    // color: black;
+    display: inline-block;
+}
+
+
+.circle{
+    width: 28px;
+    height: 28px;
+    border-radius: 25rem;
+    z-index: 99;
+    background-color: #b364f3 ;
+  }
+  .bg-green-l{
+    background-color: rgba(18, 135, 108, 0.14);
+  }
+  .search-style{
+    background-color: rgba(128, 128, 128, 0.191);
+    border: none;
+    border-radius: 15px;
+    width: 100%;
+    padding: 5px;
+    padding-left: 10px
+  }
+  .search-style::placeholder{
+    color: #000000;
+    opacity: 0.5;
+  }
+  .max-height-content {
+    max-height: calc(100vh - var(--header-height) - 3.5rem);
+    overflow: scroll; /* Permite scroll si el contenido es mayor */
+  }
+  
+  .max-height-content-cuadrilla {
+    max-height: calc(100vh - var(--header-height-2) - 3.5rem);
+    overflow: scroll; /* Permite scroll si el contenido es mayor */
+  }

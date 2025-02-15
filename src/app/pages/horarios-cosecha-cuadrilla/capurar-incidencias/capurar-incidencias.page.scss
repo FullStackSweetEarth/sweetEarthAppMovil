@@ -1,0 +1,79 @@
+/* Contenedor con scroll */
+.table-container {
+    max-height: 60vh; /* Altura máxima del contenedor */
+    overflow-y: auto;  /* Habilita el scroll vertical */
+    overflow-x: auto;  /* Habilita el scroll horizontal si es necesario */
+    // border: 1px solid #ccc; /* Borde opcional para distinguir el área de la tabla */
+    padding-left: 8px;
+    padding-right: 8px;
+    position: relative;
+  }
+  
+  /* Tabla estilizada */
+  table {
+    width: 100%; /* Asegura que la tabla ocupe el ancho del contenedor */
+    border-collapse: collapse; /* Une los bordes */
+  }
+  
+  table th, table td {
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde de las celdas */
+    text-align: left; /* Alineación del texto */
+  }
+  table td{
+    padding: 0px ;
+    padding-left: 4px;
+  }
+  table th {
+    background-color: #f4f4f4; /* Fondo diferente para los encabezados */
+  }
+  /* Encabezados de tabla */
+thead th {
+  position: sticky !important; /* Hacer que el encabezado sea pegajoso */
+  top: 0; /* Fijarlo en la parte superior */
+  background-color: #f4f4f4; /* Fondo diferente para los encabezados */
+  z-index: 2; /* Asegurar que el encabezado esté sobre las celdas */
+  border-bottom: 2px solid #ddd; /* Separador para los encabezados */
+}
+
+// .head-1{
+//   position: absolute;
+//   top: 0!important;
+//   left: 0!important;
+//   z-index: 999 !important
+// }
+/* Fijar las dos primeras columnas */
+/* Fijar la primera columna (no necesitamos left explícito, se adapta automáticamente) */
+.head-1 {
+  position: sticky;
+  left: 0; /* Fija a la izquierda, automáticamente ajusta el ancho */
+  background-color: #fff; /* Fondo blanco para la primera columna */
+  z-index:992 ;
+}
+
+/* Fijar la segunda columna (también se adapta automáticamente) */
+.head-2 {
+  position: sticky;
+  left: 20px; /* Fija la segunda columna, pero se desplaza con respecto a la primera */
+  // background-color: #f4f4f4; /* Fondo diferente para distinguir la segunda columna */
+  z-index: 9999; /* Asegura que la segunda columna esté encima del contenido desplazado */
+}.head-2b {
+  position: sticky;
+  left: 60px; /* Fija la segunda columna, pero se desplaza con respecto a la primera */
+  // background-color: #f4f4f4; /* Fondo diferente para distinguir la segunda columna */
+  z-index: 9999; /* Asegura que la segunda columna esté encima del contenido desplazado */
+}
+ion-textarea textarea {
+    padding: 0 !important;
+    margin: 0 !important;
+    // position: absolute !important;
+    // top: 50%!important;
+  }
+  ::ng-deep ion-textarea textarea {
+    padding: 0 !important;
+    margin: 0 !important;
+    // position: absolute !important;
+    // top: 50%!important;
+    // transform: translate(-0%,-30%);
+
+  }

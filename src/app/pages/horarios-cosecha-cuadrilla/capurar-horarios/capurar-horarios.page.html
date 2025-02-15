@@ -1,0 +1,242 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Capturar Horarios</ion-title>
+
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="open-modal-fecha2" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-header
+      class="new-background-color"
+      style="padding: 4px; background-color: rgb(18, 135, 107) !important"
+    >
+      <ion-row>
+        <ion-col size="auto" style="font-size: 20px">
+          <small>CUADRILLA</small> <br />
+          {{cuadrillaDetalles?.nombre}}
+        </ion-col>
+        <ion-col style="text-align: right; font-size: 20px">
+          <small># EMPLEADOS</small> <br />
+          {{cuadrillaDetalles?.empleado.length}}
+        </ion-col>
+      </ion-row>
+    </ion-header>
+    <ion-card-content style="padding-top: 4px">
+      <ion-row>
+        <ion-col>
+          <ion-text> Rancho </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-select
+                interface="action-sheet"
+                placeholder="Sin Data"
+                style="padding: 0px"
+                [(ngModel)]="registro.idRancho"
+                (ionChange)="getSetores()"
+              >
+                <ion-select-option
+                  *ngFor="let rancho of listaRanchos"
+                  [value]="rancho.idRancho"
+                  >{{rancho.rancho}}</ion-select-option
+                >
+              </ion-select>
+              <ion-icon name="leaf"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        <ion-col>
+          <ion-text> Sector </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-select
+                interface="action-sheet"
+                placeholder="Sin Data"
+                style="padding: 0px"
+                [(ngModel)]="registro.idPlantacion"
+              >
+                <ion-select-option
+                  *ngFor="let sector of listaSectores"
+                  [value]="sector.plantacionID"
+                  >{{sector.sector}}</ion-select-option
+                >
+              </ion-select>
+              <ion-icon name="grid"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text style="margin-left: 4px"> Hora Inicio</ion-text>
+          <br />
+          <input
+            type="time"
+            (change)="validarHora()"
+            [(ngModel)]="registro.horaInicio"
+            style="
+              width: 100%;
+              border-radius: 15px;
+              padding: 3px;
+              margin-top: 5px;
+              padding-left: 6px !important;
+              border: solid 1px rgb(0, 0, 0);
+              color: #28ba62;
+            "
+          />
+        </ion-col>
+        <ion-col>
+          <ion-text style="margin-left: 4px"> Hora Fin</ion-text>
+          <br />
+          <input
+            type="time"
+            (change)="validarHora()"
+            [(ngModel)]="registro.horaFin"
+            style="
+              width: 100%;
+              border-radius: 15px;
+              padding: 3px;
+              margin-top: 5px;
+              padding-left: 6px !important;
+              border: solid 1px rgb(0, 0, 0);
+              color: #28ba62;
+            "
+          />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-button
+            (click)="addSector()"
+            expand="block"
+            style="width: 100%; color: white; --border-radius: 55px !important"
+          >
+            <ion-icon name="save" style="margin-right: 2px"></ion-icon> Guardar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngIf="cuadrillaDetalles?.sectores.length > 0" class="table-container">
+    <table style="overflow-y: scroll !important; overflow-x: scroll !important">
+      <thead>
+        <tr>
+          <th
+            class="head-1"
+            style="
+              z-index: 9999999999 !important;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            Rancho
+          </th>
+          <th
+            class="head-2"
+            style="
+              z-index: 9999999999 !important;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            Sector
+          </th>
+          <th
+            style="
+              white-space: nowrap;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            <ion-icon name="time"></ion-icon>Inicio
+          </th>
+          <th
+            style="
+              white-space: nowrap;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            <ion-icon name="time"></ion-icon>Fin
+          </th>
+          <th
+            style="
+              white-space: nowrap;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            Eliminar
+          </th>
+        </tr>
+        <tr *ngFor="let sector of cuadrillaDetalles?.sectores; let i = index">
+          <td (click)="this.registro = sector; this.getSetores()">
+            {{sector.rancho}}
+          </td>
+          <td (click)="this.registro = sector; this.getSetores()">
+            {{sector.nombre}}
+          </td>
+          <td (click)="this.registro = sector; this.getSetores()">
+            {{sector.horaInicio}}
+          </td>
+          <td (click)="this.registro = sector; this.getSetores()">
+            {{sector.horaFin}}
+          </td>
+          <td style="position: relative">
+            <div class="center-v circulo-trash">
+              <ion-button
+                (click)="deleteRegistro(i)"
+                size="small"
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -70%);
+                  --background: #c5000f !important;
+                  --border-radius: 15px;
+                "
+              >
+                <ion-icon
+                  style="color: white; font-size: 14px"
+                  name="trash"
+                ></ion-icon>
+              </ion-button>
+            </div>
+          </td>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</ion-content>

@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="#"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Capturar monitoreo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-row style="text-align: center;">
+        <ion-col >
+          <small><b>RANCHO</b></small> <br>
+          Aurora
+        </ion-col>
+        <ion-col>
+          <small><b>Sector</b></small> <br>
+          #02
+        </ion-col>
+        <!-- <ion-col>
+          <small><b>Tunel</b></small> <br>
+          #01
+        </ion-col> -->
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card  >
+    <ion-card-header class="new-background-color" style="padding: 5px !important;">
+
+      <ion-row >
+        <ion-col style="text-align: left;"><b>Tunel</b><br>10</ion-col>
+        <ion-col style="text-align: right;"><b>Surco</b><br>A</ion-col>
+      </ion-row>
+      </ion-card-header>
+  <ion-card-content style="padding: 10px;">
+    <ion-row style="text-align: center;">
+      <ion-col>
+        
+         Estaca 
+        
+        <!-- <ion-text color="primary"> -->
+            <!-- <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 10%;justify-content: space-between"> -->
+                <ion-select class="custom-select" interface="action-sheet" placeholder="Sin Data" style="padding: 0px !important;margin: 0px !important;  width: 100%; background-color: black;">
+                    <!-- <ion-select-option *ngIf="rendimiento.tunel !== ''" [value]="rendimiento.idTunelAaux">{{rendimiento.tunel}}</ion-select-option>
+                    <ion-select-option *ngFor="let tunel of tuneles| filtrarInactivos:['restantes'] " [value]="tunel.id">{{tunel.nombre}}</ion-select-option> -->
+                </ion-select>
+                <!-- <ion-icon name="ellipse"></ion-icon> -->
+            <!-- </ion-chip> -->
+        <!-- </ion-text> -->
+      </ion-col>
+      <ion-col>
+        Categoria
+        <ion-select  interface="action-sheet" placeholder="Sin Data" style="padding: 0px !important;margin: 0px !important;  width: 100%;">
+          <!-- <ion-select-option *ngIf="rendimiento.tunel !== ''" [value]="rendimiento.idTunelAaux">{{rendimiento.tunel}}</ion-select-option>
+          <ion-select-option *ngFor="let tunel of tuneles| filtrarInactivos:['restantes'] " [value]="tunel.id">{{tunel.nombre}}</ion-select-option> -->
+      </ion-select>
+      </ion-col>
+      <ion-col>
+        Tipo
+        <ion-select  interface="action-sheet" placeholder="Sin Data" style="padding: 0px !important;margin: 0px !important;  width: 100%;">
+          <!-- <ion-select-option *ngIf="rendimiento.tunel !== ''" [value]="rendimiento.idTunelAaux">{{rendimiento.tunel}}</ion-select-option>
+          <ion-select-option *ngFor="let tunel of tuneles| filtrarInactivos:['restantes'] " [value]="tunel.id">{{tunel.nombre}}</ion-select-option> -->
+      </ion-select>
+      </ion-col>
+      <ion-col>
+        Nivel
+        <ion-select  interface="action-sheet" placeholder="Sin Data" style="padding: 0px !important;margin: 0px !important;  width: 100%;  height: 6px !important;">
+          <!-- <ion-select-option *ngIf="rendimiento.tunel !== ''" [value]="rendimiento.idTunelAaux">{{rendimiento.tunel}}</ion-select-option>
+          <ion-select-option *ngFor="let tunel of tuneles| filtrarInactivos:['restantes'] " [value]="tunel.id">{{tunel.nombre}}</ion-select-option> -->
+      </ion-select>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+  </ion-card>
+  <div class="scanner-container">
+    <div #cameraView class="camera-view"></div>
+  </div>
+  
+  <!-- <ion-button expand="full" (click)="startScan()">Iniciar escaneo</ion-button> -->
+  <ion-button expand="full" color="danger" (click)="stopScan()">Detener escaneo</ion-button>
+
+</ion-content>

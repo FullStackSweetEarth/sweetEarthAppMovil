@@ -1,0 +1,23 @@
+.justify-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centra los items verticalmente si el contenedor tiene altura definida */
+    gap: 10px;
+    padding: 5px;
+  }
+  .white-text::placeholder {
+    color: #ffffff; /* Cambia #9e9e9e por el color que prefieras */
+    opacity: 1; /* Ajusta la opacidad si quieres que el color sea más visible */
+  }
+  .gg {
+    --border-radius: 35rem;
+    width: 8.5vw!important;
+    height: 8.5vw !important;
+  
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --margin: 0;
+  }
+  

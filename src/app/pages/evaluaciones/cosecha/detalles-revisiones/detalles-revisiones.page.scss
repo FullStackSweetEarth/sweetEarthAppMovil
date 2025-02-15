@@ -1,0 +1,20 @@
+
+.style-card-people{
+    --background: rgba(18, 135, 108, 0.8) !important;
+    --color: white;
+    --border-radius: 15px;
+}
+.style-card-people-active{
+    --background: rgb(128, 0, 32) !important;
+    --color: white;
+    --border-radius: 15px;
+}
+.estatico {
+    position: absolute;
+    top: 20px; /* Ajusta la posición según lo necesites */
+    right: 20px; /* Puedes usar left, right, top o bottom */
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+  }

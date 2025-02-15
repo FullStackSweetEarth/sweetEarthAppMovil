@@ -1,0 +1,195 @@
+.card-info{
+    
+    background-color: rgb(18, 135, 107); color: white;
+}
+
+
+.edicion{
+  // margin-bottom: 225px;
+    transition-duration: .5s;
+
+
+}
+.noedicion{
+    margin-bottom: 115px;
+    transition-duration: .5s;
+
+}.edicion2{top:233px;
+    transition-duration: .5s;
+
+
+}
+.noedicion2{
+    top:120px;
+    transition-duration: .5s;
+
+}
+
+.ani{
+    transition-duration: .2s;
+
+}
+
+ion-searchbar.custom {
+    --background: rgb(18, 135, 107);
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff;
+  
+    --border-radius: 4px;
+  }
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: rgb(18, 135, 107);
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: #fff;
+  }
+/* Scoped components require higher specificity to customize */
+ion-searchbar.custom {
+    --background: rgb(18, 135, 107);
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff;
+  
+    --border-radius: 4px;
+  }
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: rgb(18, 135, 107);
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: #fff;
+  }
+  .bg-recibo {
+    background-image: url('../../../../assets/imagenes/logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color:#f6ecb7;
+  }
+  ion-alert.custom-alert {
+    --backdrop-opacity: 0.7;
+  }
+  
+  .custom-alert .alert-button-group {
+    padding: 8px;
+  }
+  
+  button.alert-button.alert-button-confirm {
+    background-color: var(--ion-color-success);
+    color: var(--ion-color-success-contrast);
+  }
+  
+  .md button.alert-button.alert-button-confirm {
+    border-radius: 4px;
+  }
+  
+  .ios .custom-alert button.alert-button {
+    border: 0.55px solid rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.2);
+  }
+  
+  .ios button.alert-button.alert-button-cancel {
+    border-right: 0;
+    border-bottom-left-radius: 13px;
+    border-top-left-radius: 13px;
+  }
+  
+  .ios button.alert-button.alert-button-confirm {
+    border-bottom-right-radius: 13px;
+    border-top-right-radius: 13px;
+  }
+  .shape-separator {
+    background:#f6ecb7;
+  }
+  .shape-separator::after {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 12'%3E%3Cpath d='m12 0l12 12h-24z' fill='%23fff'/%3E%3C/svg%3E");
+    position: absolute;
+    width: 100%;
+    height: 12px;
+    bottom: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    
+  .shape-separator::after {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 12'%3E%3Cpath d='m12 0l12 12h-24z' fill='%23000'/%3E%3C/svg%3E");
+    position: absolute;
+    width: 100%;
+    height: 12px;
+    bottom: 0;
+  }
+  }
+  
+  .shape-separator2 {
+    
+        background: #f6ecb7;
+      }
+      .shape-separator2::after {
+        content: "";
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='24 12 0 0'%3E%3Cpath d='m12 0l12 12h-24z' fill='%23fff'/%3E%3C/svg%3E");
+        position: absolute;
+        width: 100%;
+        height: 12px;
+        bottom: 0;
+      }
+  .ion-card{
+      box-shadow: none;
+  }
+  
+  .centrar{
+      text-align: center;
+      align-items: center;
+      align-content: center;
+  }
+  .titulo{
+      color: rgb(0, 0, 0);
+      font-size: 24px;
+  }
+  .normal{
+      color: rgb(0, 0, 0);
+      font-size: 15px;
+  }
+  
+  .barr{
+      background-color: rgb(0, 0, 0);
+      height: 1px;
+  }
+  .negritas{
+      font-weight: 900;
+  }
+  .firmaP{
+      position: absolute;
+      bottom: -3rem;
+      left: -50%;
+      text-align: center;
+  }
+  .signature-container {
+      position: relative;
+      border: 2px dotted black; /* Borde punteado */
+      padding: 10px; /* Espacio interno para el efecto */
+    }
+  
+  .posicionImg{
+    position: absolute !important;
+    top:4% !important;
+    z-index:1 !important;
+  }
+  .card{
+    background-color: #5e8b72 !important;
+    color: #ffffff;
+  }
+  .c2{
+    width: 100%;  position: fixed; top: 45px;z-index: 90;
+  }
+  .ion-select{
+    background-color: gray !important;
+  }
+  .sP{
+    padding: 0 !important;
+    margin: 0 !important;
+  }

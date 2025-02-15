@@ -1,0 +1,175 @@
+<ion-header>
+    <ion-toolbar class="new-background-color">
+        <ion-buttons slot="start" (click)="back()">
+            <ion-button>
+                <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Horas Galera</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button id="open-modal-fecha-HC" style="font-size: .72rem;" (click)="aviso()">
+                <ion-icon name="calendar"></ion-icon> {{date|date:'dd/MM/yyyy'}}
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="content">
+
+    <ion-card>
+        <ion-card-header class="new-background-color">
+            <ion-row>
+                <ion-col size="6">
+                    <ion-card-title style="color:white !important; padding-top: .9vh; white-space: nowrap;">Agregar Horario
+                    </ion-card-title>
+                </ion-col>
+                <ion-col *ngIf="h === date" size="6" style="text-align: right;">
+
+                    <ion-chip color="light" mode="ios" outline="true" style="font-size: 2vh;" (click)="continuar()">
+                        +
+                    </ion-chip>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+    </ion-card>
+    
+    <ion-card >
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col >
+                    <ion-card-subtitle style="color: white;font-size: 1.3rem !important;">{{rancho}}</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+    <ion-card *ngIf="listaHorarios.length === 0">
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col style=" text-align: center;">
+                    <ion-card-subtitle style="color: white;">Sin datos para mostrar</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+    <ion-card *ngIf="listaHorarios.length>0 && editar == 1">
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col size="10" id="fecha-editar">
+
+                    Modificar fecha :
+                        <span  style="font-size: .72rem; text-align: right;">
+                            <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+                        </span>
+                </ion-col>
+                <ion-col style="text-align: right;">
+                    <ion-icon name="trash-outline" (click)="eliminarHorarios()"></ion-icon>
+                   </ion-col>
+                </ion-row>
+        </div>
+    </ion-card>
+    <ion-card >
+        <ion-accordion-group *ngFor="let horario of listaHorarios" style="color: white; font-weight: bold;">
+            <ion-accordion value="first" class="backImg">
+                <div slot="header">
+                    <ion-row>
+                        <ion-col style=" text-align: left;">
+                            <ion-icon name="grid"></ion-icon> Sector<br>
+                            <ion-card-subtitle style="color: white;">{{horario.sector}}</ion-card-subtitle>
+                        </ion-col>
+                        <ion-col style=" text-align: right;" *ngIf="horario.estatus === 0">
+                            <ion-badge color="warning">Cargado</ion-badge>
+                        </ion-col>
+                    </ion-row>
+                </div>
+                <div slot="content" (click)="h === date?modificar(horario.sector):aviso()">
+                    <div *ngIf="false" style="background-color: rgb(8, 135, 107,.5);padding: .5rem;">
+                        <label>Cosecha</label>
+                        <hr style="border: solid .003vh white;">
+                        <ion-row style=" text-align: right;">
+                            <ion-col>
+                                <ion-icon name="person"></ion-icon> N° Cosechador:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.NumCosechadores}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="false" style=" text-align: center;">
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Inicio:<br>
+                                <ion-card-subtitle style="color: white;">
+                                    <!-- {{horario.CosHoraInicio|date:'HH:mm:ss a'}} -->
+                                    {{horario.CosHoraInicio}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Fin:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.CosHoraFin}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Kg:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.kilogramosCampo}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                    <div style="background-color: rgb(8, 135, 107,.5);padding: .5rem; margin-top: .5rem;">
+
+                        <label>Galera</label>
+                        <hr style="border: solid .003vh white;">
+
+                        <ion-row style=" text-align: left;">
+                            <ion-col>
+                                <ion-icon name="person"></ion-icon> N° Galerista:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.NumGaleristas}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row style=" text-align: center;">
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Inicio:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.GalHoraInicio}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Fin:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.GalHoraFin}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Kg Galeras:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.kilogramosGalera}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            
+                            <ion-col>
+                                <ion-icon name="time"></ion-icon> Kg Campo:<br>
+                                <ion-card-subtitle style="color: white;">{{horario.kilogramosCampo}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-accordion>
+        </ion-accordion-group>
+        
+    </ion-card>
+</ion-content>
+
+<ion-modal trigger="open-modal" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="date" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="obtenerHorarios();this.fecha = date"></ion-datetime>
+    </ng-template>
+</ion-modal>
+
+<ion-modal *ngIf="listaHorarios.length>0"  trigger="fecha-editar" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm" locale="es-ES" #datetime  presentation="date" size="cover" [(ngModel)]="fecha" [showDefaultButtons]="true" (ionChange)="editarRegistros(fecha)"></ion-datetime>
+    </ng-template>
+</ion-modal>
+
+<ion-modal trigger="open-modal-fecha-HC" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime  (ionChange)="obtenerHorarios(date)"  displayFormat="HH:mm"  [firstDayOfWeek]="1" locale="es-ES" #datetime [(ngModel)]="date" presentation="date" size="cover" [showDefaultButtons]="true"></ion-datetime>
+    </ng-template>
+</ion-modal>

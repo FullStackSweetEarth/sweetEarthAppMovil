@@ -1,0 +1,110 @@
+<ion-header style="margin-bottom: 115px;">
+  <ion-toolbar class="new-background-color">
+    <ion-buttons (click)="back()" slot="start">
+    <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Horas</ion-title>
+    <ion-buttons  slot="end">
+      <ion-button id="open-modal-48" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon>
+        {{fecha|date:'dd/MM/yyyy'}}
+        <!-- {{fecha}} -->
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<div style="position: absolute; top: 55px; z-index: 999999; width: 95%;">
+  <ion-card class="ani" style=" width: 100%;" >
+    <ion-row class="bg-success-title">
+      <ion-col size="3">
+        <small>Rancho</small> <br />
+        {{rancho}}
+        </ion-col
+      ><ion-col size="9" style="text-align: right; white-space: nowrap">
+        <small>Supervisor</small> <br />
+        {{supervisor}}
+      </ion-col>
+    </ion-row>
+  </ion-card>
+   
+  <ion-searchbar
+  id="4"
+  style="position: fixed; z-index: 1000"
+  class="custom"
+  placeholder="Buscar..."
+  showCancelButton="true"
+  cancelButtonText="cancel"
+  debounce="250"
+  [(ngModel)]="palabra"
+></ion-searchbar>
+</div>
+<ion-content>
+  <ion-card class="ani" style="position: relative" *ngFor="let empleado of plantilla |  buscar:['numEmpleado','nombre']:palabra; let i = index;">
+    <ion-row class="bg-success-title">
+      <ion-col size="3">
+        <small>N° Empleado</small> <br />
+        {{empleado.numEmpleado}}
+        </ion-col
+      ><ion-col size="9" style="text-align: right; ">
+        <small>Nombre</small> <br />
+        {{empleado.nombre+' '+(empleado.paterno?empleado.paterno:'')+' '+(empleado.materno?empleado.materno:'')}}
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding-left: 10px; padding-right: 10px; padding-top: 3px;">
+      <ion-col size="4" style="align-items: left; text-align: left; justify-content: left;">
+        <ion-text> Hora Inicio </ion-text>
+        <br />
+        <ion-text color="primary">
+            <ion-chip id="tiempo-modal" color="primary" mode="ios" outline="true" style="font-size: 13px; width: 100%; ">
+                <input
+                [format]="24"
+                placeholder="Sin datos"
+                aria-label="Sin datos"
+                [ngxTimepicker]="darkPickerI"
+                [(ngModel)]="empleado.porHora.horaI"
+                style="width: 85%;"
+                readonly
+              />
+              <ngx-material-timepicker
+              (timeSet)="calcularHorasT(empleado)"
+                #darkPickerI
+                [theme]="darkTheme"
+              ></ngx-material-timepicker>
+                <ion-icon name="time"></ion-icon>
+            </ion-chip>
+        </ion-text>
+      </ion-col>
+      <ion-col size="4">
+        <ion-text> Hora Fin</ion-text>
+        <br />
+        <ion-text color="primary">
+            <ion-chip id="tiempo-modal" color="primary" mode="ios" outline="true" style="font-size: 13px; width: 100%; ">
+                <input
+                [format]="24"
+                placeholder="Sin datos"
+                aria-label="Sin datos"
+                [ngxTimepicker]="darkPickerF"
+                [(ngModel)]="empleado.porHora.horaF"
+                style="width: 85%;"
+                readonly
+                />
+                <ngx-material-timepicker
+                (timeSet)="calcularHorasT(empleado)"
+                #darkPickerF
+                [theme]="darkTheme"
+              ></ngx-material-timepicker>
+                <ion-icon name="time"></ion-icon>
+            </ion-chip>
+        </ion-text>
+      </ion-col>
+      <ion-col style="text-align: right; align-items: right; align-content: right;">
+        
+          Paga  <br>
+          <b style="font-size: 20px;">
+            {{(empleado.porHora.paga | number:'.0-0':'en-US') | currency: 'USD':'symbol':'1.2-2':'en-US'}}
+          </b>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+</ion-content>

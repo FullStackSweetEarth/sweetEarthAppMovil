@@ -1,0 +1,198 @@
+<ion-header >
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Mis Cuadrillas</ion-title>
+    
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button  id="open-modal-fecha" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-button id="addEmp" style="display: none;" expand="block"></ion-button>
+
+<ion-content>
+  <div id = 'infoCuadrilla' class="max-height-content-cuadrilla">
+
+    <ion-card *ngFor="let cuadrilla of detallesCuadrillas?.cuadrillas; let i = index">
+      <ion-card-header  class="new-background-color" style="padding: 6px;">
+        <ion-row>
+          <ion-col size="7">
+            <input (change)="setName(cuadrilla.nombre, i)" type="text" [(ngModel)]="cuadrilla.nombre" style="border: none; border-bottom: solid 1px white; background-color: rgba(158, 99, 99, 0); font-size: 20px; width: 100%;" placeholder="Nombre"/>
+          </ion-col>
+          <ion-col style="font-size: 20px; margin-top: 2px; white-space: nowrap; text-align: right;">
+            <ion-icon name="accessibility"></ion-icon> {{cuadrilla?.empleado.length}}
+          </ion-col>
+          <!-- <ion-col size="1.2" class="padre">
+            
+            <div class="center-v circulo-info"  >
+              <ion-icon  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);" name="newspaper"></ion-icon>
+              </div>
+          </ion-col> -->
+          <ion-col size="1.2" class="padre">
+            
+            <div (click)="deleteCuadrilla(cuadrilla.nombre)" class="center-v circulo-trash" >
+              <ion-icon  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);" name="trash"></ion-icon>
+              </div>
+          </ion-col>
+          <ion-col  size="1" class="padre"><ion-icon class="center-v" (click)="cuadrilla.nombre.length>0?cuadrilla.showInfo = cuadrilla.showInfo?!cuadrilla.showInfo:true: false " name="chevron-down-outline"></ion-icon></ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content *ngIf="cuadrilla.showInfo" style="padding: 6px; padding-right: 10px; ">
+        <ion-row>
+          <ion-col size="10.7">
+            
+            <input type="text" [(ngModel)]="cuadrilla.palabra" placeholder="Buscar..." class="search-style">
+          </ion-col>
+          <ion-col size="1.2" class="padre">
+            <div class="center-v circulo-green" style="color: white;">
+  
+              <ion-icon  (click)="openAddEmp(cuadrilla.empleado)" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);" name="person-add"></ion-icon>
+            </div>
+          </ion-col>
+        </ion-row>
+        <div class="max-height-content">
+          <div *ngFor="let empleado of cuadrilla.empleado |buscar:['numEmpleado','nombre']:cuadrilla.palabra" style="background-color: {{empleado.bloqueado?'rgba(128, 128, 128, 0.391)':' rgba(128, 128, 128, 0.091)'}}; border-radius: 5px; padding: 5px; margin: 2px; margin-bottom: 5px;">
+           <ion-row>
+    
+             <ion-col size="2.5" style="font-size: 12px; white-space: nowrap;">
+               <small> N°</small><br>
+               {{empleado.numEmpleado}}
+             </ion-col>
+             <ion-col size="6" style="font-size: 12px;">
+               <small> NOMBRE</small><br>
+               {{empleado.nombre}}
+             </ion-col>
+             <ion-col></ion-col>
+             <ion-col size="1" style="position: relative;">
+              <div (click)="addIncidnecia(cuadrilla.nombre, empleado.numEmpleado)" style="position: absolute; top:50%; left: 50%; transform: translate(-50%,-50%);font-size: 20px;">
+    
+                <ion-icon name="add-circle" style="color:#0163aa ;"></ion-icon>
+              </div>
+             </ion-col>
+             <ion-col size="1" style="position: relative;">
+              <div style="position: absolute; top:50%; left: 50%; transform: translate(-50%,-50%);font-size: 18px;">
+    
+                <ion-icon (click)="empleado.bloqueado = false;save()" *ngIf="empleado.bloqueado" name="lock-closed" style="color:#c5000f ;"></ion-icon>
+                <ion-icon (click)="empleado.bloqueado = true;save()" *ngIf="!empleado.bloqueado" name="lock-open" style=" color: rgb(18, 135, 107);"></ion-icon>
+              </div>
+             </ion-col>
+             <ion-col size="1" style="position: relative;" (click)="deleteEmpleado(empleado.numEmpleado,cuadrilla)">
+              <div style="position: absolute; top:50%; left: 50%; transform: translate(-50%,-50%);font-size: 18px;">
+    
+                <ion-icon name="trash" style="color:#c5000f ;"></ion-icon>
+              </div>
+             </ion-col>
+           </ion-row>
+          </div>
+        </div>
+      </ion-card-content>
+      <div style="padding: 6px;">
+        <ion-button [disabled]="cuadrilla.nombre === null|| cuadrilla.nombre === undefined|| cuadrilla.nombre === ''" (click)="addSector(cuadrilla.nombre)" expand="block" color="warning">
+          <ion-icon name="timer"></ion-icon> Capturar horarios
+        </ion-button>
+      </div>
+    </ion-card>
+  </div><div>
+
+    <ion-button  (click)="addCuadrilla()" expand="block"  style="margin: 5px;--background: rgb(18, 135, 107) !important;position: absolute; bottom: 0; color: white; width: 97vw; ">
+      <ion-icon name="add-circle" style="margin-right: 2px;"></ion-icon> Agregar Cuadrilla
+    </ion-button>
+  </div>
+
+</ion-content>
+
+
+
+<ion-modal trigger="open-modal-fecha" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ng-container *ngIf="true; then devModeThen; else devModeElse"></ng-container>
+    <ng-template #devModeThen>
+      <ion-datetime [max]="hoy"   displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="fecha" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="changueDate()" ></ion-datetime>
+      
+    </ng-template>
+    <ng-template #devModeElse>
+      
+      <!-- <ion-datetime (click)="getEmpleados()" [min]="nuevaFecha" [max]="hoy"  displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="fecha" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="obtenerHorarios();"></ion-datetime> -->
+    </ng-template>
+    
+  </ng-template>
+</ion-modal>
+
+<ion-modal *ngIf="modal2" trigger="addEmp" (willDismiss)="onWillDismiss($event)">
+  
+<ng-template>
+  
+  <ion-header >
+    <ion-toolbar class="new-background-color">
+      <ion-title>Empleados</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="cancel()" [strong]="true">CERRAR</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-searchbar
+      id="45"
+      style="margin-top: 1vh"
+      class="custom"
+      placeholder="Buscar"
+      (keyup)="verificar()"
+      (click)="modal.setCurrentBreakpoint(0.75)"
+      [(ngModel)]="palabra"
+    ></ion-searchbar>
+    <ion-list>
+      <ng-container *ngFor="let emp of empleadosAux | buscar:['numEmpleado','nombre']: palabra; let i=index" >
+        <ion-card [ngClass]="{'bg-green-l': emp.clave}"  *ngIf="i<20">
+          <div style="padding: 5px" >
+            <ion-grid>
+              <ion-row >
+                <ion-col size="auto" style="white-space: nowrap;">
+                  <b><small>N°</small></b> <br />
+                  {{emp.clave?emp.clave:emp.codigo}}
+                </ion-col>
+                <ion-col >
+                  <b><small>Nombre</small></b> <br />
+                  {{emp.nombre}}
+                </ion-col>
+                <ion-col size="auto" (click)="addEmpleado(emp)">
+                  <div
+                    class="circle"
+                    style="
+                      background-color: #12876b;
+                      margin-left: 10px;
+                      position: relative;
+                    "
+                  >
+                    <ion-icon
+                      style="
+                        color: white;
+                        font-weight: 900;
+                        font-size: 15px !important;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                      "
+                      name="add-circle-outline"
+                    ></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-card>
+      </ng-container>
+      
+    </ion-list>
+    
+  </ion-content>
+</ng-template>
+</ion-modal>

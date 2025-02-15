@@ -1,0 +1,108 @@
+<ion-header style="margin-bottom: 65px">
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start" (click)="back()">
+      <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title> Actividades</ion-title>
+
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="open-modal-48" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col size="11">
+      <ion-searchbar
+        id="4"
+        style="
+          position: fixed;
+          top: 70px;
+          left: 10px;
+          z-index: 1000;
+          width: 95vw;
+        "
+        class="custom"
+        [(ngModel)]="palabra"
+        placeholder="Buscar..."
+        showCancelButton="true"
+        cancelButtonText="cancel"
+        debounce="250"
+      ></ion-searchbar
+    ></ion-col>
+  </ion-row>
+  <div
+    *ngIf="actividades.length ==0"
+    style="
+      background-color: #f6bb3a !important;
+      color: black;
+      font-size: 20rem !important;
+      z-index: 9999;
+      z-index: 99;
+      margin-left: 10px;
+      margin-right: 10px;
+      border-radius: 5px;
+      padding: 10px;
+    "
+  >
+    <ion-card-content>
+      <div>
+        <ion-icon name="warning-sharp"></ion-icon>
+        Sin actividades programadas {{fecha | date:'dd/MM/YYYY'}}
+      </div>
+    </ion-card-content>
+  </div>
+  <ion-card
+    *ngFor="let actividad of actividades | buscar:['numActividad','actividad','sector']:palabra; let i=index"
+  >
+    <ion-row style="padding-left: 3px !important">
+      <ion-col size="12" class="regla">
+        <ion-row>
+          <ion-col size="2">
+            <small>N°</small><br />
+            <div style="font-size: 12px; font-weight: 600">
+              {{actividad.numActividad}}
+            </div>
+          </ion-col>
+          <ion-col size="10">
+            <small>Nombre</small> <br />
+            <div style="font-size: 12px; font-weight: 600">
+              {{actividad.actividad}}
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row style="margin-top: 10px">
+          <ion-col size="2">
+            <ion-icon name="accessibility"></ion-icon>
+            {{actividad.numTrabajadores}}
+          </ion-col>
+          <ion-col size="2">
+            <ion-icon name="radio-button-on"></ion-icon>
+            {{actividad.surcos}}
+          </ion-col>
+          <ion-col size="8">
+            <ion-icon name="time"></ion-icon>
+            {{actividad.horaInicio}} - {{actividad.horaFin}}
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          (click)="capturar(actividad)"
+          size="small"
+          style="background-color: white; color: white; width: 98%"
+          >Captura</ion-button
+        >
+      </ion-col>
+    </ion-row>
+    <div class="circle">
+      <div class="centrar">{{actividad.sector}}</div>
+    </div>
+    <div class="nombreR">{{actividad.rancho}}</div>
+  </ion-card>
+</ion-content>

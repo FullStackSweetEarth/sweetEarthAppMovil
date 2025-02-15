@@ -1,0 +1,48 @@
+.circle{
+    width: 40px;
+    height: 40px;
+    border-radius: 2000px;
+    background-color:  rgb(18, 127, 155);
+    color: white;
+    position: absolute;
+    right: 10px;
+    padding-top: 13px;
+    top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.hydrated{
+    padding: 0 !important;
+}
+.regla{
+    padding-left: 7px !important; padding-top: 7px !important;
+}
+ion-button {
+    margin-top: 12px !important;
+    height: 20px !important;
+    font-size: 10px !important;
+}
+ion-card{
+    border-left: solid 2px rgb(92, 184, 88);
+}
+ion-ripple-effect{
+  border-radius: 15rem !important;
+}
+.nombreR{
+  width: 70px;
+  height: 20px;
+  background-color:  rgb(92, 184, 88);
+  position: absolute;
+  right: 10px;
+  top: 55px;
+  color: white !important;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 10px !important;
+}
+ion-badge{
+  padding: 10px !important;
+}

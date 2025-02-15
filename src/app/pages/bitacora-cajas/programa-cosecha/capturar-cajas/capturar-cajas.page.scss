@@ -1,0 +1,21 @@
+.circle{
+    width: 28px;
+    height: 28px;
+    border-radius: 25rem;
+    z-index: 99;
+    background-color: #b364f3 ;
+}
+.cilcle-body{
+    z-index: 1;
+    width: 68px;
+    height: 28px;
+    border-radius: 25rem;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: 900;
+    font-size: 15px;
+    background-color: #DBC7EB;
+}
+.body-cap{
+    padding: 8px; background-color: #12876c10;
+}

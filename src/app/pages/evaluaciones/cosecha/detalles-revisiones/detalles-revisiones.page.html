@@ -1,0 +1,309 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start" (click)="back()">
+      <ion-button>
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Evaluación Cosecha</ion-title>
+
+    <ion-buttons (click)="capturar()" slot="end">
+      <ion-button id="open-modal-plantilla" style="font-size: 0.72rem">
+        <ion-icon name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card class="new-background-color">
+    <div style="padding: 5px">
+      <div>
+        <ion-row>
+          <ion-col size="10">
+            <ion-card-title class="text-white"
+              >Historial
+              <ion-card-subtitle class="text-white">
+                {{nombre | uppercase}}
+              </ion-card-subtitle>
+            </ion-card-title>
+          </ion-col>
+          <ion-col style="position: relative">
+            <b class="element-center-rigth">{{numEmpleado}}</b>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let fecha of detalles; let i=index">
+        <ion-button
+        expand="block"
+          (click)="menu = i+1"
+          [ngClass]="{'style-card-people-active': menu == i+1, 'style-card-people': menu != i+1}"
+        >
+          <ion-row style="padding: 0; margin: 0"
+            ><ion-col style="padding: 0; margin: 0" size="12"
+              >{{i== 0?'HOY':(fecha.fecha | date:'EEEE')}}</ion-col
+            >
+            <ion-col style="padding: 0; margin: 0">
+              <small> {{fecha.fecha | date:'dd/MM/YYYY'}} </small>
+            </ion-col>
+          </ion-row>
+        </ion-button>
+      </ion-col>
+      <!-- <ion-col>
+        <ion-button  (click)="menu = 2"  [ngClass]="{'style-card-people-active': menu == 2, 'style-card-people': menu != 2}">
+          <ion-row style="padding: 0; margin: 0"
+            ><ion-col style="padding: 0; margin: 0" size="12">MARTES</ion-col>
+            <ion-col style="padding: 0; margin: 0">
+              <small> 10/10/2024 </small>
+            </ion-col>
+          </ion-row>
+        </ion-button>
+      </ion-col>
+  
+      <ion-col>
+        <ion-button  (click)="menu = 3"  [ngClass]="{'style-card-people-active': menu == 3, 'style-card-people': menu != 3}">
+          <ion-row style="padding: 0; margin: 0"
+            ><ion-col style="padding: 0; margin: 0" size="12">LUNES</ion-col>
+            <ion-col style="padding: 0; margin: 0">
+              <small> 09/10/2024 </small>
+            </ion-col>
+          </ion-row>
+        </ion-button>
+      </ion-col> -->
+    </ion-row>
+  </ion-grid>
+  <ion-card
+    *ngIf="sinRegistro || detalles.length === 0"
+    style="
+      background-color: #f6bb3a !important;
+      color: black;
+      font-size: 20rem !important;
+      z-index: 9999;
+      z-index: 99;
+    "
+  >
+    <ion-card-content>
+      <div>
+        <ion-icon name="warning-sharp"></ion-icon>
+        Sin datos, Evaluaciones
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <div
+    *ngIf="!sinRegistro && detalles.length>0"
+    style="height: 68vh !important; overflow: scroll; position: relative"
+  >
+  <ion-card
+    *ngIf="detalles[menu-1].empleados[0].historial[0].ranchos.length==0"
+    style="
+      background-color: #f6bb3a !important;
+      color: black;
+      font-size: 20rem !important;
+      z-index: 9999;
+      z-index: 99;
+    "
+  >
+    <ion-card-content>
+      <div>
+        <ion-icon name="warning-sharp"></ion-icon>
+        Sin datos, Evaluaciones
+      </div>
+    </ion-card-content>
+  </ion-card>
+    <ng-container
+      *ngFor="let rancho of detalles[menu-1].empleados[0].historial[0].ranchos; let i = index"
+    >
+      <ng-container *ngFor="let sector of rancho.sectores">
+        <ion-card
+          style="position: sticky; top: 1px; padding: 10px; z-index: {{i+3}}; --background:  rgba(18, 135, 108,.85); --color: white"
+        >
+          <ion-row>
+            <ion-col>
+              <b><small>RANCHO </small></b
+              ><br />
+              {{rancho.nombre}}
+            </ion-col>
+            <ion-col style="text-align: right">
+              <b><small>Sector</small></b
+              ><br />
+              {{sector.nombre}}
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-row style="padding: 0; margin: 0">
+          <ion-col
+            *ngFor="let captura of sector.capturas;let  f = index"
+            sizeXs="6"
+            sizeSm="4"
+            sizeMd="3"
+            sizeLg="2"
+            sizeXl="1.5"
+            style="padding: 0; margin: 0"
+          >
+            <ion-card>
+              <div
+                style="text-align: center;padding-top: 3px;
+                padding-bottom: 3px;background-color: rgba(18, 135, 108, 0.3);
+                color: rgba(18, 135, 108);
+                "
+              >
+                TUNEL {{captura.tunel}}
+                <span *ngIf="menu ==1"
+                  (click)="captura.editar = !captura.editar"
+                  style="position: absolute; right: 5px; color: darkslategrey"
+                  ><ion-icon name="create"></ion-icon
+                ></span>
+                <span
+                *ngIf="menu ==1"
+                  (click)="delete( detalles[menu-1].empleados[0].historial[0].fecha, captura)"
+                  style="position: absolute; left: 5px; color: rgb(177, 12, 12)"
+                  ><ion-icon name="trash"></ion-icon
+                ></span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center; /* Centra los items verticalmente si el contenedor tiene altura definida */
+                  gap: 10px;
+                  padding: 5px;
+                "
+              >
+                <span> <ion-icon name="time"></ion-icon> Hora</span>
+                <ng-container
+                  *ngIf="captura.editar ; then thenTemplate; else elseTemplate"
+                ></ng-container>
+                <ng-template #thenTemplate>
+                  <input (change)="addEvaluacion(captura)"  [(ngModel)]="captura.hora" type="time" style="text-align: center;width: 80px;border: none;border-bottom: 1px solid black; background-color: rgba(240, 248, 255, 0);"  placeholder="#" />
+                </ng-template>
+                <ng-template #elseTemplate>
+                  <span>{{captura.hora }}</span>
+                </ng-template>
+              </div>
+              <div
+                *ngFor="let rubro of captura.rubros"
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center; /* Centra los items verticalmente si el contenedor tiene altura definida */
+                  gap: 10px;
+                  padding: 5px;
+                  
+                "
+              >
+                <span>
+                  <ion-icon name="{{rubro.icon}}"></ion-icon>
+                  {{rubro.nombre}}</span
+                >
+                <ng-container
+                  *ngIf="captura.editar ; then thenTemplate0; else elseTemplate0"
+                ></ng-container>
+                <ng-template #thenTemplate0>
+                  <input
+                  (change)="addEvaluacion(captura)" 
+                    [(ngModel)]="rubro.frutos"
+                    type="number"
+                    style="
+                      text-align: center;
+                      width: 30px;
+                      border: none;
+                      border-bottom: 1px solid black;
+                      background-color: rgba(240, 248, 255, 0);
+                    "
+                    placeholder="#"
+                  />
+                </ng-template>
+                <ng-template #elseTemplate0>
+                  <span>{{rubro.frutos}}</span>
+                </ng-template>
+              </div>
+              <div style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center; /* Centra los items verticalmente si el contenedor tiene altura definida */
+              gap: 10px;
+              padding: 5px;
+              border-top: rgb(194, 193, 193) solid 1px; text-align: center !important; align-items: center;">
+                <ng-container
+                *ngIf="captura.editar ; then thenTemplate0C; else elseTemplate0C"
+              ></ng-container>
+              <ng-template #thenTemplate0C>
+                <ion-textarea 
+                (change)="addEvaluacion(captura)" 
+                  [(ngModel)]="captura.comentario"[counter]="true" maxlength="250"></ion-textarea>
+                
+              </ng-template>
+              <ng-template #elseTemplate0C>
+                <span>{{captura.comentario}}</span>
+              </ng-template>
+            </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center; /* Centra los items verticalmente si el contenedor tiene altura definida */
+                  gap: 10px;
+                  padding: 5px;
+                  background-color: rgba(128, 128, 128, 0.14);
+                "
+              >
+                <span># Estacas</span>
+
+                <ng-container
+                  *ngIf="captura.editar ; then thenTemplate4; else elseTemplate4"
+                ></ng-container>
+                <ng-template #thenTemplate4>
+                  <input
+                  (change)="addEvaluacion(captura)" 
+                    [(ngModel)]="captura.estacas"
+                    type="number"
+                    style="
+                      text-align: center;
+                      width: 30px;
+                      border: none;
+                      border-bottom: 1px solid black;
+                      background-color: rgba(240, 248, 255, 0);
+                    "
+                    placeholder="#"
+                  />
+                </ng-template>
+                <ng-template #elseTemplate4>
+                  <span>{{captura.estacas}}</span>
+                </ng-template>
+              </div>
+            </ion-card>
+          </ion-col>
+
+          <ion-col
+            sizeXs="6"
+            sizeSm="4"
+            sizeMd="3"
+            sizeLg="2"
+            sizeXl="1.5"
+            style="padding: 0; margin: 0"
+          >
+            <ion-card *ngIf="menu ==1"
+            (click)="capturar(rancho.rancho, sector.sector)"
+              color="warning"
+              style="height: 130px; position: relative; cursor: pointer"
+            >
+              <ion-icon
+                style="
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+                  font-size: 40px;
+                "
+                name="add-circle"
+              ></ion-icon>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </ng-container>
+  </div>
+</ion-content>

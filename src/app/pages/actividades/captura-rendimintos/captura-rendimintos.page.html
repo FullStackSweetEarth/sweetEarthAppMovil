@@ -1,0 +1,366 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-icon
+    (click)="back()"
+      style="font-size: 25px !important; padding-left: 10px !important"
+      name="chevron-back-sharp"
+      slot="start"
+    ></ion-icon>
+    <ion-title style="padding-left: 5px">Capturar</ion-title>
+
+    <ion-buttons  slot="end">
+      <ion-button id="open-modal" style="font-size: 0.72rem">
+        <ion-icon name="stopwatch"></ion-icon> Asignar Horario
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card  *ngIf="actividad" style="border-left: solid 4px rgb(18, 135, 107);">
+    <ion-card-content style="padding: 3px !important;">
+      <ion-row>
+        <ion-col size="2" style="white-space: nowrap;">
+          <span style="background-color: rgb(18, 135, 107); border-radius: 5px; color: white;padding-left: 4px;padding-right: 4px;"><small>{{actividad?.numActividad}}</small></span>
+        </ion-col>
+        <ion-col size="10" style=" font-size: 15px;">{{actividad?.actividad}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6.5" style="white-space: nowrap;">
+          <ion-row style="font-size: 14px;">
+            <ion-col ><ion-icon name="people"></ion-icon> {{actividad?.numTrabajadores}}</ion-col>
+            <ion-col >
+              <ion-icon name="bar-chart"></ion-icon> {{actividad?.eficiencia}}
+            </ion-col>
+            <ion-col >
+              <ion-icon name="ellipse"></ion-icon> {{actividad?.surcos}}
+            </ion-col>
+          </ion-row>
+          <div style="position: relative;left: -3vw;z-index: 999;width: 60vw;background-color: rgb(18, 135, 107, 0.342); padding-left: 5px;padding-right: 5px; border-radius: 5px; color: rgb(18, 135, 107);"><small>{{actividad?.supervisorN}}</small></div>
+        </ion-col>
+        <ion-col size="5.5" style="text-align: right; font-size: 13px; "> <div style="padding-right: 30px !important;border-radius: 45rem 0rem 0rem 45rem;  height: 45px;background-color: rgb(18, 135, 107); color: white;position: relative; white-space: nowrap; right: -7vw; "> <span style="position: absolute;left: 50%; top: 50%; transform: translate(-50%,-50%);">{{actividad?.rancho}} <small>({{actividad?.sector}})</small> 
+          <br>
+          <div style="font-size: 11px;">
+
+            <ion-icon name="time"></ion-icon> {{actividad?.horaInicio}} a {{actividad?.horaFin}}
+          </div>
+        </span></div>
+        
+        </ion-col>
+      </ion-row>
+      
+    </ion-card-content>
+  </ion-card>
+  <ion-row>
+    <ion-col size="10">
+      <ion-searchbar
+      class="custom"
+      placeholder="Buscar..."
+      showCancelButton="true" cancelButtonText="cancel" debounce=250
+    ></ion-searchbar></ion-col>
+    <ion-col style="position: relative;">
+      <button id="addEmpleados" (click)="setOpen2(true)" fill="solid" style="border-radius: 1000px !important; color: white; background:#0054e9; width: 40px;  height: 40px; margin-top: 10px;">
+        <ion-icon name="person-add" style="margin-right: 5px; font-size: 20px;"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+<div style="overflow-y: scroll; max-height: 67vh;">
+
+  <ion-card *ngFor="let empleado of empleados | buscar:['numEmpleado','nombre']:palabra; let i=index" >
+    <ion-row style="position: relative;padding-left: 5px;padding-top: 5px;padding-right: 5px;background-color: rgb(18, 135, 107); color: white;">
+      <ion-col size="2">N° <br>
+      {{empleado.numEmpleado}}
+      </ion-col>
+      <ion-col style="text-overflow: ellipsis !important;" >Nombre <br>
+        {{empleado.nombre+' '+(empleado.paterno?empleado.paterno:'')+' '+(empleado.materno?empleado.materno:'')}}
+      </ion-col>
+          <ion-col
+          
+         size="1"
+        >
+        <!-- <ion-icon
+        (click)="addRendimeinto(empleado.actividades.rendimientos); validarHorario()?empleado.show = empleado.show === true ? false:true:false" -->
+        <ion-icon
+        (click)="empleado.show = empleado.show === true ? false:true "
+          style="color: white;font-size: 20px; margin-top: 3px; "
+          [attr.name]="!empleado.show?'eye':'eye-off'"
+        ></ion-icon>
+        </ion-col>
+    </ion-row>
+    <div  *ngIf="empleado.show" style=" padding: 5px;padding-left: 8px;padding-right: 8px;">
+      
+      <ion-row>
+        <ion-col>
+          
+        <ion-text> Hora Inicio </ion-text>
+        
+          <input type="time" [(ngModel)]="empleado.horaInicio" (change)="updateHoraEmpleado(empleado)" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px; padding-left:6px !important; border: solid 1px rgb(0, 0, 0);"/>
+        </ion-col>
+        <ion-col>
+        <ion-text> Hora Fin </ion-text>
+  
+          <input type="time" [(ngModel)]="empleado.horaFin" (change)="updateHoraEmpleado(empleado)" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px;  padding-left:6px !important; border: solid 1px rgb(0, 0, 0);" />
+        </ion-col>
+        <ion-col size="1.6" style="float: right;">
+          <ion-icon (click)="deleteEmpleado(i, empleado.numEmpleado)" style="float: right;color: red; font-size: 18px;" name="trash-bin"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ng-container *ngIf="actividad?.clasificacion+'' !== 'SECTOR' && actividad?.clasificacion+'' !== 'RANCHO'">
+        <ion-row *ngFor="let rendimiento of empleado.rendimientos; let ff = index" >
+          <ion-col size="5">
+            <ion-text> Tunel </ion-text>
+            <br />
+            <ion-text color="primary">
+                <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 100%;justify-content: space-between">
+                    <ion-select  interface="action-sheet" placeholder="Sin Data" style="padding: 0px;  width: 100%;" [(ngModel)]="rendimiento.idTunel" (IonChangue)="verificarTunel(rendimiento.idTunel)">
+                        <ion-select-option *ngIf="rendimiento.tunel !== ''" [value]="rendimiento.idTunelAaux">{{rendimiento.tunel}}</ion-select-option>
+                        <ion-select-option *ngFor="let tunel of tuneles| filtrarInactivos:['restantes'] " [value]="tunel.id">{{tunel.nombre}}</ion-select-option>
+                    </ion-select>
+                    <ion-icon name="ellipse"></ion-icon>
+                </ion-chip>
+            </ion-text>
+          </ion-col>
+          <ion-col size="5">
+            <ion-text> # Surcos </ion-text>
+            <br />
+            <ion-text color="primary">
+                <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 100%;">
+                    <ion-input (change)="addRendimiento(rendimiento, empleado.rendimientos)" [disabled]="actividad?actividad.tipoActividad === 'GRUPAL':false" [(ngModel)]="rendimiento.numSurcos" style=" font-size: .8rem;text-align: left; width: 100%;" type="number" placeholder="# Sectores"></ion-input>
+                  
+                    <ion-icon name="cube"></ion-icon>
+                </ion-chip>
+            </ion-text>
+        </ion-col>
+          <ion-col size="2" style="text-align: center;" >
+          <!-- <ion-badge style="font-size: 11px; border-radius: 15rem; color: white;" >${{rendimiento.pago| number:'.0-2'}}</ion-badge> -->
+          
+          <br />
+          <!-- <div *ngIf="empleado.firma">
+          <ion-badge style="font-size: 11px; border-radius: 15rem; color: rgb(0, 0, 0); " color="warning" ><ion-icon name="checkmark-done-circle-outline"></ion-icon></ion-badge>
+      
+          </div> -->
+          <div *ngIf="ff<empleado.rendimientos.length-1" (click)="delete(empleado.rendimientos, ff)"  style="width: 30px; height: 30px; background-color: red; border-radius: 50rem; margin-left: 7px; margin-top: 1px;">
+      
+            <ion-icon  name="trash" style="margin-top: 8px;color: rgb(255, 255, 255);"></ion-icon>
+          </div>
+      </ion-col>
+      </ion-row>
+      </ng-container>
+  </div>
+    </ion-card>
+</div>
+
+
+<!-- <ion-card *ngFor="let empleado of plantilla | buscar4:['numEmpleado','nombre']:palabra; let i=index" >
+  <ion-row style="position: relative;padding-left: 5px;padding-top: 5px;padding-right: 5px;background-color: rgb(18, 135, 107); color: white;">
+    <ion-col size="2">N° <br>
+    {{empleado.numEmpleado}}
+    </ion-col>
+    <ion-col style="text-overflow: ellipsis !important;" >Nombre <br>
+      {{empleado.nombre+' '+(empleado.paterno?empleado.paterno:'')+' '+(empleado.materno?empleado.materno:'')}}
+    </ion-col>
+        <ion-col
+        
+       size="1"
+      >
+      <ion-icon
+      (click)="addRendimeinto(empleado.actividades.rendimientos); validarHorario()?empleado.show = empleado.show === true ? false:true:false"
+        style="color: white;font-size: 20px; margin-top: 3px; "
+        [attr.name]="!empleado.show?'eye':'eye-off'"
+      ></ion-icon>
+      </ion-col>
+  </ion-row>
+  <div  *ngIf="empleado.show" style=" padding: 5px;padding-left: 8px;padding-right: 8px;">
+<ng-container *ngFor="let activi of empleado.actividades.rendimientos | buscar: ['idActividad']: idApp">
+
+<ng-container *ngFor="let cap of activi.capturas;let g = index">
+  <ion-row  >
+    <ion-col size="5">
+      <ion-text> Tunel </ion-text>
+      <br />
+      <ion-text color="primary">
+          <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 100%;justify-content: space-between">
+              <ion-select (ionChange)="addTunel( cap,empleado.actividades)" interface="action-sheet" placeholder="Sin Data" style="padding: 0px;  width: 100%;" [(ngModel)]="cap.idTunel">
+                  <ion-select-option  [value]="cap.idTunelAux">{{cap.tunel}}</ion-select-option>
+                  <ion-select-option *ngFor="let tunel of disponibles | filtrarInactivos:['restantes']" [value]="tunel.idTunel">{{tunel.nombre}}</ion-select-option>
+              </ion-select>
+              <ion-icon name="ellipse"></ion-icon>
+          </ion-chip>
+      </ion-text>
+    </ion-col>
+    <ion-col size="5">
+      <ion-text> # Surcos </ion-text>
+      <br />
+      <ion-text color="primary">
+          <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 100%;">
+              <ion-input [disabled]="actividad?actividad.tipoActividad === 'GRUPAL':false" (change)="actividad?(actividad.tipoActividad === 'GRUPAL'?false:addTunel( cap,empleado.actividades)):addTunel( cap,empleado.actividades)" [(ngModel)]="cap.numSurcos" style=" font-size: .8rem;text-align: left; width: 100%;" type="number" placeholder="# Sectores"></ion-input>
+            
+              <ion-icon name="cube"></ion-icon>
+          </ion-chip>
+      </ion-text>
+  </ion-col>
+    <ion-col style="text-align: center;" >
+    <ion-badge style="font-size: 11px; border-radius: 15rem; color: white;" >${{cap.pago| number:'.0-2'}}</ion-badge>
+    
+    <br />
+    <div *ngIf="empleado.firma">
+    <ion-badge style="font-size: 11px; border-radius: 15rem; color: rgb(0, 0, 0); " color="warning" ><ion-icon name="checkmark-done-circle-outline"></ion-icon></ion-badge>
+
+    </div>
+    <div *ngIf="!empleado.firma" (click)="deleteTunel(activi.capturas, g, empleado.actividades)" style="width: 30px; height: 30px; background-color: red; border-radius: 50rem; margin-left: 7px; margin-top: 1px;">
+
+      <ion-icon  name="trash" style="margin-top: 8px;color: rgb(255, 255, 255);"></ion-icon>
+    </div>
+</ion-col>
+</ion-row>
+</ng-container>
+</ng-container>
+</div>
+<ng-container *ngFor="let activi of empleado.actividades.rendimientos | buscar: ['idActividad']: idApp">
+
+<ion-row style="background-color: rgb(18, 135, 107); color: white; border-top: solid 1px white;">
+<ion-col>
+  Surcos <br>
+  {{activi.numSurcos}}
+</ion-col>
+<ion-col style="text-align: right;">
+  Total <br>
+  {{activi.pago | currency: 'USD':'symbol':'1.2-2':'en-US'}}
+</ion-col>
+</ion-row>
+</ng-container>
+  </ion-card> -->
+  
+  <!-- <ion-button id="addEmpleados" (click)="setOpen2(true)" fill="solid" style="--border-radius: 1000px !important;position: fixed; bottom: 0; color: white; --background:#0054e9">
+    <ion-icon name="person-add" style="margin-right: 5px; "></ion-icon>
+    Agregar Empleado
+  </ion-button> -->
+
+  <ion-modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]" 
+  [backdropDismiss]="horaInicio<horaFin"  style="--height: auto;">
+    <ng-template>
+      <div class="new-background-color" style="width: 100%; height: 50px; background-color: rgb(18, 135, 107)!important;display: flex;  align-items: center;
+    justify-content: center;">
+HORARIO
+      </div>
+      <div class="block">
+        <ion-row>
+          <ion-col size="12">
+
+            <ion-label>Defina la hora de inició y fin de la actividad para que se le asigne a todos los empleados</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row style="margin-top: 10px;">
+          <ion-col size="6">
+            
+          <ion-text> Hora Inicio </ion-text>
+          <br>
+          
+            <input (change)="asignaHorariosAll()" type="time" [(ngModel)]="horaInicio" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px; padding-left:6px !important; border: solid 1px rgb(0, 0, 0);"/>
+          </ion-col>
+          <ion-col size="6">
+          <ion-text> Hora Fin </ion-text>
+    
+            <input (change)="asignaHorariosAll()" type="time" [(ngModel)]="horaFin" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px;  padding-left:6px !important; border: solid 1px rgb(0, 0, 0);" />
+          </ion-col>
+        </ion-row>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal
+#modal
+trigger="addEmp"
+[isOpen]="isModalOpen"
+>
+<ng-template>
+  
+  <ion-header >
+    <ion-toolbar class="new-background-color">
+      <ion-title>Empleados</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="setOpen2(false)" [strong]="true">CERRAR</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-searchbar
+      id="45"
+      style="margin-top: 1vh"
+      class="custom"
+      placeholder="Buscar"
+      (click)="modal.setCurrentBreakpoint(0.75)"
+      [(ngModel)]="palabra2"
+    ></ion-searchbar> 
+    <ion-list>
+      <ng-container *ngFor="let emp of empleadosAux | buscar:['numEmpleado','nombre']: palabra2; let i=index" >
+        <ion-card [ngClass]="{'bg-green-l': emp.clave}"  *ngIf="i<20">
+          <div style="padding: 5px" >
+            <ion-grid>
+              <ion-row >
+                <ion-col size="2.5" style="white-space: nowrap;">
+                  <b><small>N°</small></b> <br />
+                  {{emp.clave?emp.clave:emp.codigo}}
+                </ion-col>
+                <ion-col >
+                  <b><small>Nombre</small></b> <br />
+                  {{emp.nombre}}
+                </ion-col>
+                <ion-col size="2" (click)="addEmpleado(emp)">
+                  <div
+                    class="circle"
+                    style="
+                      background-color: #12876b;
+                      margin-left: 10px;
+                      position: relative;
+                    "
+                  >
+                    <ion-icon
+                      style="
+                        color: white;
+                        font-weight: 900;
+                        font-size: 15px !important;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                      "
+                      name="add-circle-outline"
+                    ></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-card>
+      </ng-container> 
+      
+    </ion-list>
+    
+  </ion-content>
+</ng-template>
+</ion-modal>
+</ion-content>
+
+
+<ion-modal [isOpen]="isModalOpen2">
+  <ng-template>
+    <ion-header >
+      <ion-toolbar class="new-background-color">
+        <ion-title>Precargar Plantilla</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="custom-content" >
+     <h1 >¿Quieres precargar a tus empleados asignados?</h1>
+
+     <ion-row>
+      <ion-col>
+        <ion-button (click)="isModalOpen2 = false;" color="warning" style="width: 100%; font-size: 16px;">No</ion-button>
+      </ion-col>
+      <ion-col> 
+        <ion-button (click)="isModalOpen2 = false;cargarPlantilla()" style="width: 100%;color: white; font-size: 16px;">Si</ion-button>
+      </ion-col>
+     </ion-row>
+    </ion-content>
+  </ng-template>
+</ion-modal>

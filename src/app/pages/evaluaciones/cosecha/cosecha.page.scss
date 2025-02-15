@@ -1,0 +1,26 @@
+ion-searchbar{
+    
+    --background: #ffffff; // color de fondo
+    --border-radius: 8px;  // redondeo del borde
+    --border: none;
+  
+    .searchbar-input-container {
+      border: 2px solid #4CAF50; // Color y grosor del borde
+    }
+  }
+  .empleados{
+      height: 72vh !important;
+      overflow-y: scroll;
+  }
+  .icon-style{
+      font-size: 20px !important;
+  
+  }
+  .style-card-people{
+      background-color: rgb(18, 135, 107,.8);
+      color: white;
+      border-radius: 10px;
+  }
+  .icon-style-father{
+      background-color: rgba(0, 0, 0, 0.075);
+  }

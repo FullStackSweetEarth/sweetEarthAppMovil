@@ -1,0 +1,83 @@
+.head-body{
+    position: fixed;
+    z-index: 34;
+    width: 100%;
+}
+.border-input{
+    border: solid 2px #12876B;
+    border-radius: 15px;
+    padding-left: 10px !important;
+}
+.btn-icon{
+    border-radius: 25px !important;
+    width: 42px !important;
+    height: 42px !important;
+    background-color: #12876B;
+    color: white;
+    font-size: 11px !important;
+    font-weight: 900;
+}
+.border-card{
+
+    border: solid 2px #12876B;
+    border-radius: 15px;
+}
+.border-card:focus{
+    border: solid 2px #12876B;
+
+}
+.linia-hoizontal{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 2px;
+    width: 90%;
+    height: 2px;
+    background-color: #12876B;
+}
+.circle{
+    width: 28px;
+    height: 28px;
+    border-radius: 25rem;
+    z-index: 99;
+    background-color: #b364f3 ;
+}
+.cilcle-body{
+    z-index: 1;
+    width: 68px;
+    height: 28px;
+    border-radius: 25rem;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: 900;
+    font-size: 15px;
+    background-color: #DBC7EB;
+}
+.border-rigth{
+    border-right: solid 1px white;
+}
+.border-rigth-dark{
+    border-right: solid 1px rgb(0, 0, 0);
+}
+.btn-radius{
+    border-radius: 15rem;
+    background-color:#f6bb3a;
+}
+ion-searchbar.custom {
+    --background: rgb(18, 135, 107);
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff;
+  
+    --border-radius: 4px;
+  }
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: rgb(18, 135, 107);
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: #fff;
+  }

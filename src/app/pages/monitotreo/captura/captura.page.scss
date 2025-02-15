@@ -1,0 +1,43 @@
+.scanner-container {
+    position: relative;
+    // width: 100px;
+    height: 300px; /* Ajusta la altura según sea necesario */
+    border: 3px solid #4CAF50;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 10vw!important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .camera-view {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+  
+  /* Ocultar la interfaz de Ionic durante el escaneo */
+  .scanner-active ion-content {
+    opacity: 0;
+  }
+  ion-select::part(select) {
+    padding: 0 !important;  /* Elimina el padding */
+    margin: 0 !important;   /* Elimina el margen */
+    border: none !important; /* Elimina el borde si es necesario */
+    box-shadow: none !important; /* Elimina sombras */
+    height: auto !important; /* Ajusta la altura automáticamente */
+  }
+  .select-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .custom-select .select-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+  }  
+  ion-item {
+    --inner-padding-end: 0 !important;
+    --inner-padding-start: 0 !important;
+  }

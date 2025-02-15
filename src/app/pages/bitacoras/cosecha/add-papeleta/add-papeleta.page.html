@@ -1,0 +1,439 @@
+<ion-header>
+    <ion-toolbar class="new-background-color">
+        <ion-buttons slot="start" (click)="back()">
+            <ion-button>
+                <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Agregar Papeleta</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="datos || sectorD">
+    <ion-card>
+        <!-- <ion-accordion-group>
+            <ion-accordion value="first" [ngClass]="formulario"> -->
+                <!-- <ion-item slot="header" class="new-background-color">
+                    <ion-label style="margin-left: 1rem;">Formulario</ion-label>
+                </ion-item> -->
+                <ion-card-header class="new-background-color">
+                    <div class="row">
+
+                        <ion-label style="font-size: 1rem !important;">Formulario</ion-label>
+                        <ion-label  style="position: absolute; right: 15px; font-size: 1rem; border-bottom: solid white 1px;">{{rancho}}</ion-label>
+                    </div>
+                  </ion-card-header>
+                
+                <!-- <div slot="content"> -->
+                    <ion-card-content style="margin-top: 1rem;">
+                        <ion-row *ngIf="datos">
+                            <ion-col>
+                                <ion-text> Fecha </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip id="open-modal" color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: center">
+                                        <!-- {{datos.fecha|date:'dd/MM/yyyy HH:mm:ss a'| sinData}} -->
+                                        {{datos.fecha|date:'dd/MM/yyyy'| sinData}}
+                                        <ion-icon name="calendar-number"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                            <ion-col style="text-align: right">
+                                <ion-text> Hora envio </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip  color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%; justify-content: center">
+                                        <input
+                                        [format]="24"
+                                        placeholder="Sin datos"
+                                        aria-label="Sin datos"
+                                        [ngxTimepicker]="darkPicker"
+                                        [(ngModel)]="datos.horaEnvio"
+                                        (blue)="validarHora()"
+                                         max="11:00 pm" 
+                                         min="7:00 am" 
+                                        readonly
+                                      />
+                                      <ngx-material-timepicker
+                                        #darkPicker
+                                        [theme]="darkTheme"
+                                      ></ngx-material-timepicker>
+                                        <!-- <ion-label>{{datos.horaEnvio|date:'HH:mm:ss a'| sinData}}</ion-label> -->
+                                        <ion-icon name="time"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+
+                            <ion-col>
+                                <ion-text> # Papeleta </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <!-- <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%; justify-content: space-between" (click)="scanner(1)"> -->
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%; justify-content: space-between">
+                                        <ion-input style=" font-size: .8rem;text-align: left;" type="number" [(ngModel)]='datos.papeleta' placeholder="# Papeleta" (change)="cambiarPapeleta(datos.papeleta)"></ion-input>
+                                        <!-- {{datos.papeleta | sinData}} -->
+                                        <ion-icon name="barcode"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                            <ion-col style="text-align: right">
+                                <ion-text> # Licencia </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <!-- <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between" (click)="scanner(2)"> -->
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+                                        <ion-input style=" font-size: .8rem;text-align: left;" type="number" [(ngModel)]='sectorD.numLicencia' placeholder="# Licencia"></ion-input>
+                                        <!-- {{sectorD.numLicencia | sinData}} -->
+                                        <ion-icon name="barcode"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                <ion-text> Sector </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+                                        <ion-select interface="action-sheet" placeholder="Sin Data" style="padding: 0px;" (ionChange)="getSkus(); sectorD.sku = null" [(ngModel)]="sectorD.idPlantacion">
+                                            <ion-select-option *ngFor="let sector of sectores" [value]="sector.plantacionID">{{sector.sector}}</ion-select-option>
+                                        </ion-select>
+                                        <ion-icon name="grid"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                            <ion-col style="text-align: right">
+                                <ion-text> SKU </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+                                        <ion-select interface="action-sheet" placeholder="Sin Data" style="padding: 0px;" [(ngModel)]="sectorD.sku">
+                                            <ion-select-option *ngFor="let sku of skus" [value]="sku.idsku">{{sku.sku}}
+                                            </ion-select-option>
+                                        </ion-select>
+                                        <ion-icon name="link"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                        </ion-row>
+                        <!-- <ion-row>
+
+                            <ion-col>
+                                <ion-text> Hora Inicio </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip id="tiempo-modal-inicio" color="primary" mode="ios" outline="true"
+                                        style="font-size: 1.6vh">
+                                        {{sectorD.horaInicio |date:'HH:mm:ss a'|sinData}}
+                                        <ion-icon name="time"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                            <ion-col style="text-align: right">
+                                <ion-text> Hora Fin </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip id="tiempo-modal-fin" color="primary" mode="ios" outline="true"
+                                        style="font-size: 1.6vh">
+                                        {{sectorD.horaFin |date:'HH:mm:ss a'|sinData}}
+                                        <ion-icon name="time"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+
+                        </ion-row> -->
+                        <ion-row>
+                            <ion-col>
+                                <ion-text> # Cajas </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                                        <ion-input style=" font-size: .8rem;text-align: left;" type="number" [(ngModel)]='sectorD.cajas' placeholder="# Cajas"></ion-input>
+                                        <!-- <ion-select interface="action-sheet" placeholder="0" style="padding: 0px;"
+                                            [(ngModel)]="sectorD.cajas">
+                                            <ion-select-option *ngFor="let number of numbers" [value]="number">
+                                                {{number}}</ion-select-option>
+                                        </ion-select> -->
+                                        <ion-icon name="cube"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                            <ion-col style="text-align: right">
+                                <ion-text> Supervisor </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+                                        <ion-select interface="action-sheet" placeholder="Sin Data" style="padding: 0px;" [(ngModel)]="sectorD.idSupervisor">
+                                            <ion-select-option *ngFor="let supervisor of supervisores" [value]="supervisor.id">{{supervisor.nombre}}</ion-select-option>
+                                        </ion-select>
+                                        <ion-icon name="person"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                            <!-- <ion-col style="text-align: right">
+                                <ion-text> Kg Proceso Campo </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                                        <ion-input style=" font-size: .8rem;text-align: left;" type="number" [(ngModel)]='sectorD.kilogramosCampo' placeholder="# Kilos"></ion-input>
+                                        <ion-icon name="radio-button-on"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col> -->
+                        </ion-row>
+                        <ion-row>
+                            <!-- <ion-col>
+                                <ion-text> Kg Proceso Galera </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                                        <ion-input style=" font-size: .8rem; " type="number" [(ngModel)]='sectorD.kilogramosProceso' placeholder="# Kilos"></ion-input>
+
+                                        <ion-icon name="radio-button-on"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col> -->
+                           
+
+                        </ion-row>
+                        <ion-row>
+                            <ion-col style="text-align: right" size="12">
+                                <ion-text style="display: none"> Supervisor </ion-text>
+                                <br />
+                                <ion-text color="primary">
+                                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh;" (click)="papeletaSave()">
+                                        Guardar
+                                        <ion-icon name="save"></ion-icon>
+                                    </ion-chip>
+                                </ion-text>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                <!-- </div> -->
+            <!-- </ion-accordion>
+        </ion-accordion-group> -->
+    </ion-card>
+
+    <ion-card *ngIf="!capturasAux">
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col style=" text-align: center;">
+                    <ion-card-subtitle style="color: white;">No se encontrarón datos</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+    <div *ngIf="capturasAux">
+
+        <ion-card>
+            <ion-badge *ngIf="capturasAux.status === 1" class="eliminar" (click)="eliminarPapeleta(papeleta)">
+                <ion-icon name="trash"></ion-icon>
+            </ion-badge>
+            <div class="backImg">
+                <ion-row style="color: white; font-weight: bold; text-align: center;">
+                    <!-- <ion-col> -->
+                        <!-- <ion-icon name="leaf"></ion-icon> Rancho<br>
+                        <ion-card-subtitle style="color: white;">{{capturasAux.rancho}}</ion-card-subtitle> -->
+                    <!-- </ion-col> -->
+                    <ion-col>
+                        <ion-icon name="document"></ion-icon> Papeleta <br>
+                        <ion-card-subtitle style="color: white;">{{papeleta}}</ion-card-subtitle>
+                    </ion-col>
+                    <ion-col>
+                        <ion-icon name="logo-dropbox"></ion-icon> Cajas<br>
+                        <ion-card-subtitle style="color: white;">{{capturasAux.totalCajas}}</ion-card-subtitle>
+                    </ion-col>
+                    <ion-col>
+                        <ion-icon name="calendar"></ion-icon> Fecha:<br>
+                        <ion-card-subtitle style="color: white;">{{capturasAux.fecha | date:'dd/MM/yyyy'}}</ion-card-subtitle>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-card>
+        <ion-list>
+                <ion-item lines="none" *ngFor="let sector of capturasAux.sector">
+                    <ion-card  class="backImg" (click)="editar(sector)" style="color:white">
+
+                        <div>
+                            <ion-row>
+                                <ion-col style=" text-align: left;">
+                                    <ion-icon name="card"></ion-icon> Supervisor<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.supervisor}}</ion-card-subtitle>
+                                </ion-col>
+                                
+                                <ion-col *ngIf="sector.status === 0" style=" text-align: center;">
+                                    <ion-badge color="warning">Cargado</ion-badge>
+                                </ion-col>
+                                <ion-col style=" text-align: right;">
+                                    <ion-icon name="card"></ion-icon> Licencia<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.numLicencia}}</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                            <hr style="border: solid .003vh white;">
+                            <ion-row style=" text-align: center;">
+                                <!-- <ion-col>
+                                    <ion-icon name="time"></ion-icon> Inicio:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.horaInicio | date:'HH:mm'}}
+                                    </ion-card-subtitle>
+                                </ion-col> -->
+                                <ion-col>
+                                    <ion-icon name="time"></ion-icon> Envio:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.horaEnvio.length == 5?sector.horaEnvio :(sector.horaEnvio | date:'HH:mm')}}
+                                    </ion-card-subtitle>
+                                </ion-col>
+                                <!-- <ion-col>
+                                    <ion-icon name="time"></ion-icon> Fin:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.horaFin | date:'HH:mm'}}
+                                    </ion-card-subtitle>
+                                </ion-col> -->
+                                <ion-col>
+                                    <ion-icon name="information-circle"></ion-icon> Sector:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.sector}}</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                            <hr style="border: solid .003vh white;">
+                            <ion-row style=" text-align: center;">
+                                <ion-col>
+                                    <ion-icon name="information-circle"></ion-icon> SKU:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.skuTitulo}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-icon name="logo-dropbox"></ion-icon> Cajas:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.cajas}}</ion-card-subtitle>
+                                </ion-col>
+                                <!-- <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Campo:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosCampo}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Galeras:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosProceso}}</ion-card-subtitle>
+                                </ion-col> -->
+                            </ion-row>
+                            <!-- <hr style="border: solid .003vh white;">
+                            <ion-row style=" text-align: center;">
+                                <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Campo:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosCampo}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Galeras:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosProceso}}</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row> -->
+                        </div>
+                    </ion-card>
+                    <ion-item-options *ngIf="sector.status === 1" side="end">
+                        <ion-item-option (click)="deleteSector(sector, $event)" expandable="true" color="danger">
+                            <ion-icon slot="start" name="trash"></ion-icon> Eliminar
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item>
+
+            </ion-list>
+        <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1350">
+            <ion-list>
+                <ion-item lines="none" *cdkVirtualFor="let sector of capturasAux.sector">
+                    <ion-card *ngFor="let sector of capturasAux.sector" class="backImg" (click)="editar(sector)" style="color:white">
+
+                        <div>
+                            <ion-row>
+                                <ion-col style=" text-align: left;">
+                                    <ion-icon name="card"></ion-icon> Supervisor<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.supervisor}}</ion-card-subtitle>
+                                </ion-col>
+                                
+                                <ion-col *ngIf="sector.status === 0" style=" text-align: center;">
+                                    <ion-badge color="warning">Cargado</ion-badge>
+                                </ion-col>
+                                <ion-col style=" text-align: right;">
+                                    <ion-icon name="card"></ion-icon> Licencia<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.numLicencia}}</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                            <hr style="border: solid .003vh white;">
+                            <ion-row style=" text-align: center;">
+                                <!-- <ion-col>
+                                    <ion-icon name="time"></ion-icon> Inicio:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.horaInicio | date:'HH:mm'}}
+                                    </ion-card-subtitle>
+                                </ion-col> -->
+                                <ion-col>
+                                    <ion-icon name="time"></ion-icon> Envio:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.horaEnvio | date:'HH:mm'}} 
+                                    </ion-card-subtitle>
+                                </ion-col>
+                                <!-- <ion-col>
+                                    <ion-icon name="time"></ion-icon> Fin:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.horaFin | date:'HH:mm'}}
+                                    </ion-card-subtitle>
+                                </ion-col> -->
+                                <ion-col>
+                                    <ion-icon name="information-circle"></ion-icon> Sector:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.sector}}</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                            <hr style="border: solid .003vh white;">
+                            <ion-row style=" text-align: center;">
+                                <ion-col>
+                                    <ion-icon name="information-circle"></ion-icon> SKU:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.skuTitulo}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-icon name="logo-dropbox"></ion-icon> Cajas:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.cajas}}</ion-card-subtitle>
+                                </ion-col>
+                                <!-- <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Campo:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosCampo}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Galeras:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosProceso}}</ion-card-subtitle>
+                                </ion-col> -->
+                            </ion-row>
+                            <!-- <hr style="border: solid .003vh white;">
+                            <ion-row style=" text-align: center;">
+                                <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Campo:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosCampo}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-icon name="share"></ion-icon> KG Galeras:<br>
+                                    <ion-card-subtitle style="color: white;">{{sector.kilogramosProceso}}</ion-card-subtitle>
+                                </ion-col>
+                            </ion-row> -->
+                        </div>
+                    </ion-card>
+                    <ion-item-options *ngIf="sector.status === 1" side="end">
+                        <ion-item-option (click)="deleteSector(sector, $event)" expandable="true" color="danger">
+                            <ion-icon slot="start" name="trash"></ion-icon> Eliminar
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item>
+
+            </ion-list>
+        </cdk-virtual-scroll-viewport>
+       
+    </div>
+
+</ion-content>
+
+<!-- Modales -->
+
+
+<ion-modal trigger="open-modal" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm"  [firstDayOfWeek]="1" locale="es-ES" #datetime [(ngModel)]="datos.fecha" presentation="date" size="cover" [showDefaultButtons]="true"></ion-datetime>
+    </ng-template>
+</ion-modal>
+
+
+<ion-modal trigger="tiempo-modal" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm" presentation="time" [(ngModel)]="datos.horaEnvio" size="cover" [showDefaultButtons]="true">
+        </ion-datetime>
+    </ng-template>
+</ion-modal>

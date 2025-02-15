@@ -1,0 +1,211 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start" (click)="back()">
+      <ion-button>
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Evaluación Cosecha</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-card class="new-background-color">
+    <div style="padding: 5px">
+      <div style=" padding-top: 5px">
+        <ion-row>
+          <ion-col size="10">
+            <ion-card-title class="text-white" style="margin-left: 7px !important"
+              >Capturar Revisión
+              <ion-card-subtitle class="text-white">
+                {{nombre}} </ion-card-subtitle>
+            </ion-card-title>
+          </ion-col>
+          <ion-col style="position: relative">
+            <b class="element-center-rigth">{{numEmpleado}}</b>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="6" style="text-align: left">
+          <ion-text> Rancho </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-select
+                interface="action-sheet"
+                placeholder="Sin Datos"
+                style="padding: 0px"
+                [(ngModel)]="form.idRancho"
+                (ionChange)="getSctores()"
+              >
+                <ion-select-option
+                  *ngFor="let rancho of listaRanchos"
+                  [value]="rancho.idRancho"
+                  >{{ rancho.rancho }}</ion-select-option
+                >
+              </ion-select>
+              <ion-icon name="leaf"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+  
+        <ion-col size="6" style="text-align: right">
+          <ion-text> Sector </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-select
+                (ionChange)="getTuneles()"
+                interface="action-sheet"
+                placeholder="Sin Datos"
+                style="padding: 0px"
+                [(ngModel)]="form.idSector"
+              >
+                <ion-select-option
+                  *ngFor="let sector of listaSectores"
+                  [value]="sector.plantacionID"
+                  >{{ sector.sector }}</ion-select-option
+                >
+              </ion-select>
+              <ion-icon name="grid"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+  
+        <ion-col size="6" style="text-align: left">
+          <ion-text> Tunel </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-select
+                interface="action-sheet"
+                placeholder="Sin Datos"
+                style="padding: 0px"
+                [(ngModel)]="form.idTunel"
+              >
+                <ion-select-option
+                  *ngFor="let tunel of listaTuneles"
+                  [value]="tunel.id"
+                  >{{ tunel.tunel }}</ion-select-option
+                >
+              </ion-select>
+              <ion-icon name="reorder-three"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+            
+    <ion-col size="6" style="text-align: right; ">
+      <ion-text> Hora</ion-text>
+      <br />
+      <ion-text color="primary">
+          <ion-chip id="getHora" color="primary" mode="ios" outline="true" style="font-size: 1.6vh;  width: 100%; white-space: nowrap">
+            <!-- {{(!form.hora?'Sin datos':(form.hora | date:'HH:mm'))}} -->
+              
+            <input  [(ngModel)]="form.hora" type="time" style="text-align: center;width: 100%;border: none;border-bottom: 1px solid black; background-color: rgba(240, 248, 255, 0);"  placeholder="#" />
+            
+            <!-- <div style="margin-left: 14vw;" >
+
+                <ion-icon name="time"></ion-icon>
+              </div> -->
+          </ion-chip>
+      </ion-text>
+  </ion-col>
+  
+        <ion-col size="6" style="text-align: left">
+          <ion-text> # Estacas </ion-text>
+          <br />
+          <ion-text color="primary">
+            <ion-chip
+              color="primary"
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+              "
+            >
+              <ion-input
+                style="font-size: 0.8rem; text-align: left"
+                type="number"
+                [(ngModel)]="form.estacas"
+                placeholder="# Estacas"
+              ></ion-input>
+  
+              <ion-icon name="arrow-down"></ion-icon>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+        <ion-col size="12"><ion-textarea [(ngModel)]="form.comentario" label="Comentario" labelPlacement="floating" [counter]="true" maxlength="250"></ion-textarea>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card *ngFor="let rubro of form.rubros">
+    <ion-card-content class="justify-content" style="font-size: 16px;padding: 15px !important; background-color: rgba(18, 135, 108,.9); color: white;">
+      <div style="position: relative;">
+        <ion-icon  name="{{rubro.icon}}" style="font-size: 20px; position: absolute; top: 50%;transform: translate(0%,-60%);"></ion-icon> 
+        <span style="margin-left: 30px;">{{rubro.nombre}}</span>
+      </div>
+      <div style="position: relative;">
+        <ion-button (click)="restar(rubro)" class="gg" style="margin-right: 55px; --background: rgba(190, 36, 16, 0.842); --color: white"><ion-icon name="remove"></ion-icon></ion-button>
+        <input [(ngModel)]="rubro.frutos" class="white-text" type="number" style="
+        position: absolute; top: 50%; transform: translate(-50px,-50%)
+        ;text-align: center;width: 50px;border: none;border-bottom: 1px solid white; background-color: rgba(240, 248, 255, 0); --placeholder-color: white; "  placeholder="#" />
+        <ion-button (click)="sumar(rubro)" class="gg" style="margin-left: 5px; --background: rgba(16, 77, 190, 0.842); --color: white"><ion-icon name="add"></ion-icon></ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="back()" color="danger" expand="block"><ion-icon name="trash" style="margin-right: 3px;"></ion-icon>Cancelar</ion-button>
+  
+    </ion-col>
+    <ion-col>
+      <ion-button (click)="addEvaluacion()" class="text-white" expand="block"><ion-icon style="margin-right:3px;" name="save"></ion-icon> Guardar</ion-button>
+    </ion-col>
+  </ion-row>
+  
+</ion-content>
+
+
+<!-- <ion-modal trigger="getHora" [cssClass]="'bottom-end'">
+  <ng-template>
+      <ion-datetime (ionChange)="asignarHorarios($event,1)"   display-format="HH:mm" picker-format="HH:mm" presentation="time" [(ngModel)]="form.hora" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal> -->

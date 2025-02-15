@@ -1,0 +1,404 @@
+<ion-header [translucent]="true">
+    <ion-toolbar class="new-background-color">
+
+        <ion-buttons slot="start" (click)="back()">
+            <ion-button>
+                <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Nueva Aplicación</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="captura" fullscreen class="content">
+
+    <ion-card>
+        <ion-card-header class="new-background-color" style="color:white">
+            <ion-card-title>Formulario</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row style="padding: .5rem;">
+                <ion-col size="6">
+                    <ion-text> Hora Inicio </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip  color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%; justify-content: center">
+                            <!-- <ion-label>{{captura.horaInicio|date:'HH:mm:ss a'| sinData}}</ion-label> -->
+                            <input
+                            [format]="24"
+                            placeholder="Sin datos"
+                            aria-label="Sin datos"
+                            [ngxTimepicker]="darkPicker"
+                            [(ngModel)]="captura.horaInicio"
+                            readonly
+                          />
+                          <ngx-material-timepicker
+                            #darkPicker
+                            [theme]="darkTheme"
+                            (closed)="validarHora()"
+                          ></ngx-material-timepicker>
+                            <ion-icon name="time"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+                <ion-col size="6" style="text-align: right">
+                    <ion-text> Hora Fin </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%; justify-content: center">
+                            <!-- <ion-label>{{captura.horaFin |date:'HH:mm:ss a'| sinData}}</ion-label> -->
+                            <input
+                            [format]="24"
+                            placeholder="Sin datos"
+                            aria-label="Sin datos"
+                            [ngxTimepicker]="darkPicker2"
+                            [(ngModel)]="captura.horaFin"
+                            readonly
+                          />
+                          <ngx-material-timepicker
+                            #darkPicker2
+                            [theme]="darkTheme"
+                            (closed)="validarHora()"
+                          ></ngx-material-timepicker>
+                            <ion-icon name="time"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+            <ion-row style="padding: .5rem;">
+                <ion-col>
+                    <ion-text>Temperatura </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                            <ion-input style=" font-size: .8rem;text-align: left;" type="text" [(ngModel)]='captura.temperatura' placeholder="°C"></ion-input>
+                            <ion-icon name="thermometer-outline"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+                <ion-col style="text-align: right">
+                    <ion-text>Viento </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                            <ion-input style=" font-size: .8rem;text-align: left;" type="text" [(ngModel)]='captura.velocidadViento' placeholder="Km/h"></ion-input>
+                            <ion-icon name="speedometer-sharp"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+            <ion-row style="padding: .5rem;">
+                <ion-col>
+                    <ion-text>Clima </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <!-- Agegar seletor de clima
+                          -->
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                            <ion-select interface="action-sheet" placeholder="Sin Data" style="padding: 0px;" (ionChange)="addClima()" [(ngModel)]="captura.idClima" >
+                                <ion-select-option *ngFor="let clima of climas" [value]="clima.id">{{clima.nombre}}</ion-select-option>
+                            </ion-select>
+                            <!-- <ion-input style=" font-size: .8rem;text-align: left;" type="text" [(ngModel)]='captura.clima' placeholder="Nublado"></ion-input> -->
+                            <ion-icon name="cloud-sharp"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+                <ion-col style="text-align: right">
+                    <ion-text>Agua </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;">
+                            <ion-input style=" font-size: .8rem;text-align: left;" type="text" [(ngModel)]='captura.agua' placeholder="Litros"></ion-input>
+                            <ion-icon name="water-sharp"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+            <ion-row  style="padding: .5rem;">
+                <ion-col *ngIf="captura.horaFin">
+
+                    <ion-text> Tipo de aplicacion</ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+                            <ion-select interface="action-sheet" placeholder="Sin Data" style="padding: 0px;" [(ngModel)]="captura.idTipoAplicacion" justify="space-between">
+                                <ion-select-option *ngFor="let aplicacion of listaTipoAplicacion" [value]="aplicacion.id">{{aplicacion.tipo}}</ion-select-option>
+                            </ion-select>
+                            <ion-icon name="bandage-sharp"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="captura.idTipoAplicacion!=0">
+        <ion-card-header class="new-background-color" style="color:white">
+            <ion-card-title>Productos</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <div class="row col-12 justify-content-around m-0 p-0">
+                <div class="row col-10 m-1 p-0 mt-1 mb-1">
+                    <ion-searchbar placeholder="Buscar Producto" [(ngModel)]="productoSeleccionado" (ngModelChange)="buscarProducto()">
+                    </ion-searchbar>
+                    <ion-item *ngFor="let item of listaProductosFiltro">
+                        <ion-thumbnail slot="end">
+                            <ion-button color="light" (click)="seleccionarProducto(item.nombreCorto, item.unidad)">
+                                <ion-icon name="add-outline"></ion-icon>
+                            </ion-button>
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h2>
+                                {{item.nombreCorto}}
+                            </h2>
+                        </ion-label>
+                    </ion-item>
+                </div>
+                <ion-row style="padding: .5rem;">
+                    <ion-col>
+                        <ion-label>Cantidad</ion-label>
+
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+
+                            <ion-input type="number" (change)="convertir()" [(ngModel)]="cantidadProducto" placeholder="# Cantidad"></ion-input>
+                            <ion-icon name="radio-button-on-sharp"></ion-icon>
+                        </ion-chip>
+                    </ion-col>
+                    <ion-col style="text-align: right">
+                        <ion-label position="stacked">Unidad</ion-label>
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+
+                            <ion-select interface="action-sheet"  (ionChange)="convertir();validarDatos()" [(ngModel)]="unidadMedida" *ngIf="listaTipoAplicacion.length>0">
+                                <ion-select-option value="0">Selecciona</ion-select-option>
+                                <ion-select-option *ngFor="let item of listaUnidades" [value]="item.unidadDestino">{{item.unidadDestino}}</ion-select-option>
+                            </ion-select>
+                            <ion-icon name="apps-sharp"></ion-icon>
+
+                        </ion-chip>
+                    </ion-col>
+                    <!-- <ion-col>
+                        <ion-label>Equivalente</ion-label>
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+
+                            {{cantidadConvertida}} {{unidad}}
+                            <ion-icon name="information-circle"></ion-icon>
+                        </ion-chip>
+                        
+                    </ion-col> -->
+                </ion-row>
+                <!-- <ion-row>
+                    
+                    <ion-col>
+                        <ion-label>Equivalente</ion-label>
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+
+                            {{cantidadConvertida}} {{unidad}}
+                            <ion-icon name="information-circle"></ion-icon>
+                        </ion-chip>
+                        
+                    </ion-col>
+                </ion-row> -->
+                <ion-row>
+                    <ion-col style="text-align: right" size="12">
+                        <ion-text style="display: none"> Supervisor </ion-text>
+                        <br />
+                        <ion-text color="primary">
+                            <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh;" (click)="agregarProducto()">
+                                Agregar
+                                <ion-icon name="add"></ion-icon>
+                            </ion-chip>
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+                <!-- <ion-button color="secondary" fill="outline" (click)="agregarProducto()" class="btn btn-outline-primary btn-sm">Agregar</ion-button> -->
+                <div class="row col-12 justify-content-around m-0 p-0 mt-2 mb-0" *ngIf="captura.productos.length > 0">
+                    <ion-card *ngFor="let item of captura.productos">
+                        <div class="backImg">
+                            <ion-row style="color: white; font-weight: bold; text-align: center;">
+                                <ion-col size="12">
+                                    <ion-icon name="leaf"></ion-icon> Producto<br>
+                                    <ion-card-subtitle style="color: white;">
+                                        {{item.nombreProdo}}
+                                    </ion-card-subtitle>
+                                </ion-col>
+                                <ion-col>
+                                    {{item.unidadMedida}}<br>
+                                    <ion-card-subtitle style="color: white;margin-top: .5rem;">{{item.cantidad}}</ion-card-subtitle>
+                                </ion-col>
+                                <ion-col style="text-align: center;">Eliminar<br>
+                                    <ion-card-subtitle style="color: white;">
+                                        <ion-button color="danger" (click)="eliminarProduto(item.idProducto)" shape="round" size="small">
+                                            <ion-icon name="trash"></ion-icon>
+
+                                        </ion-button>
+                                    </ion-card-subtitle>
+                                </ion-col>
+                            </ion-row>
+                        </div>
+                    </ion-card>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="captura.idTipoAplicacion!=0">
+        <ion-card-header class="new-background-color" style="color:white">
+            <ion-card-title>Equipos</ion-card-title>
+        </ion-card-header>
+        <ion-card-content style="padding: 1rem;">
+
+
+
+            <ion-row>
+                <ion-col>
+                    <ion-label position="stacked">Equipo</ion-label>
+                    <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+
+                        <ion-select interface="action-sheet" [(ngModel)]="datoEquipo" *ngIf="listaEquipos.length>0">
+                            <ion-select-option [value]="0">Selecciona</ion-select-option>
+                            <ion-select-option *ngFor="let item of listaEquipos" [value]="item.idAnterior">{{item.idAnterior}}</ion-select-option>
+                        </ion-select>
+                    </ion-chip>
+                </ion-col>
+                <ion-col style="text-align: right">
+                    <ion-text style="display: none"> Supervisor </ion-text>
+                    <br />
+                    <ion-text color="primary">
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh;" (click)="agregarEquipo()">
+                            Agregar
+                            <ion-icon name="add"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+            <div class="row col-12 justify-content-around m-0 p-0 mt-2 mb-0" *ngIf="captura.equipos.length > 0">
+                <ion-card *ngFor="let item of captura.equipos">
+                    <div class="backImg">
+                        <ion-row style="color: white; font-weight: bold; text-align: center;">
+                            <ion-col>
+                                <ion-icon name="leaf"></ion-icon> Equipo<br>
+                                <ion-card-subtitle style="color: white;margin-top: .5rem;">
+                                    {{item.idAnterior}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            <ion-col style="text-align: center;">Eliminar<br>
+                                <ion-card-subtitle style="color: white;">
+                                    <ion-button color="danger" (click)="eliminarEquipo(item.id)" shape="round" size="small">
+                                        <ion-icon name="trash"></ion-icon>
+
+                                    </ion-button>
+                                </ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </ion-card>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="captura.idTipoAplicacion!=0">
+        <ion-card-header class="new-background-color" style="color:white">
+            <ion-card-title>Sectores</ion-card-title>
+        </ion-card-header>
+        <ion-card-content style="padding: 1rem;">
+            <div class="row col-12 justify-content-around m-0 p-0">
+                <!-- <div class="row col-4 m-1 p-0 mt-1 mb-1">
+                    
+                </div> -->
+                <ion-row>
+                    <ion-col>
+                        <ion-label>Sector</ion-label>
+                        <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%;justify-content: space-between">
+
+                            <ion-select interface="action-sheet" class="form-select form-select-sm " [(ngModel)]="addSector" *ngIf="listaSectores.length>0">
+                                <ion-select-option [value]="0">Selecciona</ion-select-option>
+                                <ion-select-option *ngFor="let item of listaSectores" [value]="item.plantacionID">{{item.sector}}</ion-select-option>
+                            </ion-select>
+                        </ion-chip>
+                    </ion-col>
+                    <ion-col style="text-align: right">
+                        <ion-text style="display: none"> Supervisor </ion-text>
+                        <br />
+                        <ion-text color="primary">
+                            <ion-chip color="primary" mode="ios" outline="true" style="font-size: 1.6vh;" (click)="agregarSector()">
+                                Agregar
+                                <ion-icon name="add"></ion-icon>
+                            </ion-chip>
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+            </div>
+            <div class="row col-12 justify-content-around m-0 p-0 mt-2 mb-0" *ngIf="captura.sectores.length > 0">
+                <ion-card *ngFor="let item of captura.sectores">
+                    <div class="backImg">
+                        <ion-row style="color: white; font-weight: bold; text-align: center;">
+                            <ion-col>
+                                <ion-icon name="leaf"></ion-icon> Sector<br>
+                                <ion-card-subtitle style="color: white;margin-top: .5rem;">
+                                    {{item.sector}}
+                                </ion-card-subtitle>
+                            </ion-col>
+                            <ion-col style="text-align: center;">Eliminar<br>
+                                <ion-card-subtitle style="color: white;">
+                                    <ion-button color="danger" (click)="eliminarSector(item.idPlantacion)" shape="round" size="small">
+                                        <ion-icon name="trash"></ion-icon>
+
+                                    </ion-button>
+                                </ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </ion-card>
+
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <ion-footer>
+        <ion-grid>
+            <ion-row>
+                <!-- <ion-col>
+                    <ion-text style="display: none"> Supervisor </ion-text>
+                    <br />
+                    <ion-text color="warning">
+                        <ion-chip color="warning" mode="ios" outline="true" style="font-size: 1.6vh;width: 100%; justify-content: center;" (click)="regresar()">
+                            Regresar
+                            <ion-icon name="arrow-back"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col> -->
+                <ion-col>
+                    <ion-text style="display: none"> Supervisor </ion-text>
+                    <br />
+                    <ion-text color="success">
+                        <ion-chip color="success" mode="ios" outline="true" style="font-size: 1.6vh;width: 100%; justify-content: center;" (click)="nuevo()">
+                            Nuevo
+                            <ion-icon name="document"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+                <ion-col>
+                    <ion-text style="display: none"> Supervisor </ion-text>
+                    <br />
+                    <ion-text color="danger">
+                        <ion-chip color="danger" mode="ios" outline="true" style="font-size: 1.6vh;width: 100%; justify-content: center;" (click)="eliminarAplicacion()">
+                            Eliminar
+                            <ion-icon name="trash"></ion-icon>
+                        </ion-chip>
+                    </ion-text>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-footer>
+</ion-content>
+
+<ion-modal trigger="tiempo-modal-inicio" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm" presentation="time" [(ngModel)]="captura.horaInicio" size="cover" [showDefaultButtons]="true">
+        </ion-datetime>
+    </ng-template>
+</ion-modal>
+<ion-modal trigger="tiempo-modal-fin" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm" presentation="time" [(ngModel)]="captura.horaFin" size="cover" [showDefaultButtons]="true">
+        </ion-datetime>
+    </ng-template>
+</ion-modal>

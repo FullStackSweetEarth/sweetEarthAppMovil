@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-icon
+      (click)="back()"
+      style="font-size: 25px !important; padding-left: 10px !important"
+      name="chevron-back-sharp"
+      slot="start"
+    ></ion-icon>
+    <ion-title style="padding-left: 5px">Actividades</ion-title>
+
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="changeFecha" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-searchbar
+  [(ngModel)]="palabra"
+  class="custom"
+  placeholder="Buscar..."
+  showCancelButton="true" cancelButtonText="cancel" debounce=250
+></ion-searchbar>
+<div style="max-height: 75vh !important;">
+  
+  <ion-card (click)="capturar(actividad)" *ngFor="let actividad of litaActividades|buscar:['actividad','numActividad','supervisorN','rancho','sector']:palabra" style="border-left: solid 4px rgb(18, 135, 107);">
+    <ion-card-content style="padding: 3px !important;">
+      <ion-row>
+        <ion-col size="2" style="white-space: nowrap;">
+          <span style="background-color: rgb(18, 135, 107); border-radius: 5px; color: white;padding-left: 4px;padding-right: 4px;"><small>{{actividad.numActividad}}</small></span>
+        </ion-col>
+        <ion-col size="10" style=" font-size: 15px;">{{actividad.actividad}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6.5" style="white-space: nowrap;">
+          <ion-row style="font-size: 14px;">
+            <ion-col ><ion-icon name="people"></ion-icon> {{actividad.numTrabajadores}}</ion-col>
+            <ion-col >
+              <ion-icon name="bar-chart"></ion-icon> {{actividad.eficiencia}}
+            </ion-col>
+            <ion-col >
+              <ion-icon name="ellipse"></ion-icon> {{actividad.surcos}}
+            </ion-col>
+          </ion-row>
+          <div style="position: relative;left: -3vw;z-index: 999;width: 60vw;background-color: rgb(18, 135, 107, 0.342); padding-left: 5px;padding-right: 5px; border-radius: 5px; color: rgb(18, 135, 107);"><small>{{actividad.supervisorN}}</small></div>
+        </ion-col>
+        <ion-col size="5.5" style="text-align: right; font-size: 13px; "> <div style="padding-right: 30px !important;border-radius: 45rem 0rem 0rem 45rem;  height: 45px;background-color: rgb(18, 135, 107); color: white;position: relative; white-space: nowrap; right: -7vw; "> <span style="position: absolute;left: 50%; top: 50%; transform: translate(-50%,-50%);">{{actividad.rancho}} <small>({{actividad.sector}})</small>
+          <br>
+          <div style="font-size: 11px;">
+            <div *ngIf="actividad.horaInicio">
+
+              <ion-icon name="time"></ion-icon> {{actividad.horaInicio}} a {{actividad.horaFin}}
+            </div>
+            <span *ngIf="!actividad.horaInicio">Sin horario</span>
+          </div>
+        </span></div>
+        
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>
+</ion-content>
+
+<ion-modal trigger="changeFecha" [cssClass]="'bottom-end'">
+  <ng-template>
+    <!-- <ion-datetime (click)="getEmpleados()" [min]="nuevaFecha" [max]="hoy"  displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="fecha" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="obtenerHorarios();"></ion-datetime> -->
+    <ion-datetime
+    (ionChange)="getActividades(fecha);"
+      displayFormat="HH:mm"
+      locale="es-ES"
+      #datetime
+      [(ngModel)]="fecha"
+      presentation="date"
+      size="cover"
+      [showDefaultButtons]="true"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,93 @@
+<ion-header>
+    <ion-toolbar class="new-background-color">
+        <ion-buttons slot="primary" style="--background-color: green !important;border-radius: 15rem !important;">
+            <ion-button (click)="salir()" style="background---background-color: green !important;border-radius: 15rem !important;">
+              Salir
+              <ion-icon slot="end" name="log-out"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        <ion-title>Menú</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-progress-bar *ngIf="items.length === 0 && ! this.est" type="indeterminate"></ion-progress-bar>
+
+<ion-content>
+    <input *ngIf="devmode" type="text" [(ngModel)]="uidUser" (change)="getDatosFire()">
+    <ion-card *ngFor="let categoria of itemsV2">
+        <ion-card-header class="new-background-color" style="position: relative;">
+            <ion-card-title style="color: white !important;">{{categoria?.categoria}}</ion-card-title>
+            <ion-icon *ngIf="!categoria.show" (click)="categoria.show = true" name="add-circle" style="position: absolute; right: 10px;top:50%; transform: translate(-50%,-50%); font-size: 18px;"></ion-icon>
+            <ion-icon *ngIf="categoria.show" (click)="categoria.show = false" name="remove-circle" style="position: absolute; right: 10px;top:50%; transform: translate(-50%,-50%); font-size: 18px;"></ion-icon>
+        </ion-card-header>
+        <ion-card-content *ngIf="categoria.show">
+            
+    <ion-row >
+            <ion-col *ngFor="let item of categoria.opcines" size="6" style="text-align: center;">
+                <ion-card class="new-background-color" (click)="navegar(item.url)">
+                    <ion-card-content>
+                        <ion-icon name="{{item.icono}}"></ion-icon>
+                        <ion-card-subtitle style="color:white">{{item.nombre}}</ion-card-subtitle>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-row>
+        <ng-container *ngIf="false">
+
+            <ion-col *ngFor="let item of items" size="6" style="text-align: center;">
+                <ion-card class="new-background-color" (click)="navegar(item.url)">
+                    <ion-card-content>
+                        <ion-icon name="{{item.icono}}"></ion-icon>
+                        <ion-card-subtitle style="color:white">{{item.nombre}}</ion-card-subtitle>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ng-container>
+        
+        <!-- <ion-card class="new-background-color" (click)="navegar('escoger-rancho/7')"> -->
+        <!-- <ion-col style="text-align: center;">
+            <ion-card class="new-background-color" (click)="navegar('domingos/plantilla')">
+            <ion-card-content>
+                <ion-icon name="sunny"></ion-icon>
+                <ion-card-subtitle style="color:white; white-space: nowrap;">Pago por Avance </ion-card-subtitle>
+            </ion-card-content>
+        </ion-card>
+    </ion-col> -->
+    <ion-col style="text-align: center;">
+            <ion-card class="new-background-color" (click)="navegar('soporte')">
+            <ion-card-content>
+                <ion-icon name="build"></ion-icon>
+                <ion-card-subtitle style="color:white">SOPORTE</ion-card-subtitle>
+            </ion-card-content>
+        </ion-card>
+    </ion-col>
+    <!-- <ion-col style="text-align: center;">
+            <ion-card class="new-background-color" (click)="navegar('verificar-sincronizacion')">
+            <ion-card-content>
+                <ion-icon name="eye"></ion-icon>
+                <ion-card-subtitle style="color:white">Verificar Sincronización</ion-card-subtitle>
+            </ion-card-content>
+        </ion-card>
+    </ion-col> -->
+    <!-- <ion-col style="text-align: center;">
+            <ion-card class="new-background-color" (click)="navegar('monitoreo/captura')">
+            <ion-card-content>
+                <ion-icon name="eye"></ion-icon>
+                <ion-card-subtitle style="color:white">Monitoreo</ion-card-subtitle>
+            </ion-card-content>
+        </ion-card>
+    </ion-col>
+    <ion-col style="text-align: center;">
+            <ion-card class="new-background-color" (click)="navegar('horarios-cosecha-cuadrilla')">
+            <ion-card-content>
+                <ion-icon name="eye"></ion-icon>
+                <ion-card-subtitle style="color:white">Horarios Cosecha</ion-card-subtitle>
+            </ion-card-content>
+        </ion-card>
+    </ion-col> -->
+    </ion-row>
+
+
+</ion-content>

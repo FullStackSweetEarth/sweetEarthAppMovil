@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+
+      <!-- <ion-buttons slot="start" (click)="back()"> -->
+        <ion-buttons slot="start"  (click)="navegar('')">
+          <ion-button>
+              <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <ion-title>Soporte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header class="new-background-color">
+      <ion-card-title class="text-white">Variables</ion-card-title>
+    </ion-card-header>
+    <div style="padding: 5px">
+
+      <ion-searchbar [(ngModel)]="palabra"></ion-searchbar>
+    </div>
+  </ion-card>
+  <div id="VARIABLES" style="max-height: 65vh; overflow-y: scroll;">
+    <ion-card style="padding: 10px;" *ngFor="let variable of localStorageKeys |buscar:['key']:palabra">
+      <!-- <ion-card-content> -->
+        <ion-row>
+          <ion-col>{{variable.key}}</ion-col>
+          <ion-col style="position: relative;">
+            <ion-button (click)="copyJsonToClipboard(variable)" size="small" class="text-white" style="position: absolute; right: 0; top:-4px">
+              <ion-icon name="file-tray-full"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      <!-- </ion-card-content> -->
+    </ion-card>
+  </div>
+
+</ion-content>

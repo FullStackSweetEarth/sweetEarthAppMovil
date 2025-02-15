@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-icon (click)="back()" style="font-size: 25px !important; padding-left: 10px !important;" name="chevron-back-sharp" slot="start"></ion-icon>
+    <ion-title style="padding-left: 5px !important;">Programa Cosecha</ion-title>
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button  style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding: 15px; ">
+    
+    <ion-searchbar
+    id="4"
+    style=" width: 100%"
+    class="custom"
+    placeholder="Buscar..."
+    showCancelButton="true" cancelButtonText="cancel" debounce=250
+    [(ngModel)]="palabra"
+  ></ion-searchbar>
+  </div>
+  <div  style="overflow: scroll; max-height: 75vh;">
+
+    <ion-card *ngFor="let dato of listaProgramaCosecha |buscar4:['sector','rancho']:palabra">
+      <ion-row style="padding-left: 3px !important;">
+       <ion-col size="12"  class="regla">
+         <ion-row>
+           <ion-col size="2">
+             <small>N°</small><br>
+            <div style="font-size: 12px; font-weight: 600;">
+             001
+           </div>
+           </ion-col>
+           <ion-col size='10'>
+            <small>Nombre</small>  <br>
+             <div style="font-size: 12px; font-weight: 600;">
+               Cosecha
+             </div>
+           </ion-col>
+         </ion-row>
+         <ion-row style="margin-top: 10px;">
+          <ion-col size="2">
+            <ion-icon name="accessibility"></ion-icon> 
+            {{dato.numTrabajadores}}
+   
+          </ion-col>
+          <ion-col size="2">
+            <ion-icon name="radio-button-on"></ion-icon> 
+            {{dato.surcos}}
+   
+          </ion-col>
+          <ion-col size="8">
+            <ion-icon name="time"></ion-icon>
+          {{dato.horaInicio}} - {{dato.horaFin}}
+          </ion-col>
+        </ion-row>
+       </ion-col >
+      </ion-row>
+      <ion-row>
+       <ion-col >
+         <ion-button (click)="capturar(dato)"  size="small" style="background-color: white; color: white; width: 98%;" >Captura</ion-button>
+       </ion-col>
+      </ion-row>
+      <div class="circle">
+       <div class="centrar" >
+         {{dato.sector}}
+       </div>
+      </div>
+      <div class="nombreR">
+       {{dato.rancho}}
+      </div>
+      
+     </ion-card>
+  </div>
+
+</ion-content>

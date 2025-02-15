@@ -1,0 +1,8 @@
+{
+  "name": "SweetEart",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "171ec8f9"
+}

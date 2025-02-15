@@ -1,0 +1,115 @@
+<ion-header>
+    <ion-toolbar class="new-background-color">
+        <ion-buttons slot="start" (click)="back()">
+            <ion-button>
+                <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Bitacora Cosecha</ion-title>
+        <ion-buttons slot="end">
+            <ion-button id="fecha" style="font-size: .72rem;">
+                <ion-icon name="calendar"></ion-icon> {{date|date:'dd/MM/yyyy'}}
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-card>
+        <ion-card-header class="new-background-color">
+            <ion-row>
+                <ion-col size="6">
+                    <ion-card-title style="color:white !important; padding-top: .9vh;">Papeletas</ion-card-title>
+                </ion-col>
+                <ion-col size="6" style="text-align: right;">
+
+                    <ion-chip color="light" mode="ios" outline="true" style="font-size: 2vh;" (click)="addPapeleta()">
+                        +
+                    </ion-chip>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+    </ion-card>
+    <ion-card >
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col >
+                    <ion-card-subtitle style="color: white;font-size: 1.3rem !important;">{{rancho}}</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+
+    <ion-card *ngIf="capturas.length === 0">
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col style=" text-align: center;">
+                    <ion-card-subtitle style="color: white;">No se encontrarón datos</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+    <ion-item lines="none" *ngFor="let captura of capturas">
+        <ion-card class="backImg" (click)="addPapeleta(captura.papeleta)" style="text-align: center; ">
+            <ion-col *ngIf="captura.status === 0">
+                <ion-badge color="warning">Cargado</ion-badge>
+            </ion-col>
+            <div>
+                <ion-row style="color: white; font-weight: bold; text-align: center;">
+                    <!-- <ion-col> -->
+                        <!-- <ion-icon name="leaf"></ion-icon> Rancho<br>
+                        <ion-card-subtitle style="color: white;">{{captura.rancho}}</ion-card-subtitle> -->
+                    <!-- </ion-col> -->
+                    <ion-col>
+                        <ion-icon name="document"></ion-icon> Papeleta <br>
+                        <ion-card-subtitle style="color: white;">{{captura.papeleta}}</ion-card-subtitle>
+                    </ion-col>
+                    <ion-col>
+                        <ion-icon name="logo-dropbox"></ion-icon> Cajas<br>
+                        <ion-card-subtitle style="color: white;">{{captura.totalCajas}}</ion-card-subtitle>
+                    </ion-col>
+                    <ion-col>
+                        <ion-icon name="calendar"></ion-icon> Fecha:<br>
+                        <ion-card-subtitle style="color: white;">{{captura.fecha | date:'dd/MM/yyyy'}}</ion-card-subtitle>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-card>
+    </ion-item>
+    <!-- <ion-virtual-scroll [trackBy]="trackBy" [items]=" capturas" approxItemHeight="61px">
+        <ion-item-sliding *virtualItem="let captura">
+            <ion-item lines="none">
+                <ion-card class="backImg" (click)="addPapeleta(captura.papeleta)">
+                    <div>
+                        <ion-row style="color: white; font-weight: bold; text-align: center;">
+                            <ion-col>
+                                <ion-icon name="document"></ion-icon> Papeleta <br>
+                                <ion-card-subtitle style="color: white;">{{captura.papeleta}}</ion-card-subtitle>
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="logo-dropbox"></ion-icon> Cajas<br>
+                                <ion-card-subtitle style="color: white;">{{captura.totalCajas}}</ion-card-subtitle>
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="calendar"></ion-icon> Fecha:<br>
+                                <ion-card-subtitle style="color: white;">{{captura.fecha | date:'dd/MM/yyyy'}}</ion-card-subtitle>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </ion-card>
+            </ion-item>
+            <ion-item-options *ngIf="captura.status === 1" side="end">
+                <ion-item-option (click)="deletePapeleta(captura, $event)" expandable="true" color="danger">
+                    <ion-icon slot="start" name="trash"></ion-icon> Eliminar
+                </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-virtual-scroll> -->
+
+</ion-content>
+<ion-modal trigger="fecha" [cssClass]="'bottom-end'">
+    <ng-template>
+        <ion-datetime displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="date" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="getData()"></ion-datetime>
+    </ng-template>
+</ion-modal>

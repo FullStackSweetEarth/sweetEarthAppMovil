@@ -1,0 +1,73 @@
+<ion-header *ngIf="!cargando">
+    <ion-toolbar class="new-background-color">
+        <ion-title>Iniciar sesión</ion-title>
+    </ion-toolbar>
+</ion-header>
+<!-- <ion-content style="align-items: center;text-align:center">
+  <br>
+  <br>
+</ion-content> -->
+<div class="container" *ngIf="cargando">
+    <div style="position: absolute; left: 30vw !important; top: 30vh !important;">
+        <!-- <img src="https://firebasestorage.googleapis.com/v0/b/sweetearth-97c70.appspot.com/o/logo%2FWhatsApp%20Image%202021-02-15%20at%204.27.45%20PM.jpeg?alt=media&token=d5c86227-c506-48f3-9486-a10088cc6549" alt="" style="width: 10em;"> -->
+    </div>
+    <div class="cargando">
+      <div class="pelotas">
+        <img src="assets/imagenes/frambuesa2.svg" alt="">
+      </div>
+      <div class="pelotas">
+        <img src="assets/imagenes/zarzamora2.svg" alt="">
+
+      </div>
+      <div class="pelotas">
+        <img src="assets/imagenes/frambuesa2.svg" alt="">
+
+      </div>
+    </div>
+    <div style="text-align: center !important; align-items: center; align-content: center; padding: 4rem;">
+        <ion-spinner style="color: white !important; " name="lines"></ion-spinner>
+    </div>
+    <!-- <div class="sombra"></div> -->
+    <!-- <span class="texto-cargando"><ion-spinner name="lines-small"></ion-spinner></span> -->
+  </div>
+<ion-content *ngIf="!cargando" class="ion-padding">
+    <div style="align-items: center;text-align:center">
+        <img src="https://firebasestorage.googleapis.com/v0/b/sweetearth-97c70.appspot.com/o/logo%2FWhatsApp%20Image%202021-02-15%20at%204.27.45%20PM.jpeg?alt=media&token=d5c86227-c506-48f3-9486-a10088cc6549" alt="" style="width: 25em;">
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form class="form" [formGroup]="validations_form" (ngSubmit)="loginUser(validations_form.value)">
+                <ion-item>
+                    <ion-label position="floating" color="primary">Emai</ion-label>
+                    <ion-input type="text" formControlName="email"></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                    <ng-container *ngFor="let validation of validation_messages.email">
+                        <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+                            {{ validation.message }}
+                        </div>
+                    </ng-container>
+                </div>
+                <ion-item>
+                    <ion-label position="floating" color="primary">Password</ion-label>
+                    <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                    <ng-container *ngFor="let validation of validation_messages.password">
+                        <div class="error-message" *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+                            {{ validation.message }}
+                        </div>
+                    </ng-container>
+                </div>
+                <br>
+                <ion-button style="color: white !important;" class="submit-btn " type="submit" [disabled]="!validations_form.valid">Iniciar sesión</ion-button>
+                <br>
+                <label class="error-message">{{errorMessage?'Asegurese de estár ingresando los datos correctamente':''}}</label>
+            </form>
+            <!-- <p (click)="presentModal()" class="go-to-register" style="cursor: pointer;">
+        <a>¿Olvidastes tu contraseña?</a>
+      </p> -->
+        </div>
+    </div>
+</ion-content>

@@ -1,0 +1,59 @@
+<ion-header >
+  <ion-toolbar class="new-background-color">
+    <ion-buttons  slot="start">
+    <ion-icon (click)="back()" class="back" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Programas Voleo</ion-title>
+    
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button   style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-searchbar class="custom" [(ngModel)]="palabra" ></ion-searchbar>
+  <ion-card (click)="capturar(programa.id)" *ngFor="let programa of programas|buscar:['rancho','estatusTxt','supervisor','producto']:palabra" style="border-left: solid 4px rgb(18, 135, 107);cursor: pointer;">
+    <ion-row style="padding: 3px;">
+      <ion-col size="3">
+        <small>RANCHO</small> <br>
+        <b>
+          {{programa.rancho}}
+        </b>
+        <span [ngClass]="{'bg-warning-2': programa.estatusTxt === 'Sector Podado','bg-success-2': programa.estatusTxt !== 'Sector Podado'}" style="white-space: nowrap;padding-left: 5px; padding-right: 5px;border-radius: 15rem;">
+          <small>
+            {{programa.estatusTxt | uppercase}}
+          </small>
+        </span>
+      </ion-col>
+      <ion-col size="9" style="text-align: right;">
+        <small>SUPERVISOR</small> <br>
+        <b>
+          {{programa.supervisor}}
+        </b></ion-col>
+        
+      
+      <ion-col size="12">
+        <small>PRODUCTO</small> <br>
+        <b>
+          {{programa.producto}}
+        </b>
+      </ion-col>
+    </ion-row>
+    <div style="border-top: solid 2px rgb(18, 135, 107); width: 100%;"></div>
+    <ion-row style="text-align: center;">
+      <ion-col style="border-right: solid 2px rgb(18, 135, 107);">
+        <small>SACOS</small> <br>
+        <b>
+          {{programa.sacos}}
+        </b>
+      </ion-col>
+      <ion-col>
+        <small>PRECIO</small> <br>
+        <b>
+          $ {{programa.precio|number:'.2-2':'en-US'}}
+        </b></ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

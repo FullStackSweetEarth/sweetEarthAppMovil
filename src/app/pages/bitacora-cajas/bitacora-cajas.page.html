@@ -1,0 +1,288 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-icon (click)="back()" style="font-size: 25px !important; padding-left: 10px !important;" name="chevron-back-sharp" slot="start"></ion-icon>
+    <ion-title style="padding-left: 5px;">Plantilla Cosechadores</ion-title>
+    
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="open-modal-plantilla_cosceha" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="head-body" >
+    <ion-row>
+      <ion-col>
+           
+    <ion-searchbar
+    id="4"
+    style=" width: 100%"
+    class="custom"
+    placeholder="Buscar..."
+    showCancelButton="true" cancelButtonText="cancel" debounce=250 [(ngModel)]="palabra"
+  ></ion-searchbar>
+      </ion-col>
+      <ion-col *ngIf="hoy == fecha" size="2">
+        <ion-fab-button (click)="setOpen2(true)" class="btn-icon" id="user-modal" color="secondary" style="margin-top: 7px;">
+          <ion-icon name="person-add-sharp" style="font-size: 17px !important;"></ion-icon>
+        </ion-fab-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="plantilla" style="overflow-x:scroll; max-height: 70vh; margin-top: 70px !important">
+    <ion-card *ngFor="let empleado of plantilla.empleados | buscar:['numEmpleado','nombre']:palabra">
+      <ion-card-header class="new-background-color"style="padding: 5px;">
+        <ion-row style="position:relative">
+          
+          <ion-col size="2.5">
+            <b><small>N°</small></b> <br>
+            <div style="font-size: 13px; white-space: nowrap;">
+              <b>{{empleado.numEmpleado}}</b>
+            </div>
+          </ion-col>
+          <ion-col style="white-space: nowrap;">
+            <div style="font-size: 13px;">
+              <b><small>NOMBRE</small></b> <br>
+             <b>{{empleado.nombre}}</b> 
+            </div>
+          </ion-col>
+          <ion-col (click)="empleado.mostrar2 = !empleado.mostrar2" style="position: absolute; top:50%; right: 0; transform: translate(92%, -50%);">
+            <ion-icon [icon]="!empleado.mostrar2?'add-circle-sharp':'remove-circle-sharp'"></ion-icon>
+          </ion-col>
+          </ion-row>
+          </ion-card-header>
+          <div    [ngClass]="{'animation03 ': empleado.mostrar2, 'animation02': !empleado.mostrar2}">
+            <div *ngIf=" empleado.mostrar2 && empleado.rendimientos.length >0" style="padding: 8px;" >
+
+              <ion-row style="text-align: center;">
+                <ion-col>
+                  <b><small>RANCHO</small></b>
+                </ion-col>
+                <ion-col>
+                  <b><small>SECTOR</small></b>
+                </ion-col>
+                <ion-col>
+                  <b><small>CULTIVO</small></b>
+                </ion-col>
+                <ion-col>
+                  <b><small>CAJAS</small></b>
+                </ion-col>
+                <ion-col style="text-align: right;">
+                  <b><small>HORA</small></b>
+                </ion-col>
+              </ion-row>
+              <div style="max-height: 110px !important; overflow: scroll;">
+                <ng-container *ngFor="let rendimiento of empleado.rendimientos" >
+                  <ion-row style="text-align: center;" *ngFor="let caja of rendimiento.cajas">
+                    <ion-col>
+                      <b><small>{{rendimiento.rancho}}</small></b>
+                    </ion-col>
+                    <ion-col>
+                      <b><small>{{rendimiento.sector}}</small></b>
+                    </ion-col>
+                    <ion-col>
+                      <img
+                        [src]="caja.idCultivo== 1?'assets/imagenes/frambuesa.svg':'assets/imagenes/zarzamora.svg'"
+                        style="
+                          position: absolute;
+                          top: 50%;
+                          left: 50%;
+                          transform: translate(-50%, -50%);
+                          color: white;
+                          width: 15px;
+                          z-index: 99;
+                        "
+                      />
+                    </ion-col>
+                    <ion-col>
+                      <b><small>{{caja.cajas}}</small></b>
+                    </ion-col>
+                    <ion-col style="text-align: right;">
+                      <b><small>{{caja.hora}}</small></b>
+                    </ion-col>
+                  </ion-row>
+                </ng-container>
+
+              </div>
+              
+            </div>
+            
+          </div>
+          <div style="padding: 8px; background-color: #12876c11;">
+            <ion-row style="text-align: center;">
+              <ion-col size="1.5"></ion-col>
+              <ion-col size="3" *ngFor="let cultivo of empleado.totales" >
+                <div
+                  class="circle"
+                  style="position: relative; background-color: {{cultivo.idCultivo== 1?'#e8949b':'#bb83e8'}}"
+                >
+                  <img
+                    [src]="cultivo.idCultivo== 1?'assets/imagenes/frambuesa.svg':'assets/imagenes/zarzamora.svg'"
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      color: white;
+                      width: 60%;
+                      z-index: 99;
+                    "
+                  />
+      
+                  <div
+                    class="cilcle-body"
+                    style="position: relative;
+                      background-color: {{cultivo.idCultivo== 1?'#e8949b50':'#d7b8f075'}};
+                      color:  {{cultivo.idCultivo== 1?'#fe3e4f':'#861adc'}} ;
+                      width: 70px;
+                    "
+                  >
+                    <span
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        right: 0%;
+                        transform: translate(-30%, -50%);
+                      "
+                    >
+                      {{cultivo.cajas}}
+                    </span>
+                  </div>
+                </div>
+              </ion-col>
+                <ion-col size="3">
+                <div
+                  class="circle"
+                  style="position: relative; background-color: #c6dfd9"
+                >
+                  <ion-icon
+                    name="file-tray-full-sharp"
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      color: #12876b;
+                      width: 60%;
+                      z-index: 99;
+                    "
+                  ></ion-icon>
+                  
+                  <div
+                    class="cilcle-body"
+                    style="position: relative;
+                      background-color: #12876c31;
+                      color:  #12876b ;
+                      width: 70px;
+                    "
+                  >
+                    <span
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        right: 0%;
+                        transform: translate(-30%, -50%);
+                      "
+                    >
+                      {{empleado.granTotal}}
+                    </span>
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col style="position: relative;" size="1.5">
+                <div *ngIf="hoy === fecha " style="position: absolute; bottom: 0; right: 0;color: rgb(175, 20, 20);">
+                  <ion-icon (click)="deleteEmpleado(empleado.numEmpleado)" name="trash-sharp" ></ion-icon>
+                </div>
+              </ion-col>
+
+            </ion-row>
+          </div>
+    </ion-card>
+
+  </div>
+  <ion-grid *ngIf="hoy === fecha && (plantilla?plantilla.empleados.length > 0:false)" style="position: absolute; bottom: 0; right: 0;">
+    <ion-row>
+      <ion-col class="btn-radius" (click)="continuar()" >
+        Continuar <ion-icon name="chevron-forward-sharp" style="position: relative; top:50%; transform: translate(-0%, -50%);"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-modal *ngIf="hoy == fecha"
+    trigger="user-modal"
+    [isOpen]="isModalOpen"
+  >
+
+
+    <ng-template style=" border-radius: 12px 13px 0 0;">
+      
+      <ion-header >
+        <ion-toolbar class="new-background-color">
+          <ion-title>Empleados</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen2(false)" [strong]="true">CERRAR</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <div style="padding: 10px; padding-top: 0; position: relative; height: 90vh;">
+        <ion-searchbar
+        class="custom"
+        placeholder="Buscar"
+        [(ngModel)]="userSearch"
+      ></ion-searchbar>
+        <div style="overflow: scroll; max-height: 80vh">
+          <ng-container *ngFor="let empleado of empleados | buscar:['clave','nombre','codigo']:userSearch; let i = index">
+
+            <ion-card  *ngIf="i<20">
+              <div style="padding: 5px" >
+                <ion-grid>
+                  <ion-row >
+                    <ion-col size="2">
+                      <b><small>N°</small></b> <br />
+                      {{empleado.clave?empleado.clave:empleado.codigo}}
+                    </ion-col>
+                    <ion-col>
+                      <b><small>Nombre</small></b> <br />
+                      {{empleado.nombre}}
+                    </ion-col>
+                    <ion-col size="2" (click)="addEmpleado(empleado)">
+                      <div
+                        class="circle"
+                        style="
+                          background-color: #12876b;
+                          margin-left: 10px;
+                          position: relative;
+                        "
+                      >
+                        <ion-icon
+                          style="
+                            color: white;
+                            font-weight: 900;
+                            font-size: 15px !important;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                          "
+                          name="add-circle-outline"
+                        ></ion-icon>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-card>
+          </ng-container>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<ion-modal trigger="open-modal-plantilla_cosceha" [cssClass]="'bottom-end'">
+  <ng-template>
+      <!-- <ion-datetime (click)="getEmpleados()" [min]="nuevaFecha" [max]="hoy"  displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="fecha" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="obtenerHorarios();"></ion-datetime> -->
+      <ion-datetime  (click)="actualizarPlantilla()" displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="fecha" presentation="date" size="cover" [showDefaultButtons]="true"></ion-datetime>
+  </ng-template>
+</ion-modal>

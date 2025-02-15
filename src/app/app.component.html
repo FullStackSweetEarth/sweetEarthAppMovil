@@ -1,0 +1,64 @@
+
+<ion-app *ngIf="deshabilitar" class="centrar">
+    
+    <div  >
+        Tú versión actual es {{versionActual}}
+        necesias actualizar a la version {{v}}
+    </div>
+    
+<ion-button color="success" (click)="descargarApp()">Descargar</ion-button>
+</ion-app>
+<ion-app *ngIf="!deshabilitar">
+    <ion-split-pane contentId="main-content">
+        <!-- <ion-menu class="new-background-color" contentId="main-content" type="overlay">
+            <ion-content >
+                <ion-list id="inbox-list">
+                    <ion-list-header>Sweet Earth</ion-list-header>
+                </ion-list>
+                <ion-list>
+                    <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+                        <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+                            <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                            <ion-label>{{ p.title }}</ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                </ion-list>
+            </ion-content>
+        </ion-menu> -->
+        <ion-router-outlet id="main-content" [style]="m?'margin-bottom: 3.5rem !important;':''" >
+
+        </ion-router-outlet>
+    </ion-split-pane>
+
+    <ng-container *ngIf="m" style="margin-top: 3.5rem !important; background-color: white !important;">
+        
+        <ion-fab style="width: 10%; position: fixed; bottom: .9rem; right: 1rem;" vertical="end" horizontal="start" 
+        edge slot="fixed" >
+        <div style="white-space: nowrap; color:rgb(173, 170, 170); font-size: 12px;">
+             <!-- <a *ngIf="url" [href]="'blob:'+url" download> 
+    holaaaasas
+                </a>  -->
+                <small>
+    
+                    Sweet Earth V
+                </small><br>
+                {{versionActual2}}
+        </div>
+        </ion-fab>
+        
+        <ion-fab style="width: 15%; position: fixed; bottom: .9rem; left: 7.5rem !important; text-align: center;" vertical="end" horizontal="left" 
+        edge slot="fixed" >
+        <div style="white-space: nowrap; color:rgb(173, 170, 170); font-size: 12px;">
+                <small>Última sincronización</small> <br>
+                {{fechaupdate}}
+        </div>
+        </ion-fab>
+        <ion-fab style="width: 10vw; position: fixed; bottom: 0rem; right: 1.7rem;" vertical="end" horizontal="end" edge slot="fixed">
+            <ion-fab-button size="small" (click)="saveData()" [disabled]="banderaSincronizarTerminado ">
+                <ion-icon style="color:white; " name="sync"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+        
+    </ng-container>
+    
+</ion-app>

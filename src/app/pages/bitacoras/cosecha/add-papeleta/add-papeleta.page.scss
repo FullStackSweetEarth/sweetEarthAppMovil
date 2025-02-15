@@ -1,0 +1,34 @@
+.select-icon {
+    display: none !important;
+}
+
+ion-input {
+    width: 50%;
+}
+
+ion-card {
+    --background: url('../../../../../assets/imagenes/back-cosecha.png') !important;
+}
+
+
+ion-item::part(native){
+    --padding: 0px;
+    --padding-start: 0px;
+    --inner-padding-end: 0px;
+}
+
+
+input{
+    
+    border: 0;
+    background-color: unset;
+    width: 20vw;
+}
+input:focus{
+    border: 0 !important;
+    background-color: unset !important;
+}
+input::selectio{
+    border: 0 !important;
+    background-color: unset !important;
+}

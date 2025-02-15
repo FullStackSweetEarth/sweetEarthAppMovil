@@ -1,0 +1,11 @@
+ion-button[shape=circle] {
+    --border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    color: white;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+ion-button[shape=save] {
+    --color: white;
+}

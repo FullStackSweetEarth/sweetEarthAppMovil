@@ -1,0 +1,92 @@
+<ion-header [translucent]="true">
+    <ion-toolbar class="new-background-color">
+        <ion-buttons slot="start" (click)="back()">
+            <ion-button>
+                <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Fumigación</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content >
+    <ion-card>
+        <ion-card-header class="new-background-color">
+            <ion-row>
+                <ion-col size="6">
+                    <ion-card-title style="color:white !important; padding-top: .9vh;">Capturas</ion-card-title>
+                </ion-col>
+                <ion-col size="6" style="text-align: right;color:white !important; border-color: white !important">
+
+                    <ion-chip color="light" mode="ios" outline="true" style="font-size: 2vh;padding: 1rems; text-align: center;color:white !important;" (click)="capturar()">
+                        Agregar
+                        <ion-icon icon="add"></ion-icon>
+                    </ion-chip>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+    </ion-card>
+    
+    <ion-card >
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col >
+                    <ion-card-subtitle style="color: white;font-size: 1.3rem !important;">{{ranchoN}}</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+    <ion-card *ngFor="let item of capturas" (click)="verAplicacion(item.id)">
+        <div class="backImg">
+            <ion-row style="color: #ffffff; font-weight: bold; text-align: center;">
+                <ion-col size="2" *ngIf="item.sincronizado === 0">
+                    <ion-badge color="warning">Cargado</ion-badge>
+                </ion-col>
+                <ion-col size="10" style="text-align: right;">
+                    <ion-icon name="time"></ion-icon> Fecha <br>
+                    <ion-card-subtitle style="color: white;">{{this.fecha | date:'dd/MM/YYYY'}}</ion-card-subtitle>
+                </ion-col>
+                <ion-col>
+                    <ion-icon name="leaf"></ion-icon> Sectores<br>
+                    <ion-card-subtitle style="color: white;">
+                        <ul>
+                            <li *ngFor="let s of item.sectores">
+                                {{s.sector}}
+                            </li>
+                        </ul>
+                    </ion-card-subtitle>
+                </ion-col>
+                <ion-col>
+                    <ion-icon name="time"></ion-icon> H.I <br>
+                    <ion-card-subtitle style="color: white;">{{item.horaInicio}}</ion-card-subtitle>
+                </ion-col>
+                <ion-col>
+                    <ion-icon name="time"></ion-icon> H.F<br>
+                    <ion-card-subtitle style="color: white;">{{item.horaFin }}</ion-card-subtitle>
+                </ion-col>
+                <!-- <ion-col> Ver<br>
+                    <ion-icon (click)="verAplicacion(item.id)" name="search"></ion-icon>
+                </ion-col> -->
+                <!-- <ion-col size="12">
+
+                    <div style="text-align: left;">
+                        {{item.id}}
+                    </div>
+                </ion-col> -->
+            </ion-row>
+        </div>
+    </ion-card>
+
+    <ion-card *ngIf="capturas.length === 0">
+        <div class="backImg" style="color: white; font-weight: bold;">
+            <ion-row>
+                <ion-col style=" text-align: center;">
+                    <ion-card-subtitle style="color: white;">No se encontrarón datos</ion-card-subtitle>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-card>
+
+
+
+</ion-content>

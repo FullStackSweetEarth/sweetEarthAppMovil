@@ -1,0 +1,156 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+
+      <!-- <ion-buttons slot="start" (click)="back()"> -->
+        <ion-buttons slot="start"  (click)="navegar('')">
+          <ion-button>
+              <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <ion-title>Verificar sincronización
+      </ion-title>
+      
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button  id="open-modal-plantilla" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="new-background-color ">
+    <ion-card-header>
+      <ion-row>
+        <ion-col>
+
+          <ion-card-title style="color: white !important">Papeletas</ion-card-title>
+        </ion-col><ion-col size="4"><input [(ngModel)]="papeleta" type="text" placeholder="Buscar..." style="width: 100%; border: none; border-radius: 15px; padding-top: 5px; padding-bottom: 5px; padding-left: 4px !important;"></ion-col>
+      </ion-row>
+      
+    </ion-card-header>
+  </ion-card>
+  
+  <ion-card  color="warning" *ngIf="listaPapeletas.length<2">
+    <ion-card-content>
+      Sin datos
+    </ion-card-content>
+  </ion-card>
+  <div *ngIf="listaPapeletas.length>1" class="table-container">
+
+    <table style="overflow-y: scroll !important; overflow-x: scroll !important;">
+      <thead >
+
+        <tr>
+          <th  class="head-1" style="z-index: 9999999999 !important;">Rancho</th>
+          <th class="head-2" style="background-color:#f4f4f4; z-index: 9999999999 !important;">Sec</th>
+          <!-- <th>Fecha</th> -->
+          <th>Papeleta</th>
+          <th>Licencia</th>
+          <th style="white-space: nowrap;"><ion-icon name="time"></ion-icon>Inicio</th>
+          <th style="white-space: nowrap;"><ion-icon name="time"></ion-icon>Fin</th>
+          <th>Cajas</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let papeleta of listaPapeletas | buscar:['numAsociado','nombre','rancho','supervisor','cultivo']:papeleta" style="position: relative;">
+        <td class="head-1">{{papeleta.rancho}}</td>
+        <td class="head-2" style="background-color: white;">{{papeleta.sector}}</td>
+        <!-- <td>{{papeleta.fecha | date:'dd/MM/YYYY'}}</td> -->
+        <td>{{papeleta.papeleta}}</td>
+        <td>{{papeleta.licencia}}</td>
+        <td>{{papeleta.horaInicioCosecha}}</td>
+        <td>{{papeleta.horaFinCosecha}}</td>
+        <td>{{papeleta.cajas|number:'.0-2':'en-US'}}</td>
+      </tr>
+    </table>
+  </div>
+  <ion-card class="new-background-color">
+    <ion-card-header>
+      <ion-row>
+        <ion-col>
+
+          <ion-card-title style="color: white !important">Fichas</ion-card-title>
+        </ion-col><ion-col size="4"><input [(ngModel)]="ficha" type="text" placeholder="Buscar..." style="width: 100%; border: none; border-radius: 15px; padding-top: 5px; padding-bottom: 5px; padding-left: 4px !important;"></ion-col>
+      </ion-row>
+    </ion-card-header>
+  </ion-card>
+  <ion-card color="warning"  *ngIf="listaFichas.length==0">
+    <ion-card-content>
+      Sin datos
+    </ion-card-content>
+  </ion-card>
+  <div *ngIf="listaFichas.length>0" class="table-container" >
+    <table >
+      <thead >
+
+        <tr >
+          <th class="head-1" style="z-index: 9999999999 !important;">N°</th>
+          <th class="head-2b" style="z-index: 9999999999 !important;">Nombre</th>
+          <th>Rancho</th>
+          <th>Supervisor</th>
+          <th>Cultivo</th>
+          <th>Cajas</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let rendimiento of listaFichas | buscar:['numAsociado','nombre','rancho','supervisor','cultivo']:ficha">
+        <td class="head-1">{{rendimiento.numAsociado}}</td>
+        <td class="head-2b" style="background-color: white;">{{rendimiento.nombre}}</td>
+        <td>{{rendimiento.rancho}}</td>
+        <td>{{rendimiento.supervisor}}</td>
+        <td>{{rendimiento.cultivo}}</td>
+        <td>{{rendimiento.cajas|number:'.0-2':'en-US'}}</td>
+      </tr>
+    </table>
+      </div>
+
+  <ion-card class="new-background-color">
+    <ion-card-header>
+      <ion-row>
+        <ion-col>
+
+          <ion-card-title style="color: white !important">Rendimientos Galeras</ion-card-title>
+        </ion-col><ion-col size="4"><input [(ngModel)]="rendimiento" type="text" placeholder="Buscar..." style="width: 100%; border: none; border-radius: 15px; padding-top: 5px; padding-bottom: 5px; padding-left: 4px !important;"></ion-col>
+      </ion-row>
+    </ion-card-header>
+  </ion-card>
+  
+  <ion-card color="warning"  *ngIf="listRendimeintos.length==0">
+    <ion-card-content>
+      Sin datos
+    </ion-card-content>
+  </ion-card>
+  
+  <div *ngIf="listRendimeintos.length>0" class="table-container" >
+    <table >
+      <thead >
+
+        <tr >
+          <th class="head-1" style="z-index: 9999999999 !important;">N°</th>
+          <th class="head-2b" style="z-index: 9999999999 !important;">Nombre</th>
+          <th>Rancho</th>
+          <th>Cultivo</th>
+          <th>Cajas</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let rendimiento of listRendimeintos | buscar:['numAsociado','nombre','rancho','supervisor','cultivo']:rendimiento">
+        <td class="head-1">{{rendimiento.numEmpleado}}</td>
+        <td class="head-2b" style="background-color: white;">{{rendimiento.nombre}}</td>
+        <td>{{rendimiento.rancho}}</td>
+        <td>{{rendimiento.cultivo}}</td>
+        <td>{{rendimiento.cajas|number:'.0-2':'en-US'}}</td>
+      </tr>
+    </table>
+      </div>
+
+</ion-content>
+
+
+
+
+<ion-modal trigger="open-modal-plantilla" [cssClass]="'bottom-end'" [showBackdrop]="true">
+  <ng-template>
+    <ion-datetime displayFormat="HH:mm" locale="es-ES" #datetime [(ngModel)]="fecha" presentation="date" size="cover" [showDefaultButtons]="true" (ionChange)="getPapeletas(); getFichas(); getRendimientoGaleras()"></ion-datetime>
+  </ng-template>
+</ion-modal>
+<ion-button id="open-loading" style="position: absolute; top: -999999px;">Show Loading</ion-button>
+<ion-loading trigger="open-loading" message="Cargando..."  spinner="circles"></ion-loading>

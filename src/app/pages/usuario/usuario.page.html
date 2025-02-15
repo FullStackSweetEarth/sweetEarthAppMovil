@@ -1,0 +1,111 @@
+<ion-header style="margin-bottom: 70px;">
+  <ion-toolbar class="new-background-color">
+    <!-- <ion-buttons slot="start" (click)="back()"> -->
+    <ion-buttons slot="start" (click)="back()">
+      <ion-button>
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Usuarios</ion-title>
+    
+    <!-- <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="open-modal-48" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+<div style="position: fixed; top: 57px; z-index: 1000; ">
+  <ion-row>
+    <ion-col size="10">
+
+      <ion-searchbar
+            id="4"
+            
+            class="custom"
+            placeholder="Buscar..."
+            [(ngModel)]="palabra"
+            showCancelButton="true" cancelButtonText="cancel" debounce=250
+          ></ion-searchbar>
+    </ion-col>
+    <ion-col style="margin-top: 6px !important;">
+      <ion-button  id="open-modal" color="secondary" shape="circle" style="font-size: 20px;" >
+        +
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</div>
+<ion-content>
+
+  
+  <ion-card class="card btn-green-low" style=" height: 52px;"  *ngFor="let empleado of empleados |  buscar:['numEmpleado','nombre']:palabra; let i = index;">
+    <ion-card-content style="margin: 0 !important; padding: 0 !important;">
+      <ion-row>
+        <!-- <ion-col size="2" style="position: relative">
+          <ion-avatar
+            style=" 
+              width: 45px;
+              height: 45px;
+              position: absolute;
+              /* top: -0.9vh; */
+              /* left: -3vw; */
+            "
+          >
+            <ion-img src="https://i.pravatar.cc/300?u=b"></ion-img>
+          </ion-avatar>
+        </ion-col> -->
+        <ion-col  style="padding: 0 !important; margin: 0 !important; padding-left: 14px !important; margin-top: 7px !important;">
+          <ion-row>
+            <ion-col size="3"  style="padding: 0;margin: 0;" >
+              <small>N°</small> <br>
+              <small style="font-size: 3vw; font-weight: 900">{{empleado.numEmpleado}}</small>
+            </ion-col>
+            <ion-col size="9" style="padding: 0;margin: 0;" >
+              <small style="padding: 0;margin: 0;">Nombre</small> <br style="padding: 0; margin: 0;">
+              <small  style="font-size: 3vw; font-weight: 900;padding: 0;margin: 0;">{{empleado.nombre | uppercase}}</small>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-modal #modal trigger="open-modal" [presentingElement]="presentingElement">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="new-background-color">
+          <ion-title>Agregar Externo</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss(); initVar()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content >
+        <ion-row style="padding: 10px !important;">
+          <ion-col size="12">
+            <ion-input [(ngModel)]="empleado.nombre" label="Nombre" label-placement="floating" fill="solid" placeholder="Amira"></ion-input>
+
+            <!-- <ion-input label="Nombre" labelPlacement="floating" placeholder="Enter text"></ion-input> -->
+          </ion-col>
+          <ion-col>
+            <ion-input [(ngModel)]="empleado.paterno" label="Paterno" label-placement="floating" fill="solid" placeholder="Robledo"></ion-input>
+
+            <!-- <ion-input label="Paterno" labelPlacement="floating" placeholder="Enter text"></ion-input> -->
+          </ion-col>
+          <ion-col>
+            <ion-input [(ngModel)]="empleado.materno" label="Materno" label-placement="floating" fill="solid" placeholder="Quiroga"></ion-input>
+
+            <!-- <ion-input label="Materno" labelPlacement="floating" placeholder="Enter text"></ion-input> -->
+          </ion-col>
+          <ion-col size="12">
+            <ion-input label="CURP"  [(ngModel)]="empleado.curp" label-placement="floating" fill="solid" placeholder="NDFG98304..."></ion-input>
+
+            <!-- <ion-input label="Materno" labelPlacement="floating" placeholder="Enter text"></ion-input> -->
+          </ion-col>
+          <ion-col size="12" >
+            <button class="btn btn-green" (click)="addExterno(); modal.dismiss(); "> Guardar</button>
+          </ion-col>
+      </ion-row>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

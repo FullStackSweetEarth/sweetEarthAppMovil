@@ -1,0 +1,357 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-icon (click)="back()" style="font-size: 25px !important; padding-left: 10px !important;" name="chevron-back-sharp" slot="start"></ion-icon>
+    <ion-title style="padding-left: 5px !important;">Capturar Cajas</ion-title>
+  
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="programaCosecha" class="new-background-color">
+    <div style="padding: 5px;" >
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4">
+            <b><small>RANCHO</small></b> <br>
+            {{programaCosecha.rancho}} <b><small>({{programaCosecha.sector}})</small></b>
+          </ion-col>
+          <ion-col>
+            <b><small>PRONÓSTICO</small></b> <br>
+            {{programaCosecha.surcos}}
+          </ion-col>
+          <ion-col>
+            <b><small>REAL</small></b> <br>
+            {{totalRealPrograma |number:'.0-0':'en-US'}}
+          </ion-col>
+          <ion-col style="white-space: nowrap;">
+            <b><small>SUPERVISOR</small></b> <br>
+            {{programaCosecha.supervisor}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div style="background-color: white !important; color: black !important;">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <b><small style="padding-left: 10px;">HORA INICIO</small></b> <br>
+            <ion-text color="primary">
+                <ion-chip id="modal-horaInicio" color="primary" mode="ios" outline="true" style="font-size: 1.6vh;  width: 100%; white-space: nowrap">
+                  {{(!horaInicio?'Sin datos':(horaInicio | date:'HH:mm'))}} 
+                
+                    <div style="margin-left: 14vw;" >
+                    
+                      <ion-icon name="time"></ion-icon>
+                    </div>
+                </ion-chip>
+            </ion-text>
+          </ion-col>
+          <ion-col>
+            <b><small style="padding-left: 10px;">HORA FIN</small></b> <br>
+            <ion-text color="primary">
+              <ion-chip id="modal-horaFin" color="primary" mode="ios" outline="true" style="font-size: 1.6vh;  width: 100%; white-space: nowrap">
+                {{(!horaFin?'Sin datos':(horaFin | date:'HH:mm'))}} 
+      
+                  <div style="margin-left: 14vw;" >
+      
+                    <ion-icon name="time"></ion-icon>
+                  </div>
+              </ion-chip>
+          </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-card>
+  <ion-searchbar
+    id="4"
+    style=" width: 100%"
+    class="custom"
+    placeholder="Buscar..."
+    showCancelButton="true" cancelButtonText="cancel" debounce=250 [(ngModel)]="palabra"
+  ></ion-searchbar>
+  <div id="scroll-Card" *ngIf="banderaPlantilla" style="overflow: scroll; max-height: 55vh;">
+    <ion-card *ngFor="let empleado of plantilla | buscar4:['numEmpleado','nombre']:palabra">
+      <ion-card-header class="new-background-color"style="padding: 5px;">
+        <ion-row>
+          <ion-col size="2" style="white-space: nowrap;">
+            <b><small>N°</small></b> <br>
+            <div style="font-size: 13px;">
+              <b>{{empleado.numEmpleado}}</b>
+            </div>
+          </ion-col>
+          <ion-col style="white-space: nowrap;">
+            <div style="font-size: 13px;">
+              <b><small>NOMBRE</small></b> <br>
+             <b>{{empleado.nombre}}</b> 
+            </div>
+          </ion-col>
+          <ion-col style="white-space: nowrap; text-align: right;" (click)="empleado.mostrar = !empleado.mostrar">
+            <div style="font-size: 13px;">
+             <b>
+              <ion-icon *ngIf="!empleado.mostrar" name="add-circle-sharp" style="color: white; font-size: 20px; margin-top: 5px;"></ion-icon>
+              <ion-icon *ngIf="empleado.mostrar" name="remove-circle-sharp" style="color: white; font-size: 20px; margin-top: 5px;"></ion-icon>
+            </b> 
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-grid *ngIf=" empleado.rendimientos.length >0" [ngClass]="{'animation03 ': empleado.mostrar, 'animation02': !empleado.mostrar}">
+        <ng-container *ngIf="empleado.mostrar && empleado.rendimientos.length >0 && !bandera">
+
+          <ion-row>
+            <ion-col>
+              <b>Cultivo</b>
+            </ion-col>
+            <ion-col>
+              <b>Cajas</b>
+            </ion-col>
+            <ion-col style="text-align: right;">
+              <b>Hora</b>
+            </ion-col>
+            <ion-col style="text-align: right;" size="1">
+              <b></b>
+            </ion-col>
+          </ion-row>
+          <div  style="max-height: 110px !important; overflow: scroll;" >
+
+            <ion-row *ngFor="let rendimiento of empleado.rendimientos| historial:['idProgramaCosecha']:programaCosecha.idProgramaAct:'cajas' ">
+              <ion-col>{{rendimiento.cultivo}}</ion-col>
+              <ion-col>
+                <input (change)="modificar(empleado); addHistorialM(empleado)" type="number" [(ngModel)]="rendimiento.cajas" style="border: none; text-align: center; width: 70%; border-bottom: solid 1px black;"  />
+                <!-- {{rendimiento.cajas}} -->
+                <!-- <ion-icon style="color: #12876b; margin-left: 4px;" name="information-circle-sharp"></ion-icon> -->
+              </ion-col>
+              <ion-col  style="text-align: right;">{{rendimiento.hora}}</ion-col>
+              <ion-col (click)="delete(rendimiento.hora,empleado.numEmpleado)" size="1" style="text-align: right;">
+                <ion-icon style="color: red;" name="trash-sharp"></ion-icon>
+              </ion-col>
+            </ion-row>
+           
+          </div>
+        </ng-container>
+      </ion-grid>
+      <div  [ngClass]="{'animation01 body-cap': empleado.mostrar, 'animation02': !empleado.mostrar}"  >
+        <ion-row *ngIf="empleado.mostrar"  >
+          <ion-col *ngIf="programaCosecha.idCultivo === '1'" size="10">
+            <div
+              class="circle"
+              style="position: relative; background-color: #e8949b"
+            >
+              <img
+                src="assets\imagenes\frambuesa.svg "
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  color: white;
+                  width: 60%;
+                  z-index: 99;
+                "
+              />
+  
+              <div
+                class="cilcle-body"
+                style="
+                  position: relative;
+                  background-color: #e8949b50;
+                  color: #fe3e4f;
+                  width: 120px !important;
+                "
+              >
+              <input  [(ngModel)]="empleado.cajas"  type="number" style="outline: none;color:#fe3e4f !important; text-align: center; position: absolute;right: 10px; border: none; border-bottom: solid 2px  #fe3e4f; width: 60%; background-color: #12876c00;" placeholder="Cajas">
+               
+              </div>
+            </div>
+          </ion-col>
+
+          
+          <ion-col *ngIf="programaCosecha.idCultivo === '2'"  size="5">
+            <div
+              class="circle"
+              style="position: relative; background-color: #bb83e8"
+            >
+              <img
+                src="assets\imagenes\zarzamora.svg "
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  color: white;
+                  width: 60%;
+                  z-index: 99;
+                "
+              />
+  
+              <div
+                class="cilcle-body"
+                style="
+                  position: relative;
+                  background-color: #d7b8f075;
+                  color: #861adc;
+                  width: 120px !important;
+                "
+              >
+            <input [(ngModel)]="empleado.cajas"  type="number" style="outline: none;color:#861adc !important;
+            text-align: center; position: absolute;right: 10px; border: none; border-bottom: solid 2px  #861adc;
+            width: 60%; background-color: #12876c00;" placeholder="Cajas">
+                
+              </div>
+            </div>
+          </ion-col>
+          <ion-col size="2" style="text-align: center;">
+            <button (click)="addRendimeintos(empleado, programaCosecha.idCultivo === '2'?'Zarzamora':'Frambuesa')" class="circle" style="background-color: #0054e9;">
+              <ion-icon color="light" name="save-sharp"></ion-icon>
+            </button>
+          </ion-col>
+
+
+          </ion-row>
+      </div>
+      <div style="padding: 8px;"  *ngIf="!empleado.mostrar">
+        <ion-row >
+          <!-- <ion-col size="4.5"></ion-col> -->
+          <ion-col *ngIf="programaCosecha.idCultivo === '1'" size="3">
+            <div
+              class="circle"
+              style="position: relative; background-color: #e8949b"
+            >
+              <img
+                src="assets\imagenes\frambuesa.svg "
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  color: white;
+                  width: 60%;
+                  z-index: 99;
+                "
+              />
+  
+              <div
+                class="cilcle-body"
+                style="
+                  position: relative;
+                  background-color: #e8949b50;
+                  color: #fe3e4f;
+                  width: 100px;
+                "
+              >
+                <span
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    right: 0%;
+                    transform: translate(-50%, -50%);
+                    
+                  "
+                >
+                  {{(empleado.rendimientos.length>0? (empleado.rendimientos | historial:['idProgramaCosecha']:programaCosecha.idProgramaAct:'total'):0)}}
+                </span>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col *ngIf="programaCosecha.idCultivo === '2'" size="3">
+            <div
+              class="circle"
+              style="position: relative; background-color: #bb83e8"
+            >
+              <img
+                src="assets\imagenes\zarzamora.svg "
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  color: white;
+                  width: 60%;
+                  z-index: 99;
+                "
+              />
+  
+              <div
+                class="cilcle-body"
+                style="
+                  position: relative;
+                  background-color: #d7b8f075;
+                  color: #861adc;
+                "
+              >
+                <span
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    right: 0%;
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  34
+                </span>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col *ngIf="false" size="3">
+            <div
+              class="circle"
+              style="position: relative; background-color: #12876c50"
+            >
+            <ion-icon style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);z-index: 99; color: #12876b; font-size: 20px;" name="cube-sharp"></ion-icon>
+             
+  
+              <div
+                class="cilcle-body"
+                style="
+                  position: relative;
+                  background-color: #12876c41;
+                  color: #12876b;
+                "
+              >
+                <span
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    right: 0%;
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  68
+                </span>
+              </div>
+            </div>
+          </ion-col>
+          </ion-row>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>
+
+
+<ion-modal trigger="modal-horaInicio" [cssClass]="'bottom-end'">
+  <ng-template>
+      <ion-datetime  (ionChange)="registrarHorarioRealCosecha()"   display-format="HH:mm" picker-format="HH:mm" presentation="time" [(ngModel)]="horaInicio" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="modal-horaFin" [cssClass]="'bottom-end'">
+  <ng-template>
+    
+    <!-- <ion-datetime displayFormat="HH:mm" presentation="time" [(ngModel)]="horaInicio" size="cover" [showDefaultButtons]="true">
+    </ion-datetime> -->
+      <ion-datetime  (ionChange)="registrarHorarioRealCosecha()"
+      display-format="HH:mm" picker-format="HH:mm" presentation="time" [(ngModel)]="horaFin" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal>

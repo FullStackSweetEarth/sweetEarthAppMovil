@@ -1,0 +1,186 @@
+<ion-header >
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start" (click)="back()">
+      <ion-button>
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Bitácora Fichas</ion-title>
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="open-modal-48" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+    <!-- <ion-row> -->
+      <ion-card  style="font-size: 12px;">
+        <ion-row class="bg-success-title">
+          <ion-col size="3">
+            <small>Rancho</small> <br />
+            {{rancho}} 
+          </ion-col>
+            <ion-col style="white-space: nowrap;">
+              <small>Supervisor</small><br />
+              {{supervisor}} 
+            </ion-col>
+          </ion-row>
+
+      </ion-card>
+    <!-- </ion-row> -->
+    <ion-row >
+      <ion-col size="9">
+        <ion-searchbar
+          id="4"
+          style=" z-index: 1000; width: 75vw"
+          class="custom"
+          placeholder="Buscar..."
+          [(ngModel)]="palabra"
+          showCancelButton="true" cancelButtonText="cancel" debounce=250
+          (ionClear)="clear($event)"
+        ></ion-searchbar>
+      </ion-col>
+      <ion-col
+        style="
+          color: white;
+          z-index: 999;
+        "
+      >
+        <ion-fab
+          style="position: relative; left: 10vw; top: 2vw;"
+          id="addEmp"
+          expand="block"
+        >
+          <ion-fab-button
+            (click)="palabra = ''"
+            color="secondary"
+            style="width: 40px; height: 40px"
+          >
+            <ion-icon
+              style="color: white; font-size: 12px"
+              name="person-add"
+            ></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-col>
+    </ion-row>
+  <!-- <div style="margin-top: 120px"></div> -->
+   <div style="max-height: 72vh;overflow: scroll;">
+
+     <ion-card
+       style="position: relative"
+       *ngFor="let info of listaDatos | buscar:['numEmpleado','nombre']:palabra; let i=index"
+     >
+       <!-- <ion-grid> -->
+   
+       <ion-row class="bg-success-title">
+         <ion-col size="3">
+           <small>N° Empleado</small> <br />
+           {{info.numEmpleado}} </ion-col
+         ><ion-col size="8.5" style="text-align: right; white-space: nowrap">
+           <small>Nombre</small> <br />
+           {{info.nombre}}
+         </ion-col>
+   
+         <div
+           style="
+             width: 10px;
+             height: 10px;
+             background-color: red;
+             border-radius: 2px;
+             font-size: 7px;
+             position: relative;
+             right: -2vw;
+           "
+           (click)="delete(info.numEmpleado)"
+         >
+           <div style="position: relative; top: 2px; left: 2px">X</div>
+         </div>
+         <!-- <ion-col>
+                 12:30 a 14:30<br>
+                 14:40 a 16:00
+               </ion-col> -->
+       </ion-row>
+       <ion-row>
+         <ion-col *ngFor="let cultivo of info.rendimientos">
+           <ion-row
+             style="
+               text-align: center;
+               align-items: center;
+               justify-content: center;
+               white-space: nowrap;
+             "
+           >
+             <img
+               style="width: {{cultivo.nombre === 'Tomate'?'30':'20'}}px"
+               [src]="getCultivoImagen2(cultivo)"
+             />
+             <div style="width:  {{cultivo.nombre === 'Tomate'?'60':'70'}}px !important; margin-left: 8px">
+               <ion-input
+                 (change)="addDatos()"
+                 [(ngModel)]="cultivo.cajas"
+                 placeholder="Cajas"
+                 type="number"
+               ></ion-input>
+             </div>
+           </ion-row>
+         </ion-col>
+       </ion-row>
+       <!-- </ion-grid> -->
+     </ion-card>
+   </div>
+  <ion-modal
+    #modal
+    trigger="addEmp"
+    [initialBreakpoint]="0.75"
+    [breakpoints]="[0, 0.25, 0.5, 0.75]"
+  >
+    <ng-template>
+      <ion-content>
+        <ion-searchbar
+          id="45"
+          style="margin-top: 1vh"
+          (click)="palabra = ''"
+          class="custom"
+          placeholder="Search"
+          (click)="modal.setCurrentBreakpoint(0.75)"
+          [(ngModel)]="palabra2"
+        ></ion-searchbar>
+        <ion-list>
+          <ion-item
+            *ngFor="let emp of listaEmpleados | buscar:['numEmpleado','nombre']: palabra2; let i=index"
+          >
+            {{emp.numEmpleado}} {{emp.nombre}}
+
+            <ion-label style="text-align: right">
+              <ion-icon
+                (click)="addEmpleado(emp)"
+                name="add-circle-outline"
+              ></ion-icon>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-modal trigger="open-modal-48" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ion-datetime displayFormat="HH:mm"
+      *ngIf="fecha"
+      locale="es-ES"
+      #datetime
+      [(ngModel)]="fecha"
+      presentation="date"
+      size="cover"
+      [showDefaultButtons]="true"
+      (ionChange)="generarKey();
+        getDatos()"
+      [min]="nuevaFecha"
+      [max]="fecha2"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>

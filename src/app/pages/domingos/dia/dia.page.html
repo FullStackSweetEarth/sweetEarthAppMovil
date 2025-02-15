@@ -1,0 +1,63 @@
+<ion-header style="margin-bottom: 115px;">
+  <ion-toolbar class="new-background-color">
+    <ion-buttons (click)="back()" slot="start">
+    <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Dia</ion-title>
+    <ion-buttons  slot="end">
+      <ion-button id="open-modal-48" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon>
+        {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<div style="position: absolute; top: 55px; z-index: 999999; width: 95%;">
+  <ion-card class="ani" style=" width: 100%;" >
+    <ion-row class="bg-success-title">
+      <ion-col size="3">
+        <small>Rancho</small> <br />
+        {{rancho}}
+        </ion-col
+      ><ion-col size="9" style="text-align: right; white-space: nowrap">
+        <small>Supervisor</small> <br />
+        {{supervisor}}
+      </ion-col>
+    </ion-row>
+  </ion-card>
+   
+  <ion-searchbar
+  id="4"
+  style="position: fixed; z-index: 1000"
+  class="custom"
+  placeholder="Buscar..."
+  showCancelButton="true"
+  cancelButtonText="cancel"
+  debounce="250"
+  [(ngModel)]="palabra"
+></ion-searchbar>
+</div>
+<ion-content>
+   
+  <ion-card class="ani" style="position: relative; " *ngFor="let empleado of plantilla |  buscar:['numEmpleado','nombre']:palabra; let i = index;">
+    <ion-row class="bg-success-title" style="padding: 5px;">
+      <ion-col size="3">
+        <small>N° </small> <br />
+        {{empleado.numEmpleado}}
+        </ion-col
+      ><ion-col size="7" style="text-align: left;">
+        <small>Nombre</small> <br />
+        {{empleado.nombre+' '+(empleado.paterno?empleado.paterno:'')+' '+(empleado.materno?empleado.materno:'')}}
+      </ion-col>
+      <ion-col>
+        <div style="float: right;z-index: 9;">
+          <ion-toggle (click)="asignarPaga(empleado )"  [checked]="idRancho === empleado.porDia.idRancho && idSupervisor === empleado.porDia.idSupervisor"></ion-toggle> <br>
+          <span style="margin-top: 10px !important;">
+            {{(idRancho === empleado.porDia.idRancho && idSupervisor === empleado.porDia.idSupervisor? empleado.porDia.paga:"0")|currency : 'USD':'symbol':'1.2-2':'en-US' }}
+            <!-- $ 0.00 -->
+          </span>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

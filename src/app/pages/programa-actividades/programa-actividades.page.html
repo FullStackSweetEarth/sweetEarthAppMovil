@@ -1,0 +1,330 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="#"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Programas Actividades</ion-title>
+
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="changeDate" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card style="position: sticky; top: 10px; z-index: 5">
+    <ion-card-header
+      class="text-white"
+      style="background-color: rgb(18, 135, 107); color: white !important"
+    >
+      <ion-row>
+        <ion-col>
+          <ion-card-title class="text-white" color="white">
+            {{rancho}}
+          </ion-card-title>
+        </ion-col>
+        <ion-col size="4" style="padding: 0 !important">
+          <ion-text color="primary" style="padding: 0">
+            <ion-chip
+              mode="ios"
+              outline="true"
+              style="
+                font-size: 1.6vh;
+                width: 100%;
+                justify-content: space-between;
+                border: none;
+                color: white !important;
+                padding: 0;
+                position: absolute;
+                right: -3rem;
+                top: -0.2rem;
+              "
+            >
+              <ion-select
+                interface="action-sheet"
+                placeholder="Sector"
+                style="padding: 0px"
+                [(ngModel)]="registro.idPlantacion"
+                (ionChange)="getDatos()"
+              >
+                <ion-select-option
+                  *ngFor="let sector of listaSectores"
+                  [value]="sector.plantacionID"
+                  >{{sector.sector}}</ion-select-option
+                >
+              </ion-select>
+            </ion-chip>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="10">
+          <ion-searchbar [(ngModel)]="buscador2" class="custom"></ion-searchbar>
+        </ion-col>
+        <!-- <ion-col size="2">
+            <ion-select placeholder="Select a Fruit">
+              <ion-select-option value="apple">L1</ion-select-option>
+              <ion-select-option value="banana">L2</ion-select-option>
+              <ion-select-option value="orange">L3</ion-select-option>
+            </ion-select>
+          </ion-col> -->
+        <ion-col
+          size="2"
+          style="
+            color: white;
+            position: fixed;
+            top: 70px;
+            left: 44.5vw;
+            z-index: 999;
+          "
+        >
+          <ion-fab
+            style="position: relative; left: 33vw; top: 2vw"
+            id="addEmp"
+            expand="block"
+          >
+            <ion-fab-button
+              id="add-actividad"
+              expand="block"
+              color="secondary"
+              style="width: 40px; height: 40px"
+              [disabled]="!registro.idPlantacion"
+            >
+              <ion-icon
+                style="color: white; font-size: 22px"
+                name="add"
+              ></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card
+    *ngIf="listaDatos.length === 0"
+    style="
+      background-color: #f6bb3a !important;
+      color: black;
+      font-size: 20rem !important;
+      z-index: 9999;
+      z-index: 99;
+    "
+  >
+    <ion-card-content>
+      <div>
+        <ion-icon name="warning-sharp"></ion-icon>
+        Sin datos, de click para agregar
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="listaDatos.length > 0">
+    <div class="table-responsive">
+      <table style="width: 100%">
+        <tr
+          style="
+            text-align: center;
+            background-color: rgb(18, 135, 107);
+            color: white;
+            border: solid 1px white;
+          "
+        >
+          <th style="padding: 4px !important">Actividad</th>
+          <th style="padding: 4px !important">Periodo</th>
+          <th style="padding: 4px !important">Comentario</th>
+        </tr>
+        <tr *ngFor="let regis of listaDatos|buscar4:['actividad']:buscador2 ">
+          <td style="padding: 4px !important; position: relative">
+            {{regis.actividad}}
+            <ion-icon
+              name="trash"
+              style="color: red; position: absolute; top: 1px; right: 1px"
+              (click)="eliminar(regis)"
+            ></ion-icon>
+          </td>
+          <td style="padding: 4px !important">
+            <ion-select
+              interface="action-sheet"
+              placeholder="Sin Dato"
+              style="padding: 0px"
+              [(ngModel)]="regis.nivel"
+              (ionChange)="confirm(regis)"
+            >
+              <ion-select-option
+                *ngFor="let nivel of listaNiveles"
+                [value]="nivel.value"
+                >{{nivel.name}}</ion-select-option
+              >
+            </ion-select>
+          </td>
+          <td style="padding: 4px !important">
+            <textarea [(ngModel)]="regis.comentario" (change)="confirm(regis)">
+            </textarea>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ion-card>
+  <!-- <ion-card
+    *ngFor="let registro of listaDatos|buscar4:['actividad']:buscador2 "
+  >
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="2">
+          <b>{{registro.sector}}</b> <br />
+          <small>Sector</small>
+        </ion-col>
+        <ion-col size="6">
+          <b>{{registro.actividad}} </b> <br />
+          <small>Actividad</small>
+        </ion-col>
+        <ion-col size="2">
+          <div class="level-prioriti" style="position: relative">
+            <span
+              style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+              "
+              >{{registro.nivel}}L</span
+            >
+          </div>
+        </ion-col>
+        <ion-col size="2" style="position: relative; left: 15px">
+          <div
+            class="btn-circle"
+            style="position: relative"
+            (click)="eliminar(registro.idActividad+registro.idPlantacion)"
+          >
+            <ion-icon
+              name="trash"
+              style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              "
+            ></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col>
+          <p>{{registro.comentario}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card> -->
+
+  <ion-modal trigger="add-actividad" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="new-background-color">
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancelar</ion-button>
+          </ion-buttons>
+          <ion-title>Actividad</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm(registro)" [strong]="true"
+              >Finalizar</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <!-- <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-select
+                  label="Sector"
+                  [interfaceOptions]="customActionSheetOptions"
+                  interface="action-sheet"
+                  placeholder="Selecciona uno"
+                  [(ngModel)]="registro.idPlantacion"
+                >
+                  <ion-select-option
+                    *ngFor="let sector of listaSectores"
+                    [value]="sector.plantacionID"
+                    >{{sector.sector}}</ion-select-option
+                  >
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-select
+                  label="Nivel"
+                  [interfaceOptions]="customActionSheetOptions2"
+                  interface="action-sheet"
+                  placeholder="Selecciona uno"
+                  [(ngModel)]="registro.nivel"
+                >
+                  <ion-select-option
+                    *ngFor="let nivel of listaNiveles"
+                    [value]="nivel.value"
+                    >{{nivel.name}}</ion-select-option
+                  >
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row> -->
+
+          <ion-searchbar
+            animated="true"
+            placeholder="Actividad"
+            [(ngModel)]="buscador"
+            (keyup)="registro.actividad = ''"
+          ></ion-searchbar>
+          <ion-card *ngIf="!buscador && registro.actividad" class="activo2">
+            <ion-card-content style="padding: 6px !important">
+              {{registro.actividad}}
+            </ion-card-content>
+          </ion-card>
+          <ng-container *ngIf="buscador">
+            <ion-card
+              class="activo"
+              *ngFor="let actividad of listaActividades|buscar4: ['actividad']:buscador"
+            >
+              <ion-card-content
+                style="padding: 6px !important"
+                (click)="registro.idActividad = actividad.id; registro.actividad = actividad.actividad; buscador = null; confirm(registro)"
+              >
+                {{actividad.actividad}}
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
+
+          <!-- <ion-textarea
+            [(ngModel)]="registro.comentario"
+            label="Comentario"
+            labelPlacement="floating"
+            fill="solid"
+            placeholder="Retraso de 3 tuneles.."
+          ></ion-textarea> -->
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-modal trigger="changeDate" [cssClass]="'bottom-end'">
+  <ng-template>
+    <ion-datetime
+      [min]="nuevaFecha"
+      [max]="hoy"
+      displayFormat="HH:mm"
+      locale="es-ES"
+      #datetime
+      [(ngModel)]="fecha"
+      presentation="date"
+      size="cover"
+      [showDefaultButtons]="true"
+      (ionChange)="getDatos()"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>

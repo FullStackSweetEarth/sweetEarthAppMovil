@@ -1,0 +1,139 @@
+<ion-header >
+  <ion-toolbar class="new-background-color">
+    <ion-buttons  slot="start">
+    <ion-icon (click)="back()" class="back" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Capturar Voleo</ion-title>
+    
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button   style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="programa" class="new-background-color" style="position: relative;">
+    <ion-row>
+      <ion-col>
+        <small>RANCHO</small> <br>
+        <b>
+          {{programa.rancho}}
+        </b>
+         <small class="bg-warning-2" style="border-radius: 15rem; padding-left: 3px; padding-right: 3px;white-space: nowrap;">{{programa.estatusTxt}}</small>
+      </ion-col>
+      <ion-col size="8" style="text-align: right;">
+        <small>SUPERVISOR</small> <br>
+        <b>
+          {{programa.supervisor}}
+        </b><br>
+        <small id="definirHorarios" style="background-color: white; color: rgb(18, 135, 107);padding: 2px; border-radius: 15px;">ASIGNAR HORARIOS</small>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        
+        <small>PRODUCTO</small> <br>
+        <b>
+          {{programa.producto}}
+        </b>
+      </ion-col>
+      <ion-col size="2" style="text-align: right;">
+        <ion-icon name="ellipse"></ion-icon> {{programa.sacos}} ${{programa.precio | number:'.2-2':'en-US'}}
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-searchbar class="custom" [(ngModel)]="palabra" ></ion-searchbar>
+
+  <ion-card *ngFor="let empleado of this.plantilla" style=" border-left: solid 3px rgb(18, 135, 107);">
+    <ion-card-header class="new-background-color" style="padding: 3px !important;">
+      <ion-row>
+
+        <ion-col style="padding: 0 !important; margin: 0!important;" >
+          <small size="2">N°</small><br>
+          <small>{{empleado.numEmpleado}}</small>
+        </ion-col>
+        <ion-col style="padding: 0 !important; margin: 0!important;" size="10">
+          <small>Nombre</small> <br> {{empleado.nombre}} 
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-row style="padding: 0 !important; margin: 0!important; padding-top: 4px !important; padding-left: 4px !important;">
+      <ion-col size="12" style="text-align: center;">
+        <ng-container *ngFor="let rendimiento of empleado.voleos.rendimientos">
+          <div *ngIf="rendimiento.idProgramaVoleo+'' === idPrograma+''">
+            
+    <ion-row >
+    
+      <ion-col style="text-align: left;">
+        
+        <ion-text> Hora Inicio </ion-text>
+        
+          <input type="time" (change)="calcularIndividualDescuento(rendimiento)"  [(ngModel)]="rendimiento.horaInicio" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px; padding-left:6px !important; border: solid 1px rgb(0, 0, 0);"/>
+        </ion-col>
+        <ion-col style="text-align: left;">
+        <ion-text> Hora Fin </ion-text>
+  
+          <input type="time" (change)="calcularIndividualDescuento(rendimiento)" [(ngModel)]="rendimiento.horaFin"  style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px;  padding-left:6px !important; border: solid 1px rgb(0, 0, 0);" />
+        </ion-col>
+    </ion-row>
+            <ion-row style="padding: 0 !important; margin: 0!important; padding-bottom: 4px!important;">
+              <ion-col style="padding: 0 !important; margin: 0!important;">
+
+                <small>SACOS</small>
+                <br>
+                <input [disabled]="!rendimiento.horaInicio || !rendimiento.horaFin" (change)="calcularPagos(rendimiento, empleado.voleos)" type="number" style="margin-left: 5px;width: 90%; border: none; border-bottom: solid 1px black; text-align: center;" placeholder="###" [(ngModel)]="rendimiento.sacos" [ngClass]="{'disabled-input': !rendimiento.horaInicio || !rendimiento.horaFin}">
+              </ion-col>
+              <ion-col style="padding: 0 ; margin: 0!important; text-align: right; padding-right: 5px;">
+                <small>PAGO</small> <br>
+                <b style="background-color: rgb(18, 135, 107,.2);color: rgb(18, 135, 107);; padding: 1px; border-radius: 5px;">
+
+                  $ {{rendimiento.pago| number:'.2-2':'en-US'}}
+                </b>
+              </ion-col>
+            </ion-row>
+
+          </div>
+        </ng-container>
+        
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+</ion-content>
+
+
+
+
+<ion-modal trigger="definirHorarios" [initialBreakpoint]="1" [breakpoints]="[0, 1]" 
+[backdropDismiss]="horaInicio<horaFin"  style="--height: auto;">
+  <ng-template>
+    <div class="new-background-color" style="width: 100%; height: 50px; background-color: rgb(18, 135, 107)!important;display: flex;  align-items: center;
+  justify-content: center;">
+HORARIO
+    </div>
+    <div class="block">
+      <ion-row>
+        <ion-col size="12">
+
+          <ion-label>Defina la hora de inició y fin de la actividad para que se le asigne a todos los empleados</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row style="margin-top: 10px;">
+        <ion-col size="6">
+          
+        <ion-text> Hora Inicio </ion-text>
+        <br>
+        
+          <input (change)="asignaHorariosAll()" type="time" [(ngModel)]="horaInicio" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px; padding-left:6px !important; border: solid 1px rgb(0, 0, 0);"/>
+        </ion-col>
+        <ion-col size="6">
+        <ion-text> Hora Fin </ion-text>
+  
+          <input (change)="asignaHorariosAll()" type="time" [(ngModel)]="horaFin" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px;  padding-left:6px !important; border: solid 1px rgb(0, 0, 0);" />
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-template>
+</ion-modal>

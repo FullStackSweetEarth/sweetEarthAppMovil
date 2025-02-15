@@ -1,0 +1,263 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+
+/* Core CSS required for Ionic components to work properly */
+
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+.centrar {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+
+body.scanner-active {
+    --background: transparent;
+    --ion-background-color: transparent;
+}
+
+.new-background-color {
+    --background: rgb(18, 135, 107);
+    color: white;
+}
+
+ion-modal {
+    &.bottom-end {
+        align-items: flex-end;
+        --height: auto;
+        .ion-page {
+            position: relative;
+            display: block;
+            contain: content;
+        }
+    }
+}
+
+.backImg {
+    width: 100%;
+    background-image: url('assets/imagenes/plantilla01.jpg');
+    background-image: no-repeat;
+    background-image: fixed;
+    background-image: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 1vh;
+}
+
+.eliminar {
+    position: absolute;
+    --background: red;
+    z-index: 9999;
+    right: 0vh;
+    top: 0vh;
+    font-size: .5rem;
+    color: white;
+}
+
+ion-select {
+    width: 100% !important;
+}
+
+ion-searchbar.custom {
+    --background: rgb(18, 135, 107);
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff;
+  
+    --border-radius: 4px;
+  }
+  .btn{
+    width: 100%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 17PX;
+}
+
+.btn-blue{
+    color: white;
+    background-color: #20769e;
+}
+.btn-green{
+    color: white;
+    background-color: rgb(18,135,107);
+}
+.btn-green-low{
+    color: white;
+    background-color: #5e8b72
+}
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: rgb(18, 135, 107);
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: #fff;
+  }
+.back {
+    color: white !important;
+}
+
+.bg-success-title{
+    background: rgb(18, 135, 107) !important;
+    color: white !important;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+ion-chip{
+    height: 30px !important;
+    border: solid 1px black;
+    
+}
+.ani{
+    animation-duration: 10s;
+}
+
+.animation01{
+    
+ 
+    animation: inputAnimationEntrada  .2s forwards;
+}
+
+@keyframes inputAnimationEntrada {
+    from {
+        height: 0;
+    }
+    to {
+        height: 55px;
+    }
+}
+.animation02{
+    animation: inputAnimationSalida  .2s forwards;
+
+}
+
+@keyframes inputAnimationSalida {
+    from {
+        height: 55px;
+    }
+    to {
+        height: 0;
+    }
+}
+
+
+.animation03{
+    
+ 
+    animation: inputAnimationEntrada01  .2s forwards;
+}
+
+@keyframes inputAnimationEntrada01 {
+    from {
+        height: 0;
+    }
+    to {
+        height: 140px;
+    }
+}
+
+.text-white{
+    color: white !important;
+}
+
+.element-center-rigth{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-20%,-50%);
+}
+.custom-alert-header-error .alert-title {
+    
+  color: #ffffff; /* Cambia el color del texto del header */
+  background-color: #d30909; /* Color de fondo del header */
+  width: 100%; /* Asegura que el color cubra todo el ancho */
+  margin: 0; /* Elimina los márgenes */
+  padding: 16px; /* Ajusta el padding para un estilo uniforme */
+  text-align: center; /* Centra el texto */
+  font-weight: bold;
+}
+.custom-alert-header-error .alert-head {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .alert-sub-title{
+    padding-left: 22px !important;
+    padding-top: 15px !important;
+  }
+  .alert-message{
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  /* Elimina posibles márgenes y bordes adicionales */
+  .custom-alert-header-error .alert-wrapper {
+    padding: 0;
+    border-radius: 8px; /* Si quieres un borde redondeado */
+    overflow: hidden; /* Asegura que el color no se vea cortado */
+  }
+  .custom-alert-header-ok .alert-title {
+    color: #ffffff; /* Cambia el color del texto del header */
+    background-color: #12876B; /* Cambia el color de fondo */
+    width: 100%; /* Asegura que el color cubra todo el ancho */
+    margin: 0; /* Elimina los márgenes */
+    padding: 16px; /* Ajusta el padding para un estilo uniforme */
+    text-align: center; /* Centra el texto */
+    font-weight: bold;
+  }
+  .custom-alert-header-ok .alert-wrapper {
+    padding: 0;
+    border-radius: 8px; /* Si quieres un borde redondeado */
+    overflow: hidden; /* Asegura que el color no se vea cortado */
+  }
+  .custom-alert-header-ok .alert-head {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  
+.bg-success-2{
+    background-color: rgb(18, 135, 107);color:white;
+}
+.bg-warning-2{
+    background-color: #f8cc6b;
+    color: black;
+}
+
+.success-toast {
+    --background: #4CAF50 !important; /* Verde */
+    --color: white !important;
+  }
+  
+  .error-toast {
+    --background: #F44336 !important; /* Rojo */
+    --color: white !important;
+  }

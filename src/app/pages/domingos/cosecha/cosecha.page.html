@@ -1,0 +1,444 @@
+ 
+<ion-button  id="precios2" style="display: none;" ></ion-button>
+<ion-header [ngClass]="{'edicion':true}">
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start" (click)="back()">
+      <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+
+    </ion-buttons>
+    <ion-title>Cosecha</ion-title>
+    
+  <ion-buttons slot="end">
+    <ion-col size="12">
+
+      <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+    </ion-col>
+  
+  </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card
+    class="card-info"
+  >
+    <ion-row *ngIf="info" style="width: 100%">
+      <ion-col>
+        <small>Rancho</small> <br />
+        {{info.rancho}}
+
+      </ion-col>
+      <ion-col style="text-align: right; white-space: nowrap">
+        <small>Supervisor</small> <br />
+        {{info.supervisor}}
+      </ion-col>
+    </ion-row>
+    <div
+      style="background-color: white; border: white solid 1px; width: 100%"
+    ></div>
+    <div class="editarPrecio" *ngIf="edi || true">
+      <ion-row *ngIf="false">
+        <ng-container *ngFor="let cultivo of cultivos">
+
+          <ion-col
+            *ngIf="info[cultivo.id]['precio']>0"
+            
+            style="text-align: right"
+          >
+            <ion-icon name="cash"></ion-icon> {{info[cultivo.id]['nombre']}}
+            <input
+              (change)="updatePagos()"
+              size="5"
+              type="number"
+              [(ngModel)]="info[cultivo.id]['precio']"
+              style="
+                border: 0;
+                background-color: unset;
+                border-bottom: 2px white solid;
+                width: 100%;
+                text-align: right; 
+              "
+              [disabled]="true"
+            />
+  
+          </ion-col>
+        </ng-container>
+        
+      </ion-row>
+      
+  <ion-row>
+    
+    <ion-col size="5.8" style="text-align: left; padding-left:15px;">
+      <ion-text> Hora Inicio</ion-text>
+      <br />
+      <ion-text color="primary">
+          <ion-chip id="hora-inicio-cosecha"  mode="ios" outline="true" style="font-size: 13px;  width: 100%; white-space: nowrap; color: white !important;">
+            {{horas.horaI?(horas.horaI | date:'HH:mm'): '00:00'}}
+              <div style="margin-left: 14vw;" >
+
+                <ion-icon name="time"></ion-icon>
+              </div>
+          </ion-chip>
+      </ion-text>
+  </ion-col>
+ 
+  <ion-col size="5.8" style="text-align: right; ">
+    <ion-text> Hora Fin</ion-text>
+    <br />
+    <ion-text color="primary">
+        <ion-chip  id="hora-fin-cosecha"  mode="ios" outline="true" style="font-size: 13px; width: 100%; white-space: nowrap; color: white !important;">
+          {{horas.horaF?(horas.horaF | date:'HH:mm'): '00:00'}}
+            <div style="margin-left: 16vw;">
+                <ion-icon name="time"></ion-icon>
+              </div>
+        </ion-chip>
+    </ion-text>
+</ion-col>
+    </ion-row>
+  </div>
+  </ion-card>
+  <ion-row >
+    <ion-col size="12" style="padding: 10px ; padding-top: 0px;">
+      <div style="background-color: rgb(18, 135, 107); width: 150px;padding-top: 4px; padding-left: 4px; border-radius: 10px 10px 0 0; color:white; text-align: center">PRECIO X CAJA</div>
+      <hr style="background-color:  rgb(18, 135, 107);height: 3px; width: 100%; margin-bottom: 0px; padding-bottom:0px; padding-top: 0px; margin-top: 0px;">
+    </ion-col>
+    <ng-container *ngFor="let cultivo of cultivos">
+
+ <ion-col size="4" *ngIf="info[cultivo.id]['p']>0"   style="width: auto; height: auto; background-color: rgb({{cultivo.color}},.5); padding-left:6px; margin: 10px; color: white; border-radius: 55px;">
+   <ion-row style="padding-left:3px; padding-right: 3px;padding-top: 2px;">
+   <ion-col size="3" style="margin: 0px !important; padding:0px !important">
+ 
+     <img
+                     style="width: 25px; "
+                     [src]="getCultivoImagen2(cultivo)"
+                   />
+   </ion-col>
+   <ion-col style="margin: 0px !important; padding:0px !important">
+    <ion-row>
+      <ion-col size="1" >$</ion-col>
+      <ion-col><input
+        (change)="updatePagos()"
+        type="number"
+        [(ngModel)]="info[cultivo.id]['precio']"
+        style="
+          border: 0;
+          background-color: unset;
+          border-bottom: 2px white solid;
+          width: 100%;
+          text-align: center; 
+        "
+      /></ion-col>
+  </ion-row>
+       
+ 
+   </ion-col>
+  </ion-row>
+ </ion-col>
+      <ion-col
+        *ngIf="info[cultivo.id]['p']>0 && false"
+        
+        style="text-align: right"
+      >
+        <ion-icon name="cash"></ion-icon> {{info[cultivo.id]['nombre']}}
+        <input
+          (change)="updatePagos()"
+          size="5"
+          type="number"
+          [(ngModel)]="info[cultivo.id]['precio']"
+          style="
+            border: 0;
+            background-color: unset;
+            border-bottom: 2px white solid;
+            width: 100%;
+            text-align: right; 
+          "
+        />
+
+      </ion-col>
+    </ng-container>
+    
+  </ion-row>
+  <ion-searchbar
+    id="4"
+    class="custom"
+    [(ngModel)]="palabra"
+    placeholder="Buscar..."
+    showCancelButton="true"
+    cancelButtonText="cancel"
+    debounce="250"
+  ></ion-searchbar>
+
+  <div style="max-height: 60vh; overflow-x: scroll;">
+    <ion-card class="ani" style="position: relative" *ngFor="let empleado of plantillaAux| buscar:['nombre','numEmpleado']:palabra">
+      <!-- <ion-grid> -->
+
+      <ion-row class="bg-success-title">
+        <ion-col size="3">
+          <small>N° Empleado</small> <br />
+          {{empleado.numEmpleado}} </ion-col
+        ><ion-col size="8.5" style="text-align: right;  text-overflow: ellipsis !important;">
+          <small>Nombre</small> <br />
+          {{empleado.nombre+' '+(empleado.paterno?empleado.paterno:'')+' '+(empleado.materno?empleado.materno:'')}}
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+        <ng-container *ngFor="let cultivo of empleado.cosecha.rendimientos">
+          <ion-col *ngIf=" info[cultivo.idCultivo]['p']>0">
+            <ion-row
+              style="
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+            <ion-col  size="auto">
+              <ion-row  style="
+              text-align: center;
+              align-items: center;
+              justify-content: center;">
+
+                <img
+                  style="width: 20px"
+                  [src]="getCultivoImagen(cultivo)"
+                />
+                <div style="width: 70px !important; margin-left: 8px">
+                  
+                  <ion-input
+                    (change)="updatePagos()"
+                    placeholder="Cajas"
+                    type="number"
+                    [(ngModel)]="cultivo.capturas.cajas"
+                  ></ion-input>
+                </div>
+              </ion-row>
+            </ion-col>
+              <ion-col
+              size="9" size-sm="9"
+                style="background-color: rgb(18, 135, 107); color: white; border-radius: 3px;"
+              >
+                {{cultivo.capturas.pago | currency: 'USD':'symbol':'1.2-2':'en-US'}}
+              </ion-col>
+              <ion-col size="1">
+
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ng-container>
+        <ion-col (click)="verRecibo(empleado)" size="1" >
+          <div style="background-color: #f6ecb7; color: black; border-radius: 3px; position: relative; width: 100%; height: 20px;">
+
+            <ion-icon name="newspaper" style="position: absolute; top: 50%;left: 50%; transform: translate(-50%,-50%);"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+</ion-content>
+
+
+<ion-modal
+  #modal0
+  trigger="precios2"
+>
+  <ng-template >
+    <ion-header>
+      <ion-toolbar class="new-background-color">
+        <ion-title style="font-weight: blod !important;">Recibo</ion-title>
+        <ion-buttons slot="end">
+          
+          <ion-button (click)="info2.firma ? true:cerrar(); modal0.dismiss()">Regresar </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-card class="card ani" *ngIf="info2" style=" height: 92px;">
+        <ion-card-content style="margin: 0 !important; padding: 0 !important;">
+         
+          <ion-row>
+            <ion-col style="padding: 0 !important; margin: 0 !important;padding-left: 17px !important; margin-top: 7px !important;">
+      
+              <ion-row >
+                <ion-col size="2.5"  style="padding: 0;margin: 0;" >
+                  <small>N°</small> <br>
+                  <small style="font-size: 3vw; font-weight: 900">{{info2.numEmpleado}}</small>
+                </ion-col>
+                <ion-col size="9" style="padding: 0;margin: 0; text-align: right;" >
+                  <small style="padding: 0;margin: 0;">Nombre</small> <br style="padding: 0; margin: 0;">
+                  <small  style="font-size: 3vw; font-weight: 900;padding: 0;margin: 0;">{{info2.nombre | uppercase}}</small>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <ion-card class="bg-recibo ion-card" style="height:  {{20+((info2.cosecha.rendimientos.length*4.5 + (info2.actividades.rendimientos.length>0? (info2.actividades.rendimientos[0].capturas.length*2):0)
+        + (info2.actividades.rendimientos.length>1?(info2.actividades.rendimientos[1]?info2.actividades.rendimientos[1].capturas.length*2:0):0)
+        + (info2.actividades.rendimientos.length>2?(info2.actividades.rendimientos[2]?info2.actividades.rendimientos[2].capturas.length*2:0):0)
+        ))}}rem !important;"  id="reciboIMG" >
+        <div class="shape-separator2"></div>
+
+        <ion-card-content style="color: black; position: relative; overflow-y: scroll;">
+          <div class="centrar titulo">Recibo</div>
+          <ion-grid *ngIf="info2.actividades.granTotal>0">
+            <ion-row class="negritas">
+              <ion-col>
+                <div class="normal negritas">Actividades</div>
+              </ion-col>
+              <ion-col style="text-align: right"> ${{((info2.actividades.granTotal)|number:'.0-0')}}.00</ion-col>
+            </ion-row></ion-grid
+          >
+          <div class="barr" *ngIf="info2.actividades.granTotal>0"></div>
+          <ion-grid *ngIf="info2.actividades.granTotal>0">
+            <ion-row class="negritas" style="font-size: 10px;">
+              <ion-col size="5"> Nombre </ion-col>
+              <ion-col style="text-align: right"> Sector </ion-col>
+              <ion-col style="text-align: right">Tunel</ion-col>
+              <ion-col style="text-align: right"> Surco </ion-col>
+              <ion-col style="text-align: right"> $ </ion-col>
+            </ion-row>
+            <ng-container *ngFor="let acti of info2.actividades.rendimientos; let i=index"  style="background-color: rgba(255, 255, 255, 0.185);">
+
+              <ion-row *ngFor="let cap of acti.capturas |filtrarInactivos:['idTunel']" style="background-color: rgba(255, 255, 255, 0.185);">
+                <ion-col size="6"> {{acti.actividad}} </ion-col>
+                <ion-col style="text-align: right"> {{acti.sector}} </ion-col>
+                <ion-col style="text-align: right"> {{cap.tunel}} </ion-col>
+                <ion-col style="text-align: right"> {{cap.numSurcos}} </ion-col>
+                <ion-col style="text-align: right"> ${{((cap.pago)|number:'.0-0')}}.00</ion-col>
+              </ion-row>
+            </ng-container>
+          </ion-grid>
+          <div class="barr" *ngIf="info2.cosecha.pago>0"></div>
+          <ion-grid *ngIf="info2.cosecha.pago>0">
+            <ion-row class="negritas">
+              <ion-col>
+                <div class="normal negritas">Cosecha</div>
+              </ion-col>
+              <ion-col style="text-align: right"> ${{(info2.cosecha.pago|number:'.0-0')}}.00</ion-col>
+            </ion-row></ion-grid
+          >
+
+          <div class="barr" *ngIf="info2.cosecha.pago>0"></div>
+          <ion-grid *ngIf="info2.cosecha.pago">
+            <ion-row class="negritas" style="font-size: 10px;">
+              <ion-col size="4"> Cultivo </ion-col>
+              <ion-col style="text-align: center"> Precio </ion-col>
+              <ion-col style="text-align: center"> Cajas </ion-col>
+              <ion-col style="text-align: right">$</ion-col>
+            </ion-row>
+            <ng-container *ngFor="let acti of info2.cosecha.rendimientos|noMostrar:['cajas']; let i=index"  style="background-color: rgba(255, 255, 255, 0.185);">
+
+              <ion-row  style="background-color: rgba(255, 255, 255, 0.185);">
+                <ion-col size="4"> {{acti.cultivo}} </ion-col>
+                <ion-col style="text-align: center"> {{(acti.capturas.pago/acti.capturas.cajas)|currency : 'USD':'symbol':'1.2-2':'en-US'}} </ion-col>
+                <ion-col style="text-align: center"> {{acti.capturas.cajas}} </ion-col>
+                <ion-col style="text-align: right"> ${{((acti.capturas.pago)|number:'.0-0')}}.00 </ion-col>
+              </ion-row>
+            </ng-container>
+            
+          </ion-grid>
+
+          <div class="barr" *ngIf="info2.porHora.paga>0"></div>
+          
+          <ion-grid *ngIf="info2.porHora.paga>0">
+            <ion-row class="negritas">
+              <ion-col>
+                <div class="normal negritas">Horas</div>
+              </ion-col>
+              <ion-col style="text-align: right"> ${{((info2.porHora.paga) | number:'.0-0': 'en-US')}}.00</ion-col>
+            </ion-row></ion-grid
+          >
+          <div class="barr" *ngIf="info2.porHora.paga>0"></div>
+          <ion-grid *ngIf="info2.porHora.paga>0">
+            <ion-row class="negritas" style="font-size: 10px;">
+              <ion-col > Hora Inicio </ion-col>
+              <ion-col style="text-align: right;"> Hora Fin</ion-col>
+              <ion-col style="text-align: right;">Horas</ion-col>
+              <ion-col style="text-align: right"> $ </ion-col>
+            </ion-row>
+            <ng-container  style="background-color: rgba(255, 255, 255, 0.185);">
+
+              <ion-row  style="background-color: rgba(255, 255, 255, 0.185);">
+                <ion-col > {{info2.porHora.horaI}} </ion-col>
+                <ion-col style="text-align: right"> {{info2.porHora.horaF}} </ion-col>
+                <ion-col style="text-align: right"> {{info2.porHora.horas |number:'.0-2'}} </ion-col>
+                <ion-col style="text-align: right"> ${{((info2.porHora.paga)|number:'.0-0')}}.00</ion-col>
+              </ion-row>
+            </ng-container>
+            
+          </ion-grid>
+          
+          <div class="barr" *ngIf="info2.porDia.paga>0"></div>
+          
+          <ion-grid *ngIf="info2.porDia.paga>0">
+            <ion-row class="negritas">
+              <ion-col>
+                <div class="normal negritas">Día</div>
+              </ion-col>
+              <ion-col style="text-align: right"> ${{(info2.porDia.paga|number:'.0-0')}}.00</ion-col>
+            </ion-row></ion-grid
+          >
+          <div class="barr" *ngIf="info2.reclutador &&info2.reclutados.length*paga_reclutador>0"></div>
+          <ion-grid *ngIf="info2.reclutador && info2.reclutados.length*paga_reclutador>0">
+            <ion-row class="negritas">
+              <ion-col>
+                <div class="normal negritas">Reclutamiento</div>
+              </ion-col>
+              <ion-col style="text-align: right"> {{info2.reclutados.length*paga_reclutador | currency: 'USD':'symbol':'1.2-2':'en-US'}}</ion-col>
+            </ion-row></ion-grid
+          >
+
+          <div class="barr"></div>
+          <div style="position: relative; bottom: 0">
+            <ion-grid>
+              <ion-row class="negritas">
+                <ion-col>
+                  <div class="normal negritas">Total</div>
+                </ion-col>
+                <ion-col style="text-align: right">  ${{(((info2.porDia.paga*1)+(((info2.actividades.granTotal*1) + (info2.cosecha.pago*1) +(info2.reclutados.length*paga_reclutador)
+              + (info2.porHora.paga*1)
+              )))|number :'.0-0':'en-US')}}.00 </ion-col>
+              </ion-row></ion-grid
+            >
+          </div>
+          <div *ngIf="!info2.firma" style="z-index: 999;position: relative;">
+            <div style="position: absolute; top:3px; right: 1px;z-index: 9999; background-color: brown;border-radius: 15px; color: white; height: 18px; width: 18px; text-align: center;" *ngIf="!info2.firma" (click)=" limp(); info2.firma = null">
+              
+              <ion-icon name="close"></ion-icon>
+            </div>
+            <signature-pad  style="z-index: 1000; margin-bottom: 50px !important;"
+              #signature2
+              [options]="signaturePadOptions"
+              (drawEnd)="drawComplete($event)"
+            ></signature-pad>
+          </div>
+        </ion-card-content>
+        <ng-container style="text-align: center; align-items: cener; align-content: center;">
+
+          <img style="position: absolute; bottom: 2rem !important; " *ngIf="info2.firma" [src]="info2.firma">
+        </ng-container>
+        <div class="text-center" style="position: absolute; bottom: 15px !important; left: 41.5vw; text-align: center; margin-top: 10px !important;">
+          <div class="centrar " >Firma</div>
+        </div>
+        <div class="shape-separator"></div>
+      </ion-card>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+<ion-modal trigger="hora-inicio-cosecha" [cssClass]="'bottom-end'">
+  <ng-template>
+      <ion-datetime (ionChange)="asignarHorarios()"
+      hourCycle="h23" formatOptions="24"   display-format="HH:mm" picker-format="HH mm" presentation="time" [(ngModel)]="horas.horaI" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal>
+<ion-modal trigger="hora-fin-cosecha" [cssClass]="'bottom-end'">
+  <ng-template>
+      <ion-datetime (ionChange)="asignarHorarios()"
+      hourCycle="h23" formatOptions="24"   display-format="HH:mm" picker-format="HH mm" presentation="time" [(ngModel)]="horas.horaF" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal>

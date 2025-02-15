@@ -1,0 +1,172 @@
+<ion-header>
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Capturar Inicidencias</ion-title>
+
+    <ion-buttons *ngIf="fecha" slot="end">
+      <ion-button id="open-modal-fecha2" style="font-size: 0.72rem">
+        <ion-icon name="calendar"></ion-icon> {{fecha|date:'dd/MM/yyyy'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-header
+      class="new-background-color"
+      style="padding: 4px; background-color: rgb(18, 135, 107) !important"
+    >
+    <ion-row>
+      <ion-col size="auto" style="font-size: 18px">
+        <small>CUADRILLA</small> <br />
+        {{cuadrillaDetalles?.nombre}}
+      </ion-col>
+      <ion-col style="text-align: right; font-size: 18px">
+        <small># EMPLEADOS</small> <br />
+        {{cuadrillaDetalles?.empleado.length}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="auto" style="font-size: 18px">
+        <small>#</small> <br />
+        {{incidenciasDetalles?.numEmpleado}}
+      </ion-col>
+      <ion-col style="text-align: right; font-size:18px">
+        <small>Nombre</small> <br />
+        
+        {{incidenciasDetalles?.nombre}}
+      </ion-col>
+    </ion-row>
+    </ion-header>
+    <ion-card-content style="padding-top: 8px; margin-top: 8px !important">
+      <ion-row>
+        <ion-col>
+          <ion-text style="margin-left: 4px"> Hora</ion-text>
+          <br />
+          <input
+            type="time"
+            [(ngModel)]="registro.hora"
+            style="
+              width: 100%;
+              border-radius: 15px;
+              padding: 3px;
+              margin-top: 5px;
+              padding-left: 6px !important;
+              border: solid 1px rgb(0, 0, 0);
+              color: #28ba62;
+            "
+          />
+        </ion-col>
+      </ion-row>
+      <ion-row style="padding-top: 4px">
+        <ion-col>
+
+          <ion-text> Comentario</ion-text>
+          <ion-textarea [(ngModel)]="registro.comentario"
+          style="
+              color: #28ba62;padding-top: 10px; padding-left: 4px;padding-right: 4px;margin: 0px; border: solid 1px black; border-radius: 15px;"
+            placeholder="Comentario.."
+            [autoGrow]="true">
+          </ion-textarea>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-button
+            expand="block"
+            style="width: 100%; color: white; --border-radius: 55px !important"
+            (click)="addIncidencia()"
+          >
+            <ion-icon name="save" style="margin-right: 2px"></ion-icon> Guardar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div *ngIf="incidenciasDetalles?.incidencias.length > 0" class="table-container">
+    <table style="overflow-y: scroll !important; overflow-x: scroll !important">
+      <thead>
+        <tr>
+          <th
+            class="head-1"
+            style="
+              z-index: 9999999999 !important;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            #
+          </th>
+          <th
+            class="head-2"
+            style="
+              z-index: 9999999999 !important;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            Hora
+          </th>
+          <th
+            style="
+              white-space: nowrap;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            Comentario
+          </th>
+          <th
+            style="
+              white-space: nowrap;
+              background-color: rgb(18, 135, 107) !important;
+              color: white;
+            "
+          >
+            Eliminar
+          </th>
+        </tr>
+        <tr *ngFor="let incidencia of incidenciasDetalles?.incidencias; let i = index">
+          <td   >
+            {{i+1}}
+          </td>
+          <td (click)="registro = incidencia" >
+            {{incidencia.hora}}
+          </td>
+          <td (click)="registro = incidencia"  >
+            <p >
+              {{incidencia.comentario}}
+            </p>
+          </td>
+          <td style="position: relative">
+            <div class="center-v circulo-trash">
+              <ion-button
+                (click)="deleteRegistro(i)"
+                size="small"
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -70%);
+                  --background: #c5000f !important;
+                  --border-radius: 15px;
+                "
+              >
+                <ion-icon
+                  style="color: white; font-size: 14px"
+                  name="trash"
+                ></ion-icon>
+              </ion-button>
+            </div>
+          </td>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</ion-content>

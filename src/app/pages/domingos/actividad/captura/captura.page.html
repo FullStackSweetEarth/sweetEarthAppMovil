@@ -1,0 +1,191 @@
+<ion-header class="new-background-color">
+  <ion-toolbar class="new-background-color">
+    <ion-buttons slot="start"(click)="back()" >
+        <ion-icon class="back" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      {{total.pago | currency: 'USD':'symbol':'1.2-2':'en-US'}}
+    </ion-buttons>
+    <ion-title>Actividades</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+  <ion-row *ngIf="actividad" style="background-color: rgb(18, 135, 107); color: white; border-top: solid 1px white;">
+    <ion-col size="3"><small>Rancho</small><br>
+    {{rancho}} <small>({{actividad.sector}})</small></ion-col>
+    <ion-col size="1"><small>N° <br>
+    {{actividad.numActividad}}</small></ion-col>
+    <ion-col><small>Actividad <br>
+    {{actividad.actividad}}</small></ion-col>
+    <!-- <ion-col size="2">
+      <ion-button *ngIf="actividad.tipoActividad === 'GRUPAL'" (click)="distribuirRendimeintosv2()" size="small" shape="round"  color="secondary">
+        <ion-icon name="save"></ion-icon>
+      </ion-button>
+    </ion-col> -->
+  </ion-row>
+  <ion-row *ngIf="actividad" style="margin-top: 10px; padding-left: 8px; padding-right: 5px;">
+    <ion-col size="2">
+      <ion-icon name="accessibility"></ion-icon> 
+      {{actividad.numTrabajadores>0?actividad.numTrabajadores:0}}
+
+    </ion-col>
+    <ion-col size="2">
+      <ion-icon name="radio-button-on"></ion-icon> 
+      {{actividad.surcos>0?actividad.surcos:0}}
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    
+    <ion-col size="5.8" style="text-align: left; padding-left:15px;">
+      <ion-text> Hora Inicio</ion-text>
+      <br />
+      <ion-text color="primary">
+          <ion-chip id="open-modal" color="primary" mode="ios" outline="true" style="font-size: 1.6vh;  width: 100%; white-space: nowrap">
+            {{(!horaInicio?'Sin datos':(horaInicio | date:'HH:mm'))}} 
+              <div style="margin-left: 14vw;" >
+
+                <ion-icon name="time"></ion-icon>
+              </div>
+          </ion-chip>
+      </ion-text>
+  </ion-col>
+ 
+  <ion-col size="5.8" style="text-align: right; ">
+    <ion-text> Hora Fin</ion-text>
+    <br />
+    <ion-text color="primary">
+        <ion-chip id="open-modal-49" color="primary" mode="ios" outline="true" style="font-size: 1.6vh; width: 100%; white-space: nowrap">
+          {{(!horaFin?'Sin datos':(horaFin | date:'HH:mm'))}} 
+
+            <div style="margin-left: 16vw;">
+
+                <ion-icon name="time"></ion-icon>
+              </div>
+        </ion-chip>
+    </ion-text>
+</ion-col>
+    </ion-row>
+</ion-card>
+
+<ion-searchbar
+id="4"
+style=" width: 100%"
+class="custom"
+placeholder="Buscar..."
+showCancelButton="true" cancelButtonText="cancel" debounce=250 [(ngModel)]="palabra"
+></ion-searchbar>
+  <ion-card *ngFor="let empleado of plantilla | buscar4:['numEmpleado','nombre']:palabra; let i=index" >
+    <ion-row style="position: relative;padding-left: 5px;padding-top: 5px;padding-right: 5px;background-color: rgb(18, 135, 107); color: white;">
+      <ion-col size="2">N° <br>
+      {{empleado.numEmpleado}}
+      </ion-col>
+      <ion-col style="text-overflow: ellipsis !important;" >Nombre <br>
+        {{empleado.nombre+' '+(empleado.paterno?empleado.paterno:'')+' '+(empleado.materno?empleado.materno:'')}}
+      </ion-col>
+          <ion-col
+          
+         size="1"
+        >
+        <ion-icon
+        (click)="addRendimeinto(empleado.actividades.rendimientos); validarHorario()?empleado.show = empleado.show === true ? false:true:false"
+          style="color: white;font-size: 20px; margin-top: 3px; "
+          [attr.name]="!empleado.show?'eye':'eye-off'"
+        ></ion-icon>
+        </ion-col>
+    </ion-row>
+    <div  *ngIf="empleado.show" style=" padding: 5px;padding-left: 8px;padding-right: 8px;">
+      <ng-container *ngFor="let activi of empleado.actividades.rendimientos | buscar: ['idActividad']: idApp">
+  <ion-row>
+    
+    <ion-col>
+      
+      <ion-text> Hora Inicio </ion-text>
+      
+        <input type="time" (change)="calcularDescuentoIndividual(activi)" [(ngModel)]="activi.horaInicio" style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px; padding-left:6px !important; border: solid 1px rgb(0, 0, 0);"/>
+      </ion-col>
+      <ion-col>
+      <ion-text> Hora Fin </ion-text>
+
+        <input type="time" (change)="calcularDescuentoIndividual(activi)" [(ngModel)]="activi.horaFin"  style="width: 100%; border-radius: 15px;padding:3px; margin-top: 5px;  padding-left:6px !important; border: solid 1px rgb(0, 0, 0);" />
+      </ion-col>
+  </ion-row>
+
+  <ng-container *ngFor="let cap of activi.capturas;let g = index">
+    <ion-row  >
+      <ion-col size="5">
+        <ion-text> Tunel </ion-text>
+        <br />
+        <ion-text color="primary">
+            <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 100%;justify-content: space-between">
+                <ion-select (ionChange)="addTunel( cap,empleado.actividades)" interface="action-sheet" placeholder="Sin Data" style="padding: 0px;  width: 100%;" [(ngModel)]="cap.idTunel">
+                    <ion-select-option  [value]="cap.idTunelAux">{{cap.tunel}}</ion-select-option>
+                    <ion-select-option *ngFor="let tunel of disponibles | filtrarInactivos:['restantes']" [value]="tunel.idTunel">{{tunel.nombre}}</ion-select-option>
+                </ion-select>
+                <ion-icon name="ellipse"></ion-icon>
+            </ion-chip>
+        </ion-text>
+      </ion-col>
+      <ion-col size="5">
+        <ion-text> # Surcos </ion-text>
+        <br />
+        <ion-text color="primary">
+            <ion-chip color="primary" mode="ios" outline="true" style="font-size: 12px; width: 100%;">
+                <ion-input [disabled]="actividad?actividad.tipoActividad === 'GRUPAL':false" (change)="actividad?(actividad.tipoActividad === 'GRUPAL'?false:addTunel( cap,empleado.actividades)):addTunel( cap,empleado.actividades)" [(ngModel)]="cap.numSurcos" style=" font-size: .8rem;text-align: left; width: 100%;" type="number" placeholder="# Sectores"></ion-input>
+              
+                <ion-icon name="cube"></ion-icon>
+            </ion-chip>
+        </ion-text>
+    </ion-col>
+      <ion-col style="text-align: center;" >
+      <ion-badge style="font-size: 11px; border-radius: 15rem; color: white;" >${{cap.pago| number:'.0-2'}}</ion-badge>
+      
+      <br />
+      <div *ngIf="empleado.firma">
+      <ion-badge style="font-size: 11px; border-radius: 15rem; color: rgb(0, 0, 0); " color="warning" ><ion-icon name="checkmark-done-circle-outline"></ion-icon></ion-badge>
+
+      </div>
+      <div *ngIf="!empleado.firma" (click)="deleteTunel(activi.capturas, g, empleado.actividades)" style="width: 30px; height: 30px; background-color: red; border-radius: 50rem; margin-left: 7px; margin-top: 1px;">
+
+        <ion-icon  name="trash" style="margin-top: 8px;color: rgb(255, 255, 255);"></ion-icon>
+      </div>
+  </ion-col>
+  </ion-row>
+</ng-container>
+</ng-container>
+</div>
+<ng-container *ngFor="let activi of empleado.actividades.rendimientos | buscar: ['idActividad']: idApp">
+
+<ion-row style="background-color: rgb(18, 135, 107); color: white; border-top: solid 1px white;">
+  <ion-col>
+    Surcos <br>
+    {{activi.numSurcos}}
+  </ion-col>
+  <ion-col style="text-align: right;">
+    Total <br>
+    {{activi.pago | currency: 'USD':'symbol':'1.2-2':'en-US'}}
+  </ion-col>
+</ion-row>
+</ng-container>
+    </ion-card>
+
+
+</ion-content>
+
+
+
+<ion-modal trigger="open-modal" [cssClass]="'bottom-end'">
+  <ng-template>
+      <ion-datetime (ionChange)="asignarHorarios($event,1)"   display-format="HH:mm" picker-format="HH:mm" presentation="time" [(ngModel)]="horaInicio" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="open-modal-49" [cssClass]="'bottom-end'">
+  <ng-template>
+      <ion-datetime (ionChange)="asignarHorarios($event,2)"  display-format="HH:mm" picker-format="HH:mm" presentation="time" [(ngModel)]="horaFin" size="cover" [showDefaultButtons]="true" >
+      </ion-datetime>
+  </ng-template>
+</ion-modal>

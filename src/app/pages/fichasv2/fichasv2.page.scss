@@ -1,0 +1,31 @@
+ion-searchbar.custom {
+    --background: rgb(18, 135, 107);
+    --color: #fff;
+    --placeholder-color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff;
+  
+    --border-radius: 4px;
+  }
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: rgb(18, 135, 107);
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+  .c{
+    background-color: rgb(0, 0, 0) !important
+  }
+  .c2{
+    background-color: rgb(0, 0, 0) !important; width: 100%;z-index: 90;
+  }
+}
+.c2{
+  width: 100%;  position: fixed; top: 45px;z-index: 90;
+}
+  .c{
+    background-color: white 
+  }

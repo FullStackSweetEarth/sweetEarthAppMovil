@@ -1,0 +1,16 @@
+
+
+input{
+    
+    border: 0;
+    background-color: unset;
+    width: 20vw;
+}
+input:focus{
+    border: 0 !important;
+    background-color: unset !important;
+}
+input::selectio{
+    border: 0 !important;
+    background-color: unset !important;
+}
